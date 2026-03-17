@@ -1,0 +1,14 @@
+# Todo
+- #10: Add database schema for users, habits, and streaks
+- #11: Implement habit completion and streak tracking logic
+- #13: Build profile page with user statistics
+- #14: Add notifications center
+- #15: Implement AI chatbot widget
+- #16: Add notes/journaling feature for habits
+- #17: Create streak sharing functionality
+- #19: Add habit templates for quick start
+- #20: Implement weekly/monthly calendar view
+- #21: Add habit reminder notifications
+- #22: Create habit analytics dashboard
+- #23: Add streak freeze feature
+- #24: Implement habit difficulty levels
