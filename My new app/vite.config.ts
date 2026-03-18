@@ -13,6 +13,9 @@ export default defineConfig({
 	  ],
 	  server: {
 	    allowedHosts: true,
+	    proxy: {
+	      "/api": "http://localhost:4000",
+	    },
 	  },
   build: {
     chunkSizeWarningLimit: 5000,
