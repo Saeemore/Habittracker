@@ -23,7 +23,7 @@ AI-Based Habit Tracker helps people build and maintain positive habits through p
 ## 🛠 Tech Stack
 - **Frontend:** React + TypeScript (Vite or Next.js)  
 - **Backend:** Node.js + TypeScript (Express / Fastify)  
-- **Database:** PostgreSQL (primary), Redis (cache, rate limiting)  
+- **Database:** MongoDB
 - **ML / AI:** Python (scikit-learn, PyTorch/TensorFlow) or hosted LLM APIs  
 - **Auth:** JWT / OAuth2 (Google, Apple)  
 - **Deployment:** Docker, GitHub Actions, Kubernetes / cloud hosting  
@@ -188,8 +188,7 @@ docker-compose.override.yml
 
 ```bash
 # Database
-DB_URL=postgres://user:password@localhost:5432/habit_tracker
-REDIS_URL=redis://localhost:6379
+
 
 # Auth
 JWT_SECRET=changeme

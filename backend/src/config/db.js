@@ -6,7 +6,7 @@ async function connectToDatabase() {
   mongoose.set("strictQuery", true);
   await mongoose.connect(env.MONGODB_URI, { autoIndex: true });
   // eslint-disable-next-line no-console
-  console.log("[backend] connected to MongoDB");
+  console.log("AAAPKA BACKEND SAKRIYA HOO CHUKA HAI");
 }
 
 module.exports = { connectToDatabase };
