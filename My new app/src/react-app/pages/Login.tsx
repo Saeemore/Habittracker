@@ -1,33 +1,43 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { TrendingUp, Sparkles } from 'lucide-react';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { TrendingUp, Sparkles } from "lucide-react";
+import { ApiError, setAccessToken } from "@/react-app/lib/api";
+import { login, register } from "@/react-app/lib/auth";
 
 interface LoginPageProps {
-  onLoginSuccess: () => void;
+  onLoginSuccess: (username?: string) => void;
 }
 
 export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    setError('');
-    
-    setTimeout(() => {
-      if (username && password) {
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('username', username);
-        onLoginSuccess();
-      } else {
-        setError('Please fill in all fields');
-        setIsLoading(false);
+    setError("");
+
+    try {
+      if (!username || !password || (isSignup && !email)) {
+        setError("Please fill in all fields");
+        return;
       }
-    }, 2000);
+
+      const result = isSignup
+        ? await register({ email, username, password })
+        : await login({ username, password });
+
+      setAccessToken(result.accessToken);
+      onLoginSuccess(result.user.username);
+    } catch (err) {
+      if (err instanceof ApiError) setError(err.message);
+      else setError("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -108,15 +118,13 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
           Welcome to HabitFlow
         </h1>
         <p className="text-center text-gray-300 mb-8">
-          {isSignup ? 'Start your growth journey today' : 'Transform yourself, one habit at a time'}
+          {isSignup ? "Start your growth journey today" : "Transform yourself, one habit at a time"}
         </p>
 
         <div className="space-y-4">
           {isSignup && (
             <div>
-              <label className="block text-sm font-medium text-gray-200 mb-2">
-                Email
-              </label>
+              <label className="block text-sm font-medium text-gray-200 mb-2">Email</label>
               <input
                 type="email"
                 placeholder="your@email.com"
@@ -146,15 +154,15 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
             <label className="block text-sm font-medium text-gray-200 mb-2">
               Password
             </label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white placeholder-gray-400 rounded-xl focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/30 transition-all backdrop-blur-sm"
-              disabled={isLoading}
-              onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
-            />
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white placeholder-gray-400 rounded-xl focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/30 transition-all backdrop-blur-sm"
+                disabled={isLoading}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+              />
           </div>
 
           {error && (
@@ -182,7 +190,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
               />
             )}
             <span className="relative z-10">
-              {isLoading ? 'Loading...' : isSignup ? 'Sign Up' : 'Login'}
+              {isLoading ? "Loading..." : isSignup ? "Sign Up" : "Login"}
             </span>
           </motion.button>
 
@@ -190,12 +198,12 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
             <button
               onClick={() => {
                 setIsSignup(!isSignup);
-                setError('');
+                setError("");
               }}
               className="text-teal-400 hover:text-teal-300 font-medium transition-colors"
               disabled={isLoading}
             >
-              {isSignup ? 'Already have an account? Login' : "Don't have an account? Sign up"}
+              {isSignup ? "Already have an account? Login" : "Don't have an account? Sign up"}
             </button>
           </div>
         </div>

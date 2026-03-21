@@ -419,26 +419,21 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
   const [activeFilter, setActiveFilter] = useState('All');
   const [formData, setFormData] = useState({ name: '', why: '', endGoal: '', targetTime: '', category: '' });
 
-  const [habits, setHabits] = useState([
-    { id: '1', name: 'Morning Meditation', endGoal: '30 minutes daily', targetTime: '06:00', completed: false, category: 'Wellness', streak: 7 },
-    { id: '2', name: 'Reading', endGoal: '30 pages daily', targetTime: '20:00', completed: false, category: 'Learning', streak: 14 },
-    { id: '3', name: 'Exercise', endGoal: '45 minutes workout', targetTime: '07:00', completed: false, category: 'Fitness', streak: 5 },
-    { id: '4', name: 'Journaling', endGoal: '10 min reflection', targetTime: '21:00', completed: false, category: 'Mindfulness', streak: 3 },
-  ]);
+  const [habits, setHabits] = useState<
+    { id: string; name: string; endGoal: string; targetTime: string; completed: boolean; category: string; streak: number }[]
+  >([]);
 
   /* ── theme tokens ─────────────────────────────────────────────────────────
      Dark:  page = #0a0a0a | sidebar = #111 | card = #161616 | inner = #1e1e1e
      Light: page = gray-100 | sidebar/card = white
   ───────────────────────────────────────────────────────────────────────── */
   const BG = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
-  const SB = isDarkMode ? 'bg-[#111111] border-white/5' : 'bg-white border-gray-200';
   const CARD = isDarkMode ? 'bg-[#161616] border-white/8' : 'bg-white border-gray-100';
   // habit card is slightly lighter than the page card
   const HCARD = isDarkMode ? 'bg-[#1c1c1c] border-white/5' : 'bg-white border-gray-100';
   const TXT = isDarkMode ? 'text-white' : 'text-gray-900';
   const MUTED = isDarkMode ? 'text-gray-500' : 'text-gray-400';
   const HOV = isDarkMode ? 'hover:bg-white/5' : 'hover:bg-gray-50';
-  const DIV = isDarkMode ? 'border-white/5' : 'border-gray-100';
   const INPUT = isDarkMode
     ? 'bg-[#1e1e1e] border-white/10 text-white placeholder-gray-600 focus:border-green-500'
     : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-green-500';

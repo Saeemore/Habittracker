@@ -1,4 +1,7 @@
-require("dotenv").config();
+const path = require("path");
+
+// Load env vars reliably even when the process is started from the repo root.
+require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
 const http = require("http");
 const { env } = require("./config/env");
@@ -12,6 +15,8 @@ async function main() {
   server.listen(env.PORT, () => {
     // eslint-disable-next-line no-console
     console.log(`[backend] listening on http://localhost:${env.PORT}`);
+
+    console.log("AAAPKA BACKEND SAKRIYA HOO CHUKA HAI");
   });
 }
 

@@ -11,22 +11,13 @@ interface ProgressSectionProps {
 }
 
 // ── Heatmap: 4 habits × 7 days
-const HABITS = ['Meditation', 'Reading', 'Exercise', 'Journaling'];
-const HEATMAP_DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+const HABITS: string[] = [];
+const HEATMAP_DAYS: string[] = [];
 type CellState = 'done' | 'missed' | 'none';
-const HEATMAP_DATA: CellState[][] = [
-  ['done', 'done', 'missed', 'done', 'done', 'missed', 'none'],
-  ['done', 'done', 'done', 'done', 'done', 'missed', 'none'],
-  ['missed', 'done', 'done', 'missed', 'done', 'none', 'none'],
-  ['done', 'missed', 'done', 'done', 'missed', 'none', 'none'],
-];
+const HEATMAP_DATA: CellState[][] = [];
 
 // ── 30-day trend (0–100), left = oldest, right = today
-const TREND: number[] = [
-  22, 38, 30, 48, 55, 42, 60, 65, 52, 70,
-  68, 75, 72, 80, 77, 82, 79, 85, 80, 84,
-  78, 82, 76, 85, 80, 83, 86, 88, 84, 95,
-];
+const TREND: number[] = [];
 
 const TABS = ['This Week', 'Last Week', 'Monthly', 'Quarterly'];
 
@@ -51,7 +42,8 @@ export default function ProgressSection({ isDarkMode }: ProgressSectionProps) {
     return isDarkMode ? 'bg-white/5' : 'bg-gray-100';
   };
 
-  const minT = Math.min(...TREND), maxT = Math.max(...TREND);
+  const minT = TREND.length ? Math.min(...TREND) : 0;
+  const maxT = TREND.length ? Math.max(...TREND) : 0;
 
   return (
     <div className={`min-h-screen ${bg} transition-colors duration-300`}>
@@ -166,10 +158,8 @@ export default function ProgressSection({ isDarkMode }: ProgressSectionProps) {
                     <span className="inline-block text-[9px] font-black tracking-widest text-green-400 bg-green-400/10 border border-green-500/30 px-2 py-0.5 rounded-full mb-3">
                       CONSISTENCY
                     </span>
-                    <h3 className="text-sm font-black mb-1.5 text-white">Pair Meditation with Coffee</h3>
-                    <p className="text-xs leading-relaxed text-gray-400">
-                      You're 20% more likely to complete 'Meditation' when you finish 'Brew Coffee' first.
-                    </p>
+                    <h3 className="text-sm font-black mb-1.5 text-white">No AI insights yet</h3>
+                    <p className="text-xs leading-relaxed text-gray-400">Check in for a few days to generate real recommendations.</p>
                   </div>
                 </div>
               </motion.div>
@@ -243,12 +233,7 @@ export default function ProgressSection({ isDarkMode }: ProgressSectionProps) {
                 className={`border rounded-2xl p-5 ${card}`}>
                 <h3 className={`text-sm font-black mb-4 ${txt}`}>Habit Progress</h3>
                 <div className="flex flex-col gap-4">
-                  {[
-                    { name: 'Meditation', pct: 60 },
-                    { name: 'Reading', pct: 80 },
-                    { name: 'Exercise', pct: 50 },
-                    { name: 'Journaling', pct: 70 },
-                  ].map((h, i) => (
+                  {([] as { name: string; pct: number }[]).map((h, i) => (
                     <div key={h.name}>
                       <div className="flex justify-between items-center mb-1.5">
                         <span className={`text-xs font-semibold ${muted}`}>{h.name}</span>
@@ -271,12 +256,7 @@ export default function ProgressSection({ isDarkMode }: ProgressSectionProps) {
                 className={`border rounded-2xl p-5 ${card}`}>
                 <h3 className={`text-sm font-black mb-4 ${txt}`}>This Month</h3>
                 <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { label: 'Completed', value: '86', sub: 'sessions', color: 'text-green-500', bg: 'bg-green-500/10' },
-                    { label: 'Skipped', value: '14', sub: 'sessions', color: 'text-orange-500', bg: 'bg-orange-500/10' },
-                    { label: 'Best Day', value: 'Wed', sub: 'most active', color: 'text-blue-500', bg: 'bg-blue-500/10' },
-                    { label: 'Avg Score', value: '78%', sub: 'per day', color: 'text-purple-500', bg: 'bg-purple-500/10' },
-                  ].map(({ label, value, color, bg: ibg }) => (
+                  {([] as { label: string; value: string; sub: string; color: string; bg: string }[]).map(({ label, value, color, bg: ibg }) => (
                     <div key={label} className={`rounded-xl p-3 ${isDarkMode ? 'bg-[#1e1e1e]' : 'bg-gray-50'}`}>
                       <div className={`w-7 h-7 rounded-lg ${ibg} flex items-center justify-center mb-2`}>
                         <span className={`text-xs font-black ${color}`}>#</span>

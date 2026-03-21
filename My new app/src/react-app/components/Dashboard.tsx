@@ -180,7 +180,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, Home, CheckCircle, BarChart2, User, Brain, TrendingUp, Trophy, X, Zap } from 'lucide-react';
+import { Flame, Home, CheckCircle, BarChart2, User, Brain, TrendingUp, Trophy, X } from 'lucide-react';
 
 interface DashboardProps {
   isDarkMode: boolean;
@@ -215,13 +215,10 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
 
   // ── theme tokens ──────────────────────────────────────────────────────────
   const bg = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
-  const sidebar = isDarkMode ? 'bg-[#111111] border-white/5' : 'bg-white border-gray-200';
   const card = isDarkMode ? 'bg-[#161616] border-white/5' : 'bg-white border-gray-100';
   const inner = isDarkMode ? 'bg-[#1e1e1e]' : 'bg-gray-50';
   const txt = isDarkMode ? 'text-white' : 'text-gray-900';
   const muted = isDarkMode ? 'text-gray-500' : 'text-gray-500';
-  const hov = isDarkMode ? 'hover:bg-white/5' : 'hover:bg-gray-50';
-  const divider = isDarkMode ? 'border-white/5' : 'border-gray-100';
 
   return (
     <div className={`flex h-screen overflow-hidden ${bg} transition-colors duration-300`}>

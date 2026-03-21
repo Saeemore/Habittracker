@@ -92,9 +92,8 @@
 
 
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, Trophy, Star, Zap, Home, CheckCircle, BarChart2, User } from 'lucide-react';
+import { Award, Trophy, Star, Zap, Home, CheckCircle, User } from 'lucide-react';
 
 interface AchievementsSectionProps {
   isDarkMode: boolean;
@@ -108,47 +107,20 @@ const NAV_ITEMS = [
   { id: 'profile', icon: User, label: 'Profile' },
 ];
 
-const ACHIEVEMENTS = [
-  {
-    id: '1', name: 'Week Warrior', description: '7-day streak', icon: Trophy, earned: true,
-    iconColor: 'text-amber-400', iconBg: 'bg-amber-500/15', cardBg: 'bg-amber-500/10', border: 'border-amber-500/25'
-  },
-  {
-    id: '2', name: 'Two Weeks Strong', description: '14-day streak', icon: Star, earned: true,
-    iconColor: 'text-blue-400', iconBg: 'bg-blue-500/15', cardBg: 'bg-blue-500/10', border: 'border-blue-500/25'
-  },
-  {
-    id: '3', name: 'Month Master', description: '30-day streak', icon: Award, earned: false,
-    iconColor: '', iconBg: '', cardBg: '', border: ''
-  },
-  {
-    id: '4', name: 'Century Club', description: '100-day streak', icon: Zap, earned: false,
-    iconColor: '', iconBg: '', cardBg: '', border: ''
-  },
-  {
-    id: '5', name: 'Habit Creator', description: 'Created 5 habits', icon: Star, earned: true,
-    iconColor: 'text-green-400', iconBg: 'bg-green-500/15', cardBg: 'bg-green-500/10', border: 'border-green-500/25'
-  },
-  {
-    id: '6', name: 'Perfect Week', description: '7 days all complete', icon: Trophy, earned: false,
-    iconColor: '', iconBg: '', cardBg: '', border: ''
-  },
-];
+const ACHIEVEMENTS = [];
 
 export default function AchievementsSection({ isDarkMode, setActiveSection }: AchievementsSectionProps) {
 
   /* ── theme tokens — same as Dashboard / HabitsSection ─────────────────── */
   const BG = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
-  const SB = isDarkMode ? 'bg-[#111111] border-white/5' : 'bg-white border-gray-200';
   const CARD = isDarkMode ? 'bg-[#161616] border-white/5' : 'bg-white border-gray-100';
   const HCARD = isDarkMode ? 'bg-[#1c1c1c] border-white/5' : 'bg-white border-gray-100';
   const TXT = isDarkMode ? 'text-white' : 'text-gray-900';
   const MUTED = isDarkMode ? 'text-gray-500' : 'text-gray-400';
-  const HOV = isDarkMode ? 'hover:bg-white/5' : 'hover:bg-gray-50';
-  const DIV = isDarkMode ? 'border-white/5' : 'border-gray-100';
 
   const earned = ACHIEVEMENTS.filter(a => a.earned).length;
   const total = ACHIEVEMENTS.length;
+  const progressPct = total ? Math.round((earned / total) * 100) : 0;
 
   return (
     <div className={`flex h-screen overflow-hidden ${BG} transition-colors duration-300`}>
@@ -203,17 +175,23 @@ export default function AchievementsSection({ isDarkMode, setActiveSection }: Ac
             <div className="flex items-center gap-2">
               <div className={`w-20 h-1.5 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-gray-200'}`}>
                 <div className="h-full rounded-full bg-green-500 transition-all duration-700"
-                  style={{ width: `${Math.round((earned / total) * 100)}%` }} />
+                  style={{ width: `${progressPct}%` }} />
               </div>
               <span className={`text-xs font-black ${MUTED}`}>{earned}/{total}</span>
             </div>
           </motion.div>
 
           {/* Achievements grid — 1→2→3→4 cols matching habits page */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {ACHIEVEMENTS.map((a, index) => {
-              const Icon = a.icon;
-              return (
+          {ACHIEVEMENTS.length === 0 ? (
+            <div className={`border rounded-2xl p-6 ${HCARD}`}>
+              <p className={`text-sm font-black ${TXT}`}>No achievements yet</p>
+              <p className={`text-xs mt-1 ${MUTED}`}>Create habits and build streaks to unlock achievements.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {ACHIEVEMENTS.map((a, index) => {
+                const Icon = a.icon;
+                return (
                 <motion.div
                   key={a.id}
                   initial={{ opacity: 0, scale: 0.92 }}
@@ -271,8 +249,9 @@ export default function AchievementsSection({ isDarkMode, setActiveSection }: Ac
                   )}
                 </motion.div>
               );
-            })}
-          </div>
+              })}
+            </div>
+          )}
         </div>
       </div>
 

@@ -33,6 +33,16 @@ function errorHandler(err, _req, res, _next) {
       });
     }
 
+    if (err.code === 13297 && typeof err.errmsg === "string") {
+      return res.status(500).json({
+        error: {
+          message: "MongoDB database name already exists with different letter case. Update MONGODB_URI to match the existing database name.",
+          code: "DB_CASE_CONFLICT",
+          details: { errmsg: err.errmsg }
+        }
+      });
+    }
+
     if (err.code === 11000) {
       return res.status(409).json({
         error: { message: "Duplicate key", code: "CONFLICT", details: err.keyValue ?? null }

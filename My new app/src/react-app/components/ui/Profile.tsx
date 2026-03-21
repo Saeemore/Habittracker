@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-    Home, CheckCircle, BarChart2, User, Zap,
+    Home, CheckCircle, BarChart2, User,
     Trophy, Globe, Flame, Shield, Sun, Lock,
     Pencil, Users, RefreshCw, Settings, Share2, Brain
 } from 'lucide-react';
@@ -39,13 +38,11 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
 
     /* ── theme tokens ────────────────────────────────────────────────────── */
     const BG = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
-    const SB = isDarkMode ? 'bg-[#111111] border-white/5' : 'bg-white border-gray-200';
     const CARD = isDarkMode ? 'bg-[#161616] border-white/5' : 'bg-white border-gray-100';
     const HCARD = isDarkMode ? 'bg-[#1c1c1c] border-white/5' : 'bg-gray-50 border-gray-100';
     const TXT = isDarkMode ? 'text-white' : 'text-gray-900';
     const MUTED = isDarkMode ? 'text-gray-500' : 'text-gray-400';
     const HOV = isDarkMode ? 'hover:bg-white/5' : 'hover:bg-gray-50';
-    const DIV = isDarkMode ? 'border-white/5' : 'border-gray-100';
 
     const heatColor = (v: number) => {
         if (v === 0) return isDarkMode ? 'bg-white/5' : 'bg-gray-100';
