@@ -115,7 +115,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
         </div>
 
         <h1 className="text-3xl font-bold text-center text-white mb-2">
-          Welcome to HabitFlow
+          Welcome to Trackify
         </h1>
         <p className="text-center text-gray-300 mb-8">
           {isSignup ? "Start your growth journey today" : "Transform yourself, one habit at a time"}

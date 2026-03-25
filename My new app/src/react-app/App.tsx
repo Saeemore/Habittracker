@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LoginPage from "@/react-app/pages/Login";
 import HomePage from "@/react-app/pages/Home";
 import { ApiError, getAccessToken, setAccessToken } from "@/react-app/lib/api";
@@ -7,19 +7,27 @@ import { me, refresh } from "@/react-app/lib/auth";
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
+  const hasBootstrapped = useRef(false);
 
   useEffect(() => {
+    if (hasBootstrapped.current) return;
+    hasBootstrapped.current = true;
+
     let alive = true;
 
     async function bootstrap() {
       try {
         const token = getAccessToken();
-        if (!token) {
+        const hadSession = localStorage.getItem("isLoggedIn") === "true";
+
+        if (!token && hadSession) {
           try {
             const refreshed = await refresh();
             setAccessToken(refreshed.accessToken);
           } catch {
-            // no refresh cookie yet
+            // stale local session marker or missing refresh cookie
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("username");
           }
         }
 

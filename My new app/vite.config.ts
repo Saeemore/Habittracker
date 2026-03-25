@@ -14,9 +14,14 @@ export default defineConfig({
 	  server: {
 	    allowedHosts: true,
 	    proxy: {
-	      "/api": "http://localhost:4000",
+	      "/api": {
+	        target: "http://127.0.0.1:4000",
+	      },
 	    },
 	  },
+  optimizeDeps: {
+    exclude: ["@cloudflare/unenv-preset"],
+  },
   build: {
     chunkSizeWarningLimit: 5000,
   },
