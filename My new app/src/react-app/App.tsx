@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import LoginPage from "@/react-app/pages/Login";
 import HomePage from "@/react-app/pages/Home";
+import UserOnboarding from "@/react-app/components/UserOnboarding";
 import { ApiError, getAccessToken, setAccessToken } from "@/react-app/lib/api";
 import { me, refresh } from "@/react-app/lib/auth";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
+  const [isDarkMode] = useState(false);
   const hasBootstrapped = useRef(false);
 
   useEffect(() => {
@@ -59,6 +62,8 @@ export default function App() {
   const handleLoginSuccess = (username?: string) => {
     if (username) localStorage.setItem("username", username);
     localStorage.setItem("isLoggedIn", "true");
+    const alreadyOnboarded = localStorage.getItem("onboardingComplete") === "true";
+    setNeedsOnboarding(!alreadyOnboarded);
     setIsLoggedIn(true);
   };
 
@@ -73,6 +78,15 @@ export default function App() {
 
   if (!isLoggedIn) {
     return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+  }
+
+  if (needsOnboarding) {
+    return (
+      <UserOnboarding
+        isDarkMode={isDarkMode}
+        onComplete={() => setNeedsOnboarding(false)}
+      />
+    );
   }
 
   return <HomePage onLogout={handleLogout} />;

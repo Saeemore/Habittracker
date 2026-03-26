@@ -15,6 +15,8 @@ This folder is a standalone Node.js backend for the Habit Tracker repo.
 2. Install:
    - `cd backend && npm i`
 3. Run MongoDB (locally or Docker).
+   - Local default URI: `mongodb://127.0.0.1:27017/habittracker`
+   - Example Docker command: `docker run -d --name habittracker-mongo -p 27017:27017 mongo`
 4. Start:
    - `cd backend && npm run dev`
 

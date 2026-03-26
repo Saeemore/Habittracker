@@ -262,30 +262,30 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
 
       {/* ── Main content ─────────────────────────────────────────────────────── */}
       <div className="flex-1 min-w-0 h-full overflow-y-auto">
-        <div className="p-4 md:p-5 xl:p-6 pb-24 md:pb-6">
+        <div className="p-6 md:p-8 xl:p-10 pb-28 md:pb-10">
 
           {/* ── Level / XP header ─────────────────────────────────────────── */}
           <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }}
-            className={`flex items-center justify-between mb-4 border rounded-2xl px-4 py-3 ${card}`}>
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="md:hidden w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-green-500 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
+            className={`flex items-center justify-between mb-6 border rounded-2xl px-6 py-5 ${card}`}>
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className="md:hidden w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-green-500 flex items-center justify-center text-white font-black text-lg flex-shrink-0">
                 {username[0]?.toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
-                <p className={`font-black text-sm leading-tight ${txt}`}>Level {level}</p>
-                <div className="flex items-center gap-2 mt-1.5">
-                  <div className={`flex-1 max-w-sm h-2 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-gray-200'}`}>
+                <p className={`font-black text-xl leading-tight ${txt}`}>Level {level}</p>
+                <div className="flex items-center gap-3 mt-2">
+                  <div className={`flex-1 max-w-sm h-3 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-gray-200'}`}>
                     <motion.div initial={{ width: 0 }} animate={{ width: `${xpPercent}%` }}
                       transition={{ duration: 1.2, ease: 'easeOut' }}
                       className="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500" />
                   </div>
-                  <span className={`text-xs flex-shrink-0 ${muted}`}>{currentXP} / {maxXP} XP</span>
+                  <span className={`text-sm flex-shrink-0 font-semibold ${muted}`}>{currentXP} / {maxXP} XP</span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 bg-orange-500 text-white rounded-full px-3 py-1.5 ml-3 flex-shrink-0 shadow-lg shadow-orange-500/20">
-              <Flame size={15} className="fill-white" />
-              <span className="font-black text-sm">{streakDays}</span>
+            <div className="flex items-center gap-2 bg-orange-500 text-white rounded-full px-5 py-2.5 ml-4 flex-shrink-0 shadow-lg shadow-orange-500/20">
+              <Flame size={22} className="fill-white" />
+              <span className="font-black text-xl">{streakDays}</span>
             </div>
           </motion.div>
 
@@ -296,60 +296,60 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
                 initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, height: 0, marginBottom: 0 }}
                 transition={{ duration: 0.3 }}
-                className="relative mb-4 rounded-2xl overflow-hidden"
+                className="relative mb-6 rounded-2xl overflow-hidden"
                 style={{ background: 'linear-gradient(135deg,#0a120a 0%,#0f2010 60%,#0a120a 100%)' }}>
                 <div className="absolute inset-0 pointer-events-none"
                   style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(34,197,94,0.12) 0%,transparent 65%)' }} />
-                <div className="relative flex flex-col sm:flex-row sm:items-center gap-3 p-4 xl:p-5">
+                <div className="relative flex flex-col sm:flex-row sm:items-center gap-4 p-6 xl:p-7">
                   <div className="flex-1 min-w-0">
-                    <span className="inline-block text-[10px] font-black tracking-widest text-green-400 bg-green-400/10 border border-green-500/30 px-2.5 py-0.5 rounded-full mb-2">
+                    <span className="inline-block text-xs font-black tracking-widest text-green-400 bg-green-400/10 border border-green-500/30 px-3 py-1 rounded-full mb-3">
                       AI MOTIVATOR
                     </span>
-                    <p className="text-white text-sm font-medium leading-snug">
+                    <p className="text-white text-base font-medium leading-snug">
                       "Arre yaar! 🗣️ You missed your meditation. Is this how you fulfill your dreams?{' '}
                       <span className="text-green-400 font-black">SHARAM KARO!"</span>
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-3 flex-shrink-0">
                     <button onClick={() => setActiveSection('habits')}
-                      className="bg-green-500 hover:bg-green-400 text-white text-xs font-bold py-2.5 px-5 rounded-xl transition-colors whitespace-nowrap shadow-lg shadow-green-500/20">
+                      className="bg-green-500 hover:bg-green-400 text-white text-sm font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap shadow-lg shadow-green-500/20">
                       Fix it now
                     </button>
                     <button onClick={() => setBannerVisible(false)}
-                      className="bg-white/10 hover:bg-white/15 text-white text-xs font-semibold py-2.5 px-4 rounded-xl transition-colors whitespace-nowrap">
+                      className="bg-white/10 hover:bg-white/15 text-white text-sm font-semibold py-3 px-5 rounded-xl transition-colors whitespace-nowrap">
                       Maybe later
                     </button>
-                    <button onClick={() => setBannerVisible(false)} className="text-white/30 hover:text-white/60 transition-colors p-1">
-                      <X size={14} />
+                    <button onClick={() => setBannerVisible(false)} className="text-white/30 hover:text-white/60 transition-colors p-1.5">
+                      <X size={18} />
                     </button>
                   </div>
                 </div>
-                <div className="absolute right-5 top-1/2 -translate-y-1/2 opacity-[0.06] pointer-events-none">
-                  <Brain size={90} />
+                <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.06] pointer-events-none">
+                  <Brain size={120} />
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
           {/* ── Two-column layout on lg+, single column on mobile ─────────── */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
 
             {/* LEFT: Daily Focus — takes 3 of 5 cols on lg */}
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className={`lg:col-span-3 border rounded-2xl p-5 ${card}`}>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className={`text-base font-black ${txt}`}>Daily Focus</h2>
-                <span className="text-green-500 text-xs font-black bg-green-500/10 px-2.5 py-1 rounded-full">{progressPercent}% Done</span>
+              className={`lg:col-span-3 border rounded-2xl p-7 ${card}`}>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className={`text-2xl font-black ${txt}`}>Daily Focus</h2>
+                <span className="text-green-500 text-sm font-black bg-green-500/10 px-4 py-1.5 rounded-full">{progressPercent}% Done</span>
               </div>
 
-              <div className={`rounded-xl p-4 mb-4 ${inner}`}>
-                <div className="flex items-start justify-between mb-4">
+              <div className={`rounded-xl p-6 mb-6 ${inner}`}>
+                <div className="flex items-start justify-between mb-6">
                   <div>
-                    <h3 className={`text-3xl font-black ${txt}`}>Reading</h3>
-                    <p className={`text-xs mt-0.5 ${muted}`}>Goal: 30 mins/day</p>
+                    <h3 className={`text-4xl font-black ${txt}`}>Reading</h3>
+                    <p className={`text-base mt-1 ${muted}`}>Goal: 30 mins/day</p>
                   </div>
-                  <span className="text-5xl leading-none">🤩</span>
+                  <span className="text-6xl leading-none">🤩</span>
                 </div>
 
                 {/* Week tracker */}
@@ -357,13 +357,13 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
                   {DAYS.map((day, i) => {
                     const done = WEEK_PROGRESS[i];
                     return (
-                      <div key={i} className="flex flex-col items-center gap-1.5 flex-1">
-                        <span className={`text-xs font-semibold ${muted}`}>{day}</span>
+                      <div key={i} className="flex flex-col items-center gap-2 flex-1">
+                        <span className={`text-sm font-bold ${muted}`}>{day}</span>
                         <motion.div
                           initial={{ scale: 0.4, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           transition={{ delay: 0.04 * i, type: 'spring', stiffness: 300 }}
-                          className={`w-full max-w-[44px] aspect-square rounded-full flex items-center justify-center text-sm font-bold
+                          className={`w-full max-w-[56px] aspect-square rounded-full flex items-center justify-center text-base font-bold
                             ${done
                               ? 'bg-green-500 text-white shadow-md shadow-green-500/30'
                               : isDarkMode ? 'bg-white/10' : 'bg-gray-200'}`}>
@@ -377,7 +377,7 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
 
               <motion.button
                 whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
-                className="w-full py-4 rounded-2xl bg-green-500 hover:bg-green-400 text-white font-black text-sm tracking-[0.15em] shadow-lg shadow-green-500/25 transition-colors">
+                className="w-full py-5 rounded-2xl bg-green-500 hover:bg-green-400 text-white font-black text-base tracking-[0.15em] shadow-lg shadow-green-500/25 transition-colors">
                 COMPLETE SESSION
               </motion.button>
             </motion.div>
@@ -388,8 +388,8 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
               {/* HabitHero Picks */}
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 }}>
-                <h2 className={`text-base font-black mb-3 ${txt}`}>HabitHero Picks ✨</h2>
-                <div className="grid grid-cols-3 gap-3">
+                <h2 className={`text-xl font-black mb-4 ${txt}`}>HabitHero Picks ✨</h2>
+                <div className="grid grid-cols-3 gap-4">
                   {HERO_PICKS.map((c, i) => (
                     <motion.button key={c.id}
                       initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
@@ -397,13 +397,13 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
                       whileHover={{ y: -4, transition: { duration: 0.18 } }}
                       whileTap={{ scale: 0.97 }}
                       onClick={() => setActiveSection('habits')}
-                      className={`rounded-2xl border-2 p-3 text-left transition-all
+                      className={`rounded-2xl border-2 p-4 text-left transition-all
                         ${isDarkMode ? `${c.darkBg} ${c.darkBorder}` : `bg-gradient-to-br ${c.lightGrad} ${c.lightBorder}`}`}>
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xl mb-2.5 ${isDarkMode ? 'bg-white/10' : 'bg-white/80'}`}>
+                      <div className={`w-14 h-14 rounded-full flex items-center justify-center text-3xl mb-3 ${isDarkMode ? 'bg-white/10' : 'bg-white/80'}`}>
                         {c.icon}
                       </div>
-                      <p className={`text-[9px] font-black tracking-widest mb-1 ${c.labelColor}`}>{c.label}</p>
-                      <p className={`text-[11px] font-bold leading-tight ${txt}`}>{c.title}</p>
+                      <p className={`text-[11px] font-black tracking-widest mb-1 ${c.labelColor}`}>{c.label}</p>
+                      <p className={`text-sm font-bold leading-tight ${txt}`}>{c.title}</p>
                     </motion.button>
                   ))}
                 </div>
@@ -412,18 +412,18 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
               {/* Growth + Badges */}
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="grid grid-cols-2 gap-3">
+                className="grid grid-cols-2 gap-4">
                 {[
                   { icon: TrendingUp, label: 'GROWTH', value: '+12%', color: 'text-green-500', bg: 'bg-green-500/10' },
                   { icon: Trophy, label: 'BADGES', value: '24', color: 'text-yellow-500', bg: 'bg-yellow-500/10' },
                 ].map(({ icon: Icon, label, value, color, bg: ibg }) => (
-                  <div key={label} className={`border rounded-2xl p-4 flex items-center gap-3 ${card}`}>
-                    <div className={`w-9 h-9 rounded-xl ${ibg} flex items-center justify-center flex-shrink-0`}>
-                      <Icon size={17} className={color} />
+                  <div key={label} className={`border rounded-2xl p-5 flex items-center gap-4 ${card}`}>
+                    <div className={`w-12 h-12 rounded-xl ${ibg} flex items-center justify-center flex-shrink-0`}>
+                      <Icon size={24} className={color} />
                     </div>
                     <div>
-                      <p className={`text-[10px] font-bold tracking-wider ${muted}`}>{label}</p>
-                      <p className={`text-xl font-black leading-tight ${txt}`}>{value}</p>
+                      <p className={`text-xs font-bold tracking-wider ${muted}`}>{label}</p>
+                      <p className={`text-2xl font-black leading-tight ${txt}`}>{value}</p>
                     </div>
                   </div>
                 ))}
@@ -435,16 +435,16 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
       </div>
 
       {/* ── Mobile bottom nav ─────────────────────────────────────────────────── */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 md:hidden">
-        <div className={`flex items-center gap-1 px-3 py-2 rounded-full shadow-2xl border ${isDarkMode ? 'bg-[#111] border-white/10' : 'bg-gray-900 border-gray-800'}`}>
+      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 md:hidden">
+        <div className={`flex items-center gap-2 px-4 py-3 rounded-full shadow-2xl border ${isDarkMode ? 'bg-[#111] border-white/10' : 'bg-gray-900 border-gray-800'}`}>
           {NAV_ITEMS.map(({ id, icon: Icon }) => {
             const active = activeNav === id;
             return (
               <button key={id}
                 onClick={() => { setActiveNav(id); if (id !== 'home') setActiveSection(id); }}
-                className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-200
+                className={`flex items-center justify-center w-14 h-14 rounded-full transition-all duration-200
                   ${active ? 'bg-green-500 shadow-lg shadow-green-500/40' : 'text-gray-500 hover:bg-white/10'}`}>
-                <Icon size={19} className={active ? 'text-white' : ''} />
+                <Icon size={24} className={active ? 'text-white' : ''} />
               </button>
             );
           })}

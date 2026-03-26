@@ -3,6 +3,14 @@ const { MongoClient } = require("mongodb");
 
 const { env } = require("./env");
 
+function buildMongoConnectionHelp(uri) {
+  return [
+    `Unable to connect to MongoDB at ${uri}.`,
+    "Start a MongoDB server locally, run a MongoDB Docker container, or update MONGODB_URI to your MongoDB Atlas connection string.",
+    "For local development on this machine, a typical URI is mongodb://127.0.0.1:27017/habittracker."
+  ].join(" ");
+}
+
 function parseMongoUri(uri) {
   try {
     const url = new URL(uri);
@@ -40,11 +48,18 @@ async function resolveDbNameCaseInsensitive(uri) {
 async function connectToDatabase() {
   mongoose.set("strictQuery", true);
 
-  const { dbName } = await resolveDbNameCaseInsensitive(env.MONGODB_URI);
-  await mongoose.connect(env.MONGODB_URI, { autoIndex: true, dbName });
+  try {
+    const { dbName } = await resolveDbNameCaseInsensitive(env.MONGODB_URI);
+    await mongoose.connect(env.MONGODB_URI, { autoIndex: true, dbName });
 
-  // eslint-disable-next-line no-console
-  console.log("[backend] connected to MongoDB", dbName ? `(db: ${dbName})` : "");
+    // eslint-disable-next-line no-console
+    console.log("[backend] connected to MongoDB", dbName ? `(db: ${dbName})` : "");
+  } catch (error) {
+    if (error?.name === "MongooseServerSelectionError") {
+      error.message = `${buildMongoConnectionHelp(env.MONGODB_URI)} Original error: ${error.message}`;
+    }
+    throw error;
+  }
 }
 
 module.exports = { connectToDatabase };
