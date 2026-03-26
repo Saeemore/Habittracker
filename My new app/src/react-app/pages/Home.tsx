@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import Sidebar from '@/react-app/components/Sidebar';
-import Dashboard from '@/react-app/components/Dashboard';
-import ProgressSection from '@/react-app/components/ProgressSection';
-import HabitsSection from '@/react-app/components/HabitsSection';
-import AchievementsSection from '@/react-app/components/AchievementsSection';
-import SettingsSection from '@/react-app/components/SettingsSection';
+import Sidebar from '@/react-app/lib/components/Sidebar';
+import Dashboard from '@/react-app/lib/components/Dashboard';
+import ProgressSection from '@/react-app/lib/components/ProgressSection';
+import HabitsSection from '@/react-app/lib/components/HabitsSection';
+import AchievementsSection from '@/react-app/lib/components/AchievementsSection';
+import SettingsSection from '@/react-app/lib/components/SettingsSection';
 // import AnalyticsDashboard from '@/react-app/components/AnalyticsDashboard'
-import AIChat from '@/react-app/components/AIChat';
-import ProfileSection from '@/react-app/components/ui/Profile';
+import AIChat from '@/react-app/lib/components/AIChat';
+import ProfileSection from '@/react-app/lib/components/ui/Profile';
 
 interface HomePageProps {
   onLogout: () => void;
