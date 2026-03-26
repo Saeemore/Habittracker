@@ -43,6 +43,7 @@ app.get("/api/health", (_req, res) => {
   res.json({ ok: true });
 });
 
+
 app.use("/api/auth", authRouter);
 app.use("/api/habits", habitsRouter);
 app.use("/api/habits/:habitId/checkins", checkinsRouter);
