@@ -1,0 +1,651 @@
+userId,userName,habitId,habitName,completedAt,timezone,dayOfWeek,localHour,bucket30min,weekdayOrWeekend
+user_001,Aarav,habit_001,Morning Run,2026-01-01 06:37:01,Asia/Kolkata,Thursday,6.62,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-02 06:27:15,Asia/Kolkata,Friday,6.45,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-03 08:09:47,Asia/Kolkata,Saturday,8.15,08:00,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-01-05 06:52:34,Asia/Kolkata,Monday,6.87,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-07 06:26:01,Asia/Kolkata,Wednesday,6.43,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-09 06:26:38,Asia/Kolkata,Friday,6.43,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-11 08:23:41,Asia/Kolkata,Sunday,8.38,08:00,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-01-12 06:41:26,Asia/Kolkata,Monday,6.68,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-13 06:22:37,Asia/Kolkata,Tuesday,6.37,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-14 06:38:55,Asia/Kolkata,Wednesday,6.63,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-16 06:23:44,Asia/Kolkata,Friday,6.38,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-17 07:53:17,Asia/Kolkata,Saturday,7.88,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-01-18 08:03:48,Asia/Kolkata,Sunday,8.05,08:00,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-01-19 06:01:05,Asia/Kolkata,Monday,6.02,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-20 06:04:22,Asia/Kolkata,Tuesday,6.07,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-21 06:21:38,Asia/Kolkata,Wednesday,6.35,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-22 06:14:02,Asia/Kolkata,Thursday,6.23,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-23 06:34:34,Asia/Kolkata,Friday,6.57,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-24 07:46:59,Asia/Kolkata,Saturday,7.77,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-01-25 07:38:35,Asia/Kolkata,Sunday,7.63,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-01-26 06:51:40,Asia/Kolkata,Monday,6.85,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-27 06:26:55,Asia/Kolkata,Tuesday,6.43,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-28 06:31:12,Asia/Kolkata,Wednesday,6.52,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-29 06:08:02,Asia/Kolkata,Thursday,6.13,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-30 06:21:49,Asia/Kolkata,Friday,6.35,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-01-31 08:01:05,Asia/Kolkata,Saturday,8.02,08:00,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-02-01 07:42:55,Asia/Kolkata,Sunday,7.7,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-02-03 06:35:40,Asia/Kolkata,Tuesday,6.58,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-04 06:20:10,Asia/Kolkata,Wednesday,6.33,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-05 06:25:13,Asia/Kolkata,Thursday,6.42,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-06 06:20:44,Asia/Kolkata,Friday,6.33,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-07 08:27:41,Asia/Kolkata,Saturday,8.45,08:00,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-02-09 06:29:34,Asia/Kolkata,Monday,6.48,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-10 06:14:10,Asia/Kolkata,Tuesday,6.23,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-11 06:42:17,Asia/Kolkata,Wednesday,6.7,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-12 06:11:40,Asia/Kolkata,Thursday,6.18,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-13 06:33:14,Asia/Kolkata,Friday,6.55,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-14 07:30:53,Asia/Kolkata,Saturday,7.5,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-02-15 07:40:03,Asia/Kolkata,Sunday,7.67,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-02-16 06:32:02,Asia/Kolkata,Monday,6.53,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-17 06:41:25,Asia/Kolkata,Tuesday,6.68,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-18 06:32:13,Asia/Kolkata,Wednesday,6.53,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-19 06:28:36,Asia/Kolkata,Thursday,6.47,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-20 06:25:20,Asia/Kolkata,Friday,6.42,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-21 07:37:31,Asia/Kolkata,Saturday,7.62,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-02-22 07:49:58,Asia/Kolkata,Sunday,7.82,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-02-23 06:23:09,Asia/Kolkata,Monday,6.38,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-24 06:45:15,Asia/Kolkata,Tuesday,6.75,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-25 06:35:34,Asia/Kolkata,Wednesday,6.58,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-26 06:03:37,Asia/Kolkata,Thursday,6.05,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-27 06:34:37,Asia/Kolkata,Friday,6.57,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-02-28 07:54:14,Asia/Kolkata,Saturday,7.9,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-03-01 07:49:08,Asia/Kolkata,Sunday,7.82,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-03-02 06:39:05,Asia/Kolkata,Monday,6.65,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-03-03 06:45:55,Asia/Kolkata,Tuesday,6.75,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-03-05 06:43:50,Asia/Kolkata,Thursday,6.72,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-03-06 06:17:38,Asia/Kolkata,Friday,6.28,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-03-08 07:55:29,Asia/Kolkata,Sunday,7.92,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-03-09 06:34:35,Asia/Kolkata,Monday,6.57,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-03-10 06:44:00,Asia/Kolkata,Tuesday,6.73,06:30,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-03-11 06:22:07,Asia/Kolkata,Wednesday,6.37,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-03-12 06:27:34,Asia/Kolkata,Thursday,6.45,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-03-13 06:13:49,Asia/Kolkata,Friday,6.22,06:00,Weekday
+user_001,Aarav,habit_001,Morning Run,2026-03-14 07:42:07,Asia/Kolkata,Saturday,7.7,07:30,Weekend
+user_001,Aarav,habit_001,Morning Run,2026-03-15 08:12:10,Asia/Kolkata,Sunday,8.2,08:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-01-01 07:16:46,Asia/Kolkata,Thursday,7.27,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-02 06:59:16,Asia/Kolkata,Friday,6.98,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-03 07:42:48,Asia/Kolkata,Saturday,7.7,07:30,Weekend
+user_001,Aarav,habit_002,Meditate,2026-01-04 07:34:58,Asia/Kolkata,Sunday,7.57,07:30,Weekend
+user_001,Aarav,habit_002,Meditate,2026-01-06 06:52:53,Asia/Kolkata,Tuesday,6.87,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-07 07:04:38,Asia/Kolkata,Wednesday,7.07,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-08 07:18:23,Asia/Kolkata,Thursday,7.3,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-09 06:59:34,Asia/Kolkata,Friday,6.98,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-10 07:48:59,Asia/Kolkata,Saturday,7.8,07:30,Weekend
+user_001,Aarav,habit_002,Meditate,2026-01-11 06:58:00,Asia/Kolkata,Sunday,6.97,06:30,Weekend
+user_001,Aarav,habit_002,Meditate,2026-01-12 07:09:31,Asia/Kolkata,Monday,7.15,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-14 07:01:56,Asia/Kolkata,Wednesday,7.02,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-15 06:56:51,Asia/Kolkata,Thursday,6.93,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-16 07:01:03,Asia/Kolkata,Friday,7.02,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-17 07:06:36,Asia/Kolkata,Saturday,7.1,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-01-18 07:27:05,Asia/Kolkata,Sunday,7.45,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-01-19 07:04:52,Asia/Kolkata,Monday,7.07,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-21 07:17:49,Asia/Kolkata,Wednesday,7.28,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-22 06:53:42,Asia/Kolkata,Thursday,6.88,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-23 06:50:35,Asia/Kolkata,Friday,6.83,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-24 07:23:33,Asia/Kolkata,Saturday,7.38,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-01-25 07:40:27,Asia/Kolkata,Sunday,7.67,07:30,Weekend
+user_001,Aarav,habit_002,Meditate,2026-01-26 07:03:59,Asia/Kolkata,Monday,7.05,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-27 06:53:46,Asia/Kolkata,Tuesday,6.88,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-28 07:06:45,Asia/Kolkata,Wednesday,7.1,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-29 07:01:42,Asia/Kolkata,Thursday,7.02,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-30 07:11:28,Asia/Kolkata,Friday,7.18,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-01-31 07:21:28,Asia/Kolkata,Saturday,7.35,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-02-01 07:26:14,Asia/Kolkata,Sunday,7.43,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-02-04 06:55:37,Asia/Kolkata,Wednesday,6.92,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-05 06:42:04,Asia/Kolkata,Thursday,6.7,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-06 07:03:03,Asia/Kolkata,Friday,7.05,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-07 07:33:57,Asia/Kolkata,Saturday,7.55,07:30,Weekend
+user_001,Aarav,habit_002,Meditate,2026-02-09 07:00:32,Asia/Kolkata,Monday,7.0,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-10 06:57:42,Asia/Kolkata,Tuesday,6.95,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-11 06:43:34,Asia/Kolkata,Wednesday,6.72,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-12 06:54:59,Asia/Kolkata,Thursday,6.9,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-13 06:55:36,Asia/Kolkata,Friday,6.92,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-14 07:20:50,Asia/Kolkata,Saturday,7.33,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-02-15 07:28:26,Asia/Kolkata,Sunday,7.47,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-02-16 07:04:06,Asia/Kolkata,Monday,7.07,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-17 07:22:22,Asia/Kolkata,Tuesday,7.37,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-18 07:02:29,Asia/Kolkata,Wednesday,7.03,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-19 07:03:03,Asia/Kolkata,Thursday,7.05,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-20 06:59:41,Asia/Kolkata,Friday,6.98,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-22 07:06:21,Asia/Kolkata,Sunday,7.1,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-02-23 06:59:06,Asia/Kolkata,Monday,6.98,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-24 07:00:12,Asia/Kolkata,Tuesday,7.0,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-25 07:29:08,Asia/Kolkata,Wednesday,7.48,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-26 06:57:17,Asia/Kolkata,Thursday,6.95,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-27 07:03:55,Asia/Kolkata,Friday,7.05,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-02-28 07:29:28,Asia/Kolkata,Saturday,7.48,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-03-01 07:15:54,Asia/Kolkata,Sunday,7.25,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-03-02 07:13:03,Asia/Kolkata,Monday,7.22,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-03-03 07:09:34,Asia/Kolkata,Tuesday,7.15,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-03-04 07:09:05,Asia/Kolkata,Wednesday,7.15,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-03-05 06:49:54,Asia/Kolkata,Thursday,6.82,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-03-06 07:16:26,Asia/Kolkata,Friday,7.27,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-03-07 07:13:13,Asia/Kolkata,Saturday,7.22,07:00,Weekend
+user_001,Aarav,habit_002,Meditate,2026-03-08 07:37:57,Asia/Kolkata,Sunday,7.62,07:30,Weekend
+user_001,Aarav,habit_002,Meditate,2026-03-10 07:26:24,Asia/Kolkata,Tuesday,7.43,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-03-11 06:48:50,Asia/Kolkata,Wednesday,6.8,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-03-12 06:53:18,Asia/Kolkata,Thursday,6.88,06:30,Weekday
+user_001,Aarav,habit_002,Meditate,2026-03-13 07:01:46,Asia/Kolkata,Friday,7.02,07:00,Weekday
+user_001,Aarav,habit_002,Meditate,2026-03-14 07:23:35,Asia/Kolkata,Saturday,7.38,07:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-01-01 21:02:31,Asia/Kolkata,Thursday,21.03,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-02 21:31:18,Asia/Kolkata,Friday,21.52,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-03 20:40:03,Asia/Kolkata,Saturday,20.67,20:30,Weekend
+user_002,Priya,habit_003,Read Books,2026-01-04 21:08:34,Asia/Kolkata,Sunday,21.13,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-01-06 21:13:03,Asia/Kolkata,Tuesday,21.22,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-07 21:57:32,Asia/Kolkata,Wednesday,21.95,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-08 21:15:33,Asia/Kolkata,Thursday,21.25,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-09 21:24:32,Asia/Kolkata,Friday,21.4,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-11 21:14:38,Asia/Kolkata,Sunday,21.23,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-01-13 21:07:25,Asia/Kolkata,Tuesday,21.12,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-15 21:34:15,Asia/Kolkata,Thursday,21.57,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-16 21:53:02,Asia/Kolkata,Friday,21.88,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-17 20:31:26,Asia/Kolkata,Saturday,20.52,20:30,Weekend
+user_002,Priya,habit_003,Read Books,2026-01-18 21:03:36,Asia/Kolkata,Sunday,21.05,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-01-19 21:34:59,Asia/Kolkata,Monday,21.57,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-20 21:44:42,Asia/Kolkata,Tuesday,21.73,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-21 21:07:15,Asia/Kolkata,Wednesday,21.12,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-22 21:06:08,Asia/Kolkata,Thursday,21.1,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-23 21:39:19,Asia/Kolkata,Friday,21.65,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-24 21:05:59,Asia/Kolkata,Saturday,21.08,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-01-25 21:04:04,Asia/Kolkata,Sunday,21.07,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-01-27 21:36:36,Asia/Kolkata,Tuesday,21.6,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-28 21:17:04,Asia/Kolkata,Wednesday,21.28,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-29 21:34:32,Asia/Kolkata,Thursday,21.57,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-30 21:35:59,Asia/Kolkata,Friday,21.58,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-01-31 20:47:04,Asia/Kolkata,Saturday,20.78,20:30,Weekend
+user_002,Priya,habit_003,Read Books,2026-02-01 21:33:23,Asia/Kolkata,Sunday,21.55,21:30,Weekend
+user_002,Priya,habit_003,Read Books,2026-02-02 21:38:28,Asia/Kolkata,Monday,21.63,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-03 21:08:45,Asia/Kolkata,Tuesday,21.13,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-04 21:41:51,Asia/Kolkata,Wednesday,21.68,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-05 21:12:00,Asia/Kolkata,Thursday,21.2,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-06 21:44:35,Asia/Kolkata,Friday,21.73,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-07 21:20:42,Asia/Kolkata,Saturday,21.33,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-02-09 21:15:16,Asia/Kolkata,Monday,21.25,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-12 21:47:17,Asia/Kolkata,Thursday,21.78,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-13 21:37:13,Asia/Kolkata,Friday,21.62,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-14 21:14:13,Asia/Kolkata,Saturday,21.23,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-02-15 21:34:54,Asia/Kolkata,Sunday,21.57,21:30,Weekend
+user_002,Priya,habit_003,Read Books,2026-02-16 21:25:31,Asia/Kolkata,Monday,21.42,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-17 21:16:58,Asia/Kolkata,Tuesday,21.27,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-18 21:13:05,Asia/Kolkata,Wednesday,21.22,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-19 21:15:53,Asia/Kolkata,Thursday,21.25,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-20 21:28:00,Asia/Kolkata,Friday,21.47,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-21 21:06:08,Asia/Kolkata,Saturday,21.1,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-02-22 21:04:16,Asia/Kolkata,Sunday,21.07,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-02-23 21:44:28,Asia/Kolkata,Monday,21.73,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-24 21:30:27,Asia/Kolkata,Tuesday,21.5,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-25 21:56:07,Asia/Kolkata,Wednesday,21.93,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-27 21:25:57,Asia/Kolkata,Friday,21.42,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-02-28 21:48:02,Asia/Kolkata,Saturday,21.8,21:30,Weekend
+user_002,Priya,habit_003,Read Books,2026-03-01 21:11:37,Asia/Kolkata,Sunday,21.18,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-03-02 21:14:27,Asia/Kolkata,Monday,21.23,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-03-03 21:10:19,Asia/Kolkata,Tuesday,21.17,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-03-04 21:38:59,Asia/Kolkata,Wednesday,21.63,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-03-05 21:25:55,Asia/Kolkata,Thursday,21.42,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-03-07 21:12:43,Asia/Kolkata,Saturday,21.2,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-03-08 21:08:06,Asia/Kolkata,Sunday,21.13,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-03-09 21:28:35,Asia/Kolkata,Monday,21.47,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-03-10 21:14:26,Asia/Kolkata,Tuesday,21.23,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-03-11 21:02:47,Asia/Kolkata,Wednesday,21.03,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-03-12 21:21:59,Asia/Kolkata,Thursday,21.35,21:00,Weekday
+user_002,Priya,habit_003,Read Books,2026-03-13 21:45:10,Asia/Kolkata,Friday,21.75,21:30,Weekday
+user_002,Priya,habit_003,Read Books,2026-03-14 21:03:51,Asia/Kolkata,Saturday,21.05,21:00,Weekend
+user_002,Priya,habit_003,Read Books,2026-03-15 20:37:26,Asia/Kolkata,Sunday,20.62,20:30,Weekend
+user_002,Priya,habit_003,Read Books,2026-03-17 21:33:21,Asia/Kolkata,Tuesday,21.55,21:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-01 08:03:26,Asia/Kolkata,Thursday,8.05,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-02 07:52:55,Asia/Kolkata,Friday,7.87,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-03 09:01:15,Asia/Kolkata,Saturday,9.02,09:00,Weekend
+user_002,Priya,habit_004,Drink Water,2026-01-04 09:00:50,Asia/Kolkata,Sunday,9.0,09:00,Weekend
+user_002,Priya,habit_004,Drink Water,2026-01-05 07:49:24,Asia/Kolkata,Monday,7.82,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-06 08:03:54,Asia/Kolkata,Tuesday,8.05,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-07 08:05:12,Asia/Kolkata,Wednesday,8.08,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-08 08:09:29,Asia/Kolkata,Thursday,8.15,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-09 08:09:52,Asia/Kolkata,Friday,8.15,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-10 08:47:14,Asia/Kolkata,Saturday,8.78,08:30,Weekend
+user_002,Priya,habit_004,Drink Water,2026-01-11 08:51:42,Asia/Kolkata,Sunday,8.85,08:30,Weekend
+user_002,Priya,habit_004,Drink Water,2026-01-12 08:04:21,Asia/Kolkata,Monday,8.07,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-13 08:04:04,Asia/Kolkata,Tuesday,8.07,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-14 08:04:17,Asia/Kolkata,Wednesday,8.07,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-15 08:34:32,Asia/Kolkata,Thursday,8.57,08:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-16 08:05:53,Asia/Kolkata,Friday,8.08,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-17 09:10:01,Asia/Kolkata,Saturday,9.17,09:00,Weekend
+user_002,Priya,habit_004,Drink Water,2026-01-19 08:08:11,Asia/Kolkata,Monday,8.13,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-20 08:05:16,Asia/Kolkata,Tuesday,8.08,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-22 07:57:22,Asia/Kolkata,Thursday,7.95,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-23 08:06:20,Asia/Kolkata,Friday,8.1,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-24 08:53:32,Asia/Kolkata,Saturday,8.88,08:30,Weekend
+user_002,Priya,habit_004,Drink Water,2026-01-26 07:57:12,Asia/Kolkata,Monday,7.95,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-27 07:55:45,Asia/Kolkata,Tuesday,7.92,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-28 08:00:33,Asia/Kolkata,Wednesday,8.0,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-29 08:20:34,Asia/Kolkata,Thursday,8.33,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-30 07:43:47,Asia/Kolkata,Friday,7.72,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-01-31 09:06:12,Asia/Kolkata,Saturday,9.1,09:00,Weekend
+user_002,Priya,habit_004,Drink Water,2026-02-01 08:45:04,Asia/Kolkata,Sunday,8.75,08:30,Weekend
+user_002,Priya,habit_004,Drink Water,2026-02-02 07:55:58,Asia/Kolkata,Monday,7.92,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-03 08:09:20,Asia/Kolkata,Tuesday,8.15,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-04 08:00:07,Asia/Kolkata,Wednesday,8.0,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-05 07:50:19,Asia/Kolkata,Thursday,7.83,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-06 07:53:42,Asia/Kolkata,Friday,7.88,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-07 09:06:25,Asia/Kolkata,Saturday,9.1,09:00,Weekend
+user_002,Priya,habit_004,Drink Water,2026-02-08 08:53:35,Asia/Kolkata,Sunday,8.88,08:30,Weekend
+user_002,Priya,habit_004,Drink Water,2026-02-09 08:01:26,Asia/Kolkata,Monday,8.02,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-10 08:00:24,Asia/Kolkata,Tuesday,8.0,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-11 07:54:57,Asia/Kolkata,Wednesday,7.9,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-12 08:19:36,Asia/Kolkata,Thursday,8.32,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-13 08:05:35,Asia/Kolkata,Friday,8.08,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-14 08:41:19,Asia/Kolkata,Saturday,8.68,08:30,Weekend
+user_002,Priya,habit_004,Drink Water,2026-02-15 09:01:27,Asia/Kolkata,Sunday,9.02,09:00,Weekend
+user_002,Priya,habit_004,Drink Water,2026-02-16 07:54:38,Asia/Kolkata,Monday,7.9,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-17 08:07:29,Asia/Kolkata,Tuesday,8.12,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-18 07:52:43,Asia/Kolkata,Wednesday,7.87,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-19 07:58:30,Asia/Kolkata,Thursday,7.97,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-20 08:04:50,Asia/Kolkata,Friday,8.07,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-21 09:07:42,Asia/Kolkata,Saturday,9.12,09:00,Weekend
+user_002,Priya,habit_004,Drink Water,2026-02-23 07:49:40,Asia/Kolkata,Monday,7.82,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-24 07:56:05,Asia/Kolkata,Tuesday,7.93,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-25 07:55:48,Asia/Kolkata,Wednesday,7.92,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-26 07:54:19,Asia/Kolkata,Thursday,7.9,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-27 08:15:12,Asia/Kolkata,Friday,8.25,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-02-28 09:03:02,Asia/Kolkata,Saturday,9.05,09:00,Weekend
+user_002,Priya,habit_004,Drink Water,2026-03-01 08:48:30,Asia/Kolkata,Sunday,8.8,08:30,Weekend
+user_002,Priya,habit_004,Drink Water,2026-03-02 08:08:49,Asia/Kolkata,Monday,8.13,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-03-04 08:19:40,Asia/Kolkata,Wednesday,8.32,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-03-05 08:09:45,Asia/Kolkata,Thursday,8.15,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-03-06 07:46:31,Asia/Kolkata,Friday,7.77,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-03-07 08:55:09,Asia/Kolkata,Saturday,8.92,08:30,Weekend
+user_002,Priya,habit_004,Drink Water,2026-03-08 09:11:00,Asia/Kolkata,Sunday,9.18,09:00,Weekend
+user_002,Priya,habit_004,Drink Water,2026-03-09 07:53:55,Asia/Kolkata,Monday,7.88,07:30,Weekday
+user_002,Priya,habit_004,Drink Water,2026-03-10 08:03:06,Asia/Kolkata,Tuesday,8.05,08:00,Weekday
+user_002,Priya,habit_004,Drink Water,2026-03-11 08:06:14,Asia/Kolkata,Wednesday,8.1,08:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-02 17:06:33,Asia/Kolkata,Friday,17.1,17:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-03 16:24:35,Asia/Kolkata,Saturday,16.4,16:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-01-04 11:38:54,Asia/Kolkata,Sunday,11.63,11:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-01-07 16:57:33,Asia/Kolkata,Wednesday,16.95,16:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-08 18:07:38,Asia/Kolkata,Thursday,18.12,18:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-09 16:37:48,Asia/Kolkata,Friday,16.62,16:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-10 18:56:39,Asia/Kolkata,Saturday,18.93,18:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-01-11 14:21:57,Asia/Kolkata,Sunday,14.35,14:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-01-12 17:50:53,Asia/Kolkata,Monday,17.83,17:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-13 18:41:28,Asia/Kolkata,Tuesday,18.68,18:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-14 20:39:47,Asia/Kolkata,Wednesday,20.65,20:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-15 16:20:28,Asia/Kolkata,Thursday,16.33,16:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-16 20:14:15,Asia/Kolkata,Friday,20.23,20:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-17 16:30:17,Asia/Kolkata,Saturday,16.5,16:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-01-18 15:01:33,Asia/Kolkata,Sunday,15.02,15:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-01-19 19:11:15,Asia/Kolkata,Monday,19.18,19:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-20 18:47:04,Asia/Kolkata,Tuesday,18.78,18:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-21 17:35:15,Asia/Kolkata,Wednesday,17.58,17:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-22 18:36:20,Asia/Kolkata,Thursday,18.6,18:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-23 17:55:05,Asia/Kolkata,Friday,17.92,17:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-25 16:40:44,Asia/Kolkata,Sunday,16.67,16:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-01-27 19:29:26,Asia/Kolkata,Tuesday,19.48,19:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-28 20:52:34,Asia/Kolkata,Wednesday,20.87,20:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-29 16:38:03,Asia/Kolkata,Thursday,16.63,16:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-30 21:41:26,Asia/Kolkata,Friday,21.68,21:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-01-31 13:34:49,Asia/Kolkata,Saturday,13.57,13:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-02-01 16:16:44,Asia/Kolkata,Sunday,16.27,16:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-02-03 19:22:36,Asia/Kolkata,Tuesday,19.37,19:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-04 18:55:00,Asia/Kolkata,Wednesday,18.92,18:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-05 17:33:19,Asia/Kolkata,Thursday,17.55,17:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-06 18:11:54,Asia/Kolkata,Friday,18.18,18:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-07 15:45:53,Asia/Kolkata,Saturday,15.75,15:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-02-08 15:36:47,Asia/Kolkata,Sunday,15.6,15:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-02-09 19:46:51,Asia/Kolkata,Monday,19.77,19:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-10 19:02:14,Asia/Kolkata,Tuesday,19.03,19:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-11 17:27:17,Asia/Kolkata,Wednesday,17.45,17:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-12 19:50:01,Asia/Kolkata,Thursday,19.83,19:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-13 18:57:42,Asia/Kolkata,Friday,18.95,18:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-14 17:43:25,Asia/Kolkata,Saturday,17.72,17:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-02-15 17:26:53,Asia/Kolkata,Sunday,17.43,17:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-02-16 17:15:08,Asia/Kolkata,Monday,17.25,17:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-17 17:39:34,Asia/Kolkata,Tuesday,17.65,17:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-19 19:37:36,Asia/Kolkata,Thursday,19.62,19:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-20 19:24:05,Asia/Kolkata,Friday,19.4,19:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-21 16:28:08,Asia/Kolkata,Saturday,16.47,16:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-02-22 16:40:11,Asia/Kolkata,Sunday,16.67,16:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-02-24 20:24:13,Asia/Kolkata,Tuesday,20.4,20:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-25 17:36:21,Asia/Kolkata,Wednesday,17.6,17:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-26 19:19:24,Asia/Kolkata,Thursday,19.32,19:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-27 18:11:53,Asia/Kolkata,Friday,18.18,18:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-02-28 16:10:53,Asia/Kolkata,Saturday,16.17,16:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-03-03 20:08:22,Asia/Kolkata,Tuesday,20.13,20:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-03-04 19:44:04,Asia/Kolkata,Wednesday,19.73,19:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-03-05 19:43:41,Asia/Kolkata,Thursday,19.72,19:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-03-08 18:27:53,Asia/Kolkata,Sunday,18.45,18:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-03-12 18:31:36,Asia/Kolkata,Thursday,18.52,18:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-03-13 19:31:29,Asia/Kolkata,Friday,19.52,19:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-03-14 16:02:49,Asia/Kolkata,Saturday,16.03,16:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-03-15 16:59:38,Asia/Kolkata,Sunday,16.98,16:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-03-16 18:18:47,Asia/Kolkata,Monday,18.3,18:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-03-17 18:38:49,Asia/Kolkata,Tuesday,18.63,18:30,Weekday
+user_003,Rohan,habit_005,Workout,2026-03-18 19:23:19,Asia/Kolkata,Wednesday,19.38,19:00,Weekday
+user_003,Rohan,habit_005,Workout,2026-03-21 15:16:43,Asia/Kolkata,Saturday,15.27,15:00,Weekend
+user_003,Rohan,habit_005,Workout,2026-03-22 19:38:24,Asia/Kolkata,Sunday,19.63,19:30,Weekend
+user_003,Rohan,habit_005,Workout,2026-03-23 16:59:45,Asia/Kolkata,Monday,16.98,16:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-02 21:23:53,Asia/Kolkata,Friday,21.38,21:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-03 22:34:06,Asia/Kolkata,Saturday,22.57,22:30,Weekend
+user_003,Rohan,habit_006,Journal,2026-01-04 22:23:19,Asia/Kolkata,Sunday,22.38,22:00,Weekend
+user_003,Rohan,habit_006,Journal,2026-01-05 22:18:38,Asia/Kolkata,Monday,22.3,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-06 22:18:50,Asia/Kolkata,Tuesday,22.3,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-07 21:59:50,Asia/Kolkata,Wednesday,21.98,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-09 21:33:42,Asia/Kolkata,Friday,21.55,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-10 22:02:32,Asia/Kolkata,Saturday,22.03,22:00,Weekend
+user_003,Rohan,habit_006,Journal,2026-01-11 21:39:00,Asia/Kolkata,Sunday,21.65,21:30,Weekend
+user_003,Rohan,habit_006,Journal,2026-01-12 22:29:52,Asia/Kolkata,Monday,22.48,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-13 21:55:27,Asia/Kolkata,Tuesday,21.92,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-14 21:35:40,Asia/Kolkata,Wednesday,21.58,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-15 21:50:29,Asia/Kolkata,Thursday,21.83,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-16 22:12:27,Asia/Kolkata,Friday,22.2,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-18 21:43:41,Asia/Kolkata,Sunday,21.72,21:30,Weekend
+user_003,Rohan,habit_006,Journal,2026-01-19 21:35:51,Asia/Kolkata,Monday,21.58,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-20 22:07:49,Asia/Kolkata,Tuesday,22.12,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-21 22:07:27,Asia/Kolkata,Wednesday,22.12,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-22 21:44:37,Asia/Kolkata,Thursday,21.73,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-23 21:45:54,Asia/Kolkata,Friday,21.75,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-24 22:06:59,Asia/Kolkata,Saturday,22.1,22:00,Weekend
+user_003,Rohan,habit_006,Journal,2026-01-26 21:16:15,Asia/Kolkata,Monday,21.27,21:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-27 21:17:36,Asia/Kolkata,Tuesday,21.28,21:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-28 21:38:24,Asia/Kolkata,Wednesday,21.63,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-29 21:53:31,Asia/Kolkata,Thursday,21.88,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-30 22:09:11,Asia/Kolkata,Friday,22.15,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-01-31 22:44:22,Asia/Kolkata,Saturday,22.73,22:30,Weekend
+user_003,Rohan,habit_006,Journal,2026-02-01 22:25:21,Asia/Kolkata,Sunday,22.42,22:00,Weekend
+user_003,Rohan,habit_006,Journal,2026-02-02 21:55:38,Asia/Kolkata,Monday,21.92,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-03 21:59:17,Asia/Kolkata,Tuesday,21.98,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-04 21:29:33,Asia/Kolkata,Wednesday,21.48,21:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-05 21:59:05,Asia/Kolkata,Thursday,21.98,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-06 21:51:26,Asia/Kolkata,Friday,21.85,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-07 22:09:48,Asia/Kolkata,Saturday,22.15,22:00,Weekend
+user_003,Rohan,habit_006,Journal,2026-02-08 21:35:30,Asia/Kolkata,Sunday,21.58,21:30,Weekend
+user_003,Rohan,habit_006,Journal,2026-02-09 22:15:31,Asia/Kolkata,Monday,22.25,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-10 22:45:01,Asia/Kolkata,Tuesday,22.75,22:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-12 21:56:44,Asia/Kolkata,Thursday,21.93,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-13 22:12:42,Asia/Kolkata,Friday,22.2,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-14 22:20:30,Asia/Kolkata,Saturday,22.33,22:00,Weekend
+user_003,Rohan,habit_006,Journal,2026-02-15 21:47:22,Asia/Kolkata,Sunday,21.78,21:30,Weekend
+user_003,Rohan,habit_006,Journal,2026-02-16 22:06:47,Asia/Kolkata,Monday,22.1,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-17 22:00:22,Asia/Kolkata,Tuesday,22.0,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-18 22:02:17,Asia/Kolkata,Wednesday,22.03,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-19 21:36:14,Asia/Kolkata,Thursday,21.6,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-23 22:00:48,Asia/Kolkata,Monday,22.0,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-24 22:14:12,Asia/Kolkata,Tuesday,22.23,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-25 22:43:30,Asia/Kolkata,Wednesday,22.72,22:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-26 22:28:37,Asia/Kolkata,Thursday,22.47,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-27 23:04:33,Asia/Kolkata,Friday,23.07,23:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-02-28 21:36:06,Asia/Kolkata,Saturday,21.6,21:30,Weekend
+user_003,Rohan,habit_006,Journal,2026-03-01 22:26:18,Asia/Kolkata,Sunday,22.43,22:00,Weekend
+user_003,Rohan,habit_006,Journal,2026-03-02 22:05:11,Asia/Kolkata,Monday,22.08,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-03-03 23:05:45,Asia/Kolkata,Tuesday,23.08,23:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-03-04 21:35:17,Asia/Kolkata,Wednesday,21.58,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-03-07 21:34:08,Asia/Kolkata,Saturday,21.57,21:30,Weekend
+user_003,Rohan,habit_006,Journal,2026-03-08 21:42:48,Asia/Kolkata,Sunday,21.7,21:30,Weekend
+user_003,Rohan,habit_006,Journal,2026-03-09 20:56:55,Asia/Kolkata,Monday,20.93,20:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-03-11 21:44:30,Asia/Kolkata,Wednesday,21.73,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-03-12 21:37:11,Asia/Kolkata,Thursday,21.62,21:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-03-13 22:04:16,Asia/Kolkata,Friday,22.07,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-03-14 22:10:30,Asia/Kolkata,Saturday,22.17,22:00,Weekend
+user_003,Rohan,habit_006,Journal,2026-03-17 22:56:36,Asia/Kolkata,Tuesday,22.93,22:30,Weekday
+user_003,Rohan,habit_006,Journal,2026-03-18 22:28:03,Asia/Kolkata,Wednesday,22.47,22:00,Weekday
+user_003,Rohan,habit_006,Journal,2026-03-20 21:42:19,Asia/Kolkata,Friday,21.7,21:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-02 05:49:35,Asia/Kolkata,Friday,5.82,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-03 08:05:38,Asia/Kolkata,Saturday,8.08,08:00,Weekend
+user_004,Sneha,habit_007,Yoga,2026-01-04 07:44:39,Asia/Kolkata,Sunday,7.73,07:30,Weekend
+user_004,Sneha,habit_007,Yoga,2026-01-05 06:21:33,Asia/Kolkata,Monday,6.35,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-06 06:14:58,Asia/Kolkata,Tuesday,6.23,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-07 05:54:55,Asia/Kolkata,Wednesday,5.9,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-08 05:39:27,Asia/Kolkata,Thursday,5.65,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-09 06:16:39,Asia/Kolkata,Friday,6.27,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-11 07:58:06,Asia/Kolkata,Sunday,7.97,07:30,Weekend
+user_004,Sneha,habit_007,Yoga,2026-01-12 06:14:13,Asia/Kolkata,Monday,6.23,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-13 05:40:16,Asia/Kolkata,Tuesday,5.67,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-14 05:52:10,Asia/Kolkata,Wednesday,5.87,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-15 06:00:35,Asia/Kolkata,Thursday,6.0,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-18 08:00:38,Asia/Kolkata,Sunday,8.0,08:00,Weekend
+user_004,Sneha,habit_007,Yoga,2026-01-19 05:54:02,Asia/Kolkata,Monday,5.9,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-20 06:07:45,Asia/Kolkata,Tuesday,6.12,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-21 05:47:55,Asia/Kolkata,Wednesday,5.78,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-22 05:58:43,Asia/Kolkata,Thursday,5.97,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-23 06:01:16,Asia/Kolkata,Friday,6.02,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-24 08:06:40,Asia/Kolkata,Saturday,8.1,08:00,Weekend
+user_004,Sneha,habit_007,Yoga,2026-01-25 08:08:51,Asia/Kolkata,Sunday,8.13,08:00,Weekend
+user_004,Sneha,habit_007,Yoga,2026-01-26 05:46:27,Asia/Kolkata,Monday,5.77,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-28 05:41:09,Asia/Kolkata,Wednesday,5.68,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-01-29 06:15:52,Asia/Kolkata,Thursday,6.25,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-01 08:03:38,Asia/Kolkata,Sunday,8.05,08:00,Weekend
+user_004,Sneha,habit_007,Yoga,2026-02-02 05:51:36,Asia/Kolkata,Monday,5.85,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-03 06:18:28,Asia/Kolkata,Tuesday,6.3,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-05 06:01:44,Asia/Kolkata,Thursday,6.02,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-06 06:14:17,Asia/Kolkata,Friday,6.23,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-07 08:00:31,Asia/Kolkata,Saturday,8.0,08:00,Weekend
+user_004,Sneha,habit_007,Yoga,2026-02-08 08:24:38,Asia/Kolkata,Sunday,8.4,08:00,Weekend
+user_004,Sneha,habit_007,Yoga,2026-02-10 06:21:20,Asia/Kolkata,Tuesday,6.35,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-11 05:57:01,Asia/Kolkata,Wednesday,5.95,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-13 06:11:53,Asia/Kolkata,Friday,6.18,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-14 08:07:37,Asia/Kolkata,Saturday,8.12,08:00,Weekend
+user_004,Sneha,habit_007,Yoga,2026-02-15 08:16:48,Asia/Kolkata,Sunday,8.27,08:00,Weekend
+user_004,Sneha,habit_007,Yoga,2026-02-16 05:48:17,Asia/Kolkata,Monday,5.8,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-17 06:08:48,Asia/Kolkata,Tuesday,6.13,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-18 06:12:30,Asia/Kolkata,Wednesday,6.2,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-19 05:38:28,Asia/Kolkata,Thursday,5.63,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-20 05:45:11,Asia/Kolkata,Friday,5.75,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-21 07:35:27,Asia/Kolkata,Saturday,7.58,07:30,Weekend
+user_004,Sneha,habit_007,Yoga,2026-02-22 07:56:31,Asia/Kolkata,Sunday,7.93,07:30,Weekend
+user_004,Sneha,habit_007,Yoga,2026-02-23 06:08:30,Asia/Kolkata,Monday,6.13,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-24 06:18:21,Asia/Kolkata,Tuesday,6.3,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-25 06:00:06,Asia/Kolkata,Wednesday,6.0,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-26 06:19:21,Asia/Kolkata,Thursday,6.32,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-27 05:43:31,Asia/Kolkata,Friday,5.72,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-02-28 07:39:25,Asia/Kolkata,Saturday,7.65,07:30,Weekend
+user_004,Sneha,habit_007,Yoga,2026-03-01 07:59:35,Asia/Kolkata,Sunday,7.98,07:30,Weekend
+user_004,Sneha,habit_007,Yoga,2026-03-04 06:04:07,Asia/Kolkata,Wednesday,6.07,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-05 05:59:25,Asia/Kolkata,Thursday,5.98,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-06 05:35:52,Asia/Kolkata,Friday,5.58,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-07 07:58:42,Asia/Kolkata,Saturday,7.97,07:30,Weekend
+user_004,Sneha,habit_007,Yoga,2026-03-08 07:44:29,Asia/Kolkata,Sunday,7.73,07:30,Weekend
+user_004,Sneha,habit_007,Yoga,2026-03-09 06:08:12,Asia/Kolkata,Monday,6.13,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-10 06:04:39,Asia/Kolkata,Tuesday,6.07,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-11 05:48:40,Asia/Kolkata,Wednesday,5.8,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-12 05:53:03,Asia/Kolkata,Thursday,5.88,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-13 05:47:35,Asia/Kolkata,Friday,5.78,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-15 07:59:56,Asia/Kolkata,Sunday,7.98,07:30,Weekend
+user_004,Sneha,habit_007,Yoga,2026-03-16 06:11:07,Asia/Kolkata,Monday,6.18,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-18 05:48:51,Asia/Kolkata,Wednesday,5.8,05:30,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-19 06:06:10,Asia/Kolkata,Thursday,6.1,06:00,Weekday
+user_004,Sneha,habit_007,Yoga,2026-03-20 05:53:00,Asia/Kolkata,Friday,5.88,05:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-01 12:15:05,Asia/Kolkata,Thursday,12.25,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-02 12:28:53,Asia/Kolkata,Friday,12.47,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-03 11:11:29,Asia/Kolkata,Saturday,11.18,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-01-04 11:20:41,Asia/Kolkata,Sunday,11.33,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-01-05 12:08:31,Asia/Kolkata,Monday,12.13,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-06 13:05:18,Asia/Kolkata,Tuesday,13.08,13:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-07 12:30:17,Asia/Kolkata,Wednesday,12.5,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-08 12:17:30,Asia/Kolkata,Thursday,12.28,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-09 12:33:15,Asia/Kolkata,Friday,12.55,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-10 11:27:09,Asia/Kolkata,Saturday,11.45,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-01-11 11:26:58,Asia/Kolkata,Sunday,11.43,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-01-12 12:41:47,Asia/Kolkata,Monday,12.68,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-13 12:43:55,Asia/Kolkata,Tuesday,12.72,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-15 12:20:54,Asia/Kolkata,Thursday,12.33,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-16 12:19:59,Asia/Kolkata,Friday,12.32,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-17 11:25:17,Asia/Kolkata,Saturday,11.42,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-01-18 10:48:18,Asia/Kolkata,Sunday,10.8,10:30,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-01-19 12:02:53,Asia/Kolkata,Monday,12.03,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-20 12:54:42,Asia/Kolkata,Tuesday,12.9,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-21 12:59:09,Asia/Kolkata,Wednesday,12.98,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-22 12:25:30,Asia/Kolkata,Thursday,12.42,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-23 12:40:35,Asia/Kolkata,Friday,12.67,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-24 11:35:24,Asia/Kolkata,Saturday,11.58,11:30,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-01-25 12:25:20,Asia/Kolkata,Sunday,12.42,12:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-01-26 12:50:44,Asia/Kolkata,Monday,12.83,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-27 12:27:24,Asia/Kolkata,Tuesday,12.45,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-28 12:12:49,Asia/Kolkata,Wednesday,12.2,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-29 12:01:20,Asia/Kolkata,Thursday,12.02,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-30 12:33:45,Asia/Kolkata,Friday,12.55,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-01-31 11:16:24,Asia/Kolkata,Saturday,11.27,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-02-01 11:04:42,Asia/Kolkata,Sunday,11.07,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-02-02 12:18:41,Asia/Kolkata,Monday,12.3,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-03 12:10:31,Asia/Kolkata,Tuesday,12.17,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-04 13:00:08,Asia/Kolkata,Wednesday,13.0,13:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-05 12:45:37,Asia/Kolkata,Thursday,12.75,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-06 12:29:06,Asia/Kolkata,Friday,12.48,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-07 11:56:28,Asia/Kolkata,Saturday,11.93,11:30,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-02-09 12:31:00,Asia/Kolkata,Monday,12.52,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-10 12:14:26,Asia/Kolkata,Tuesday,12.23,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-11 12:57:09,Asia/Kolkata,Wednesday,12.95,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-13 12:39:16,Asia/Kolkata,Friday,12.65,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-14 11:11:44,Asia/Kolkata,Saturday,11.18,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-02-15 11:26:05,Asia/Kolkata,Sunday,11.43,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-02-16 12:14:54,Asia/Kolkata,Monday,12.23,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-17 12:05:34,Asia/Kolkata,Tuesday,12.08,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-18 12:46:20,Asia/Kolkata,Wednesday,12.77,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-19 13:04:56,Asia/Kolkata,Thursday,13.07,13:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-20 12:04:55,Asia/Kolkata,Friday,12.07,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-21 11:40:39,Asia/Kolkata,Saturday,11.67,11:30,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-02-23 12:18:58,Asia/Kolkata,Monday,12.3,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-24 12:21:14,Asia/Kolkata,Tuesday,12.35,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-25 12:19:27,Asia/Kolkata,Wednesday,12.32,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-26 12:14:48,Asia/Kolkata,Thursday,12.23,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-02-27 12:30:55,Asia/Kolkata,Friday,12.5,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-03-02 12:15:01,Asia/Kolkata,Monday,12.25,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-03-04 12:34:18,Asia/Kolkata,Wednesday,12.57,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-03-05 12:29:27,Asia/Kolkata,Thursday,12.48,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-03-07 11:25:36,Asia/Kolkata,Saturday,11.42,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-03-08 11:13:11,Asia/Kolkata,Sunday,11.22,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-03-11 12:19:39,Asia/Kolkata,Wednesday,12.32,12:00,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-03-12 12:43:31,Asia/Kolkata,Thursday,12.72,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-03-13 12:39:09,Asia/Kolkata,Friday,12.65,12:30,Weekday
+user_004,Sneha,habit_008,Learn Spanish,2026-03-14 11:12:40,Asia/Kolkata,Saturday,11.2,11:00,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-03-15 11:31:16,Asia/Kolkata,Sunday,11.52,11:30,Weekend
+user_004,Sneha,habit_008,Learn Spanish,2026-03-16 12:43:57,Asia/Kolkata,Monday,12.72,12:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-01 07:19:57,Asia/Kolkata,Thursday,7.32,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-02 07:33:34,Asia/Kolkata,Friday,7.55,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-04 07:26:22,Asia/Kolkata,Sunday,7.43,07:00,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-01-05 07:33:19,Asia/Kolkata,Monday,7.55,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-06 07:25:27,Asia/Kolkata,Tuesday,7.42,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-07 07:19:29,Asia/Kolkata,Wednesday,7.32,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-08 07:20:12,Asia/Kolkata,Thursday,7.33,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-09 07:30:54,Asia/Kolkata,Friday,7.5,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-10 07:31:15,Asia/Kolkata,Saturday,7.52,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-01-11 07:24:22,Asia/Kolkata,Sunday,7.4,07:00,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-01-12 07:33:44,Asia/Kolkata,Monday,7.55,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-13 07:20:53,Asia/Kolkata,Tuesday,7.33,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-14 07:29:17,Asia/Kolkata,Wednesday,7.48,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-16 07:22:49,Asia/Kolkata,Friday,7.37,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-17 07:26:03,Asia/Kolkata,Saturday,7.43,07:00,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-01-18 07:30:47,Asia/Kolkata,Sunday,7.5,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-01-19 07:24:57,Asia/Kolkata,Monday,7.4,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-20 07:27:49,Asia/Kolkata,Tuesday,7.45,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-21 07:36:38,Asia/Kolkata,Wednesday,7.6,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-22 07:26:14,Asia/Kolkata,Thursday,7.43,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-23 07:35:39,Asia/Kolkata,Friday,7.58,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-24 07:23:48,Asia/Kolkata,Saturday,7.38,07:00,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-01-25 07:33:42,Asia/Kolkata,Sunday,7.55,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-01-26 07:38:08,Asia/Kolkata,Monday,7.63,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-27 07:15:57,Asia/Kolkata,Tuesday,7.25,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-28 07:25:02,Asia/Kolkata,Wednesday,7.42,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-29 07:33:28,Asia/Kolkata,Thursday,7.55,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-01-31 07:28:08,Asia/Kolkata,Saturday,7.47,07:00,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-02-02 07:32:47,Asia/Kolkata,Monday,7.53,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-03 07:26:12,Asia/Kolkata,Tuesday,7.43,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-05 07:30:23,Asia/Kolkata,Thursday,7.5,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-06 07:29:58,Asia/Kolkata,Friday,7.48,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-07 07:37:10,Asia/Kolkata,Saturday,7.62,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-02-08 07:31:52,Asia/Kolkata,Sunday,7.52,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-02-09 07:32:51,Asia/Kolkata,Monday,7.53,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-10 07:27:55,Asia/Kolkata,Tuesday,7.45,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-11 07:27:07,Asia/Kolkata,Wednesday,7.45,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-12 07:27:04,Asia/Kolkata,Thursday,7.45,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-14 07:32:55,Asia/Kolkata,Saturday,7.53,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-02-15 07:27:43,Asia/Kolkata,Sunday,7.45,07:00,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-02-16 07:31:54,Asia/Kolkata,Monday,7.52,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-17 07:42:23,Asia/Kolkata,Tuesday,7.7,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-19 07:35:16,Asia/Kolkata,Thursday,7.58,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-20 07:28:29,Asia/Kolkata,Friday,7.47,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-21 07:37:47,Asia/Kolkata,Saturday,7.62,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-02-22 07:27:37,Asia/Kolkata,Sunday,7.45,07:00,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-02-23 07:17:40,Asia/Kolkata,Monday,7.28,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-24 07:23:06,Asia/Kolkata,Tuesday,7.38,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-25 07:18:30,Asia/Kolkata,Wednesday,7.3,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-27 07:27:35,Asia/Kolkata,Friday,7.45,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-02-28 07:30:39,Asia/Kolkata,Saturday,7.5,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-03-01 07:40:04,Asia/Kolkata,Sunday,7.67,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-03-02 07:31:29,Asia/Kolkata,Monday,7.52,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-03-03 07:28:19,Asia/Kolkata,Tuesday,7.47,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-03-04 07:34:07,Asia/Kolkata,Wednesday,7.57,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-03-06 07:16:19,Asia/Kolkata,Friday,7.27,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-03-07 07:31:07,Asia/Kolkata,Saturday,7.52,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-03-09 07:34:08,Asia/Kolkata,Monday,7.57,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-03-10 07:21:23,Asia/Kolkata,Tuesday,7.35,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-03-11 07:36:47,Asia/Kolkata,Wednesday,7.6,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-03-12 07:32:34,Asia/Kolkata,Thursday,7.53,07:30,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-03-13 07:27:47,Asia/Kolkata,Friday,7.45,07:00,Weekday
+user_005,Karan,habit_009,Cold Shower,2026-03-14 07:33:56,Asia/Kolkata,Saturday,7.55,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-03-15 07:43:06,Asia/Kolkata,Sunday,7.72,07:30,Weekend
+user_005,Karan,habit_009,Cold Shower,2026-03-16 07:31:39,Asia/Kolkata,Monday,7.52,07:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-01 21:37:17,Asia/Kolkata,Thursday,21.62,21:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-03 20:51:28,Asia/Kolkata,Saturday,20.85,20:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-01-04 19:52:15,Asia/Kolkata,Sunday,19.87,19:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-01-05 23:04:06,Asia/Kolkata,Monday,23.07,23:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-06 18:51:23,Asia/Kolkata,Tuesday,18.85,18:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-07 21:10:41,Asia/Kolkata,Wednesday,21.17,21:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-08 19:48:25,Asia/Kolkata,Thursday,19.8,19:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-09 22:11:07,Asia/Kolkata,Friday,22.18,22:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-10 22:50:52,Asia/Kolkata,Saturday,22.83,22:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-01-11 23:30:42,Asia/Kolkata,Sunday,23.5,23:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-01-12 19:43:40,Asia/Kolkata,Monday,19.72,19:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-13 20:19:01,Asia/Kolkata,Tuesday,20.32,20:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-15 18:33:08,Asia/Kolkata,Thursday,18.55,18:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-16 19:53:13,Asia/Kolkata,Friday,19.88,19:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-18 22:56:13,Asia/Kolkata,Sunday,22.93,22:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-01-19 22:53:52,Asia/Kolkata,Monday,22.88,22:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-20 18:41:21,Asia/Kolkata,Tuesday,18.68,18:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-21 23:10:50,Asia/Kolkata,Wednesday,23.17,23:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-22 23:30:00,Asia/Kolkata,Thursday,23.5,23:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-23 22:02:09,Asia/Kolkata,Friday,22.03,22:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-24 23:30:34,Asia/Kolkata,Saturday,23.5,23:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-01-25 20:03:11,Asia/Kolkata,Sunday,20.05,20:00,Weekend
+user_005,Karan,habit_010,No Phone,2026-01-27 17:53:08,Asia/Kolkata,Tuesday,17.88,17:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-29 16:33:15,Asia/Kolkata,Thursday,16.55,16:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-01-30 23:30:01,Asia/Kolkata,Friday,23.5,23:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-02 22:38:33,Asia/Kolkata,Monday,22.63,22:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-05 20:51:23,Asia/Kolkata,Thursday,20.85,20:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-06 21:41:06,Asia/Kolkata,Friday,21.68,21:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-07 19:11:14,Asia/Kolkata,Saturday,19.18,19:00,Weekend
+user_005,Karan,habit_010,No Phone,2026-02-08 23:30:02,Asia/Kolkata,Sunday,23.5,23:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-02-09 21:19:58,Asia/Kolkata,Monday,21.32,21:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-10 21:16:33,Asia/Kolkata,Tuesday,21.27,21:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-11 22:48:41,Asia/Kolkata,Wednesday,22.8,22:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-12 22:12:03,Asia/Kolkata,Thursday,22.2,22:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-13 21:33:54,Asia/Kolkata,Friday,21.55,21:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-14 20:01:43,Asia/Kolkata,Saturday,20.02,20:00,Weekend
+user_005,Karan,habit_010,No Phone,2026-02-16 22:10:28,Asia/Kolkata,Monday,22.17,22:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-19 23:30:04,Asia/Kolkata,Thursday,23.5,23:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-21 23:30:37,Asia/Kolkata,Saturday,23.5,23:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-02-22 23:30:20,Asia/Kolkata,Sunday,23.5,23:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-02-23 19:43:38,Asia/Kolkata,Monday,19.72,19:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-24 18:31:29,Asia/Kolkata,Tuesday,18.52,18:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-25 20:41:27,Asia/Kolkata,Wednesday,20.68,20:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-27 21:08:54,Asia/Kolkata,Friday,21.13,21:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-02-28 23:30:56,Asia/Kolkata,Saturday,23.5,23:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-03-01 17:46:46,Asia/Kolkata,Sunday,17.77,17:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-03-02 23:30:27,Asia/Kolkata,Monday,23.5,23:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-03 20:36:14,Asia/Kolkata,Tuesday,20.6,20:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-04 19:55:52,Asia/Kolkata,Wednesday,19.92,19:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-05 18:28:26,Asia/Kolkata,Thursday,18.47,18:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-06 16:51:20,Asia/Kolkata,Friday,16.85,16:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-07 23:30:42,Asia/Kolkata,Saturday,23.5,23:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-03-08 22:10:09,Asia/Kolkata,Sunday,22.17,22:00,Weekend
+user_005,Karan,habit_010,No Phone,2026-03-09 17:46:30,Asia/Kolkata,Monday,17.77,17:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-11 17:45:05,Asia/Kolkata,Wednesday,17.75,17:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-12 20:09:47,Asia/Kolkata,Thursday,20.15,20:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-13 23:30:51,Asia/Kolkata,Friday,23.5,23:30,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-16 20:21:35,Asia/Kolkata,Monday,20.35,20:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-17 17:14:07,Asia/Kolkata,Tuesday,17.23,17:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-18 20:23:55,Asia/Kolkata,Wednesday,20.38,20:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-19 20:19:48,Asia/Kolkata,Thursday,20.32,20:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-20 14:15:58,Asia/Kolkata,Friday,14.25,14:00,Weekday
+user_005,Karan,habit_010,No Phone,2026-03-21 21:51:18,Asia/Kolkata,Saturday,21.85,21:30,Weekend
+user_005,Karan,habit_010,No Phone,2026-03-22 21:25:22,Asia/Kolkata,Sunday,21.42,21:00,Weekend
+user_005,Karan,habit_010,No Phone,2026-03-24 22:44:09,Asia/Kolkata,Tuesday,22.73,22:30,Weekday
