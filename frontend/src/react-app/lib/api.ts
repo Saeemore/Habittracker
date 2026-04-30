@@ -35,25 +35,26 @@ function normalizePath(path: string) {
   return `/api/${path}`;
 }
 
-export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const headers = new Headers(init.headers);
-  if (!headers.has("Content-Type") && init.body) headers.set("Content-Type", "application/json");
+const API_TIMEOUT_MS = 8000;
 
-  const token = getAccessToken();
-  if (token && !headers.has("Authorization")) headers.set("Authorization", `Bearer ${token}`);
+async function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit = {}) {
+  const controller = new AbortController();
+  const timeoutId = globalThis.setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
-  const res = await fetch(normalizePath(path), {
-    ...init,
-    headers,
-    credentials: "include"
-  });
-
-  if (res.ok) {
-    if (res.status === 204) return undefined as T;
-    const text = await res.text();
-    return (text ? JSON.parse(text) : undefined) as T;
+  if (init.signal?.aborted) {
+    controller.abort();
+  } else {
+    init.signal?.addEventListener("abort", () => controller.abort(), { once: true });
   }
 
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    globalThis.clearTimeout(timeoutId);
+  }
+}
+
+async function parseApiError(res: Response) {
   let parsed: ApiErrorShape | undefined;
   try {
     parsed = (await res.json()) as ApiErrorShape;
@@ -62,6 +63,53 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
   }
 
   const message = parsed?.error?.message || `Request failed (${res.status})`;
-  throw new ApiError(message, { code: parsed?.error?.code, details: parsed?.error?.details, status: res.status });
+  return new ApiError(message, { code: parsed?.error?.code, details: parsed?.error?.details, status: res.status });
+}
+
+async function refreshAccessToken(): Promise<string> {
+  const res = await fetchWithTimeout(normalizePath("/auth/refresh"), {
+    method: "POST",
+    credentials: "include"
+  });
+
+  if (!res.ok) throw await parseApiError(res);
+
+  const data = (await res.json()) as { accessToken: string };
+  setAccessToken(data.accessToken);
+  return data.accessToken;
+}
+
+async function sendApiRequest(path: string, init: RequestInit, token: string | null) {
+  const headers = new Headers(init.headers);
+  if (!headers.has("Content-Type") && init.body) headers.set("Content-Type", "application/json");
+
+  if (token && !headers.has("Authorization")) headers.set("Authorization", `Bearer ${token}`);
+
+  return fetchWithTimeout(normalizePath(path), {
+    ...init,
+    headers,
+    credentials: "include"
+  });
+}
+
+export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
+  let res = await sendApiRequest(path, init, getAccessToken());
+
+  if (res.status === 401 && path !== "/auth/refresh" && path !== "/auth/login" && path !== "/auth/register") {
+    try {
+      const refreshedToken = await refreshAccessToken();
+      res = await sendApiRequest(path, init, refreshedToken);
+    } catch {
+      setAccessToken(null);
+    }
+  }
+
+  if (res.ok) {
+    if (res.status === 204) return undefined as T;
+    const text = await res.text();
+    return (text ? JSON.parse(text) : undefined) as T;
+  }
+
+  throw await parseApiError(res);
 }
 

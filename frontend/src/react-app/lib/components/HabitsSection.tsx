@@ -372,7 +372,7 @@
 
 
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Check, Clock, Target, Heart, Zap, X, Home, CheckCircle, BarChart2, User, Flame } from 'lucide-react';
 import CelebrationModal from './CelebrationModal';
@@ -410,6 +410,21 @@ const NAV_ITEMS = [
   { id: 'profile', icon: User, label: 'Profile' },
 ];
 
+type Habit = { id: string; name: string; endGoal: string; targetTime: string; completed: boolean; category: string; streak: number };
+
+const HABITS_STORAGE_KEY = 'trackify:habits';
+
+function loadStoredHabits(): Habit[] {
+  try {
+    const stored = localStorage.getItem(HABITS_STORAGE_KEY);
+    if (!stored) return [];
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSectionProps) {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formStep, setFormStep] = useState(0);
@@ -419,9 +434,11 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
   const [activeFilter, setActiveFilter] = useState('All');
   const [formData, setFormData] = useState({ name: '', why: '', endGoal: '', targetTime: '', category: '' });
 
-  const [habits, setHabits] = useState<
-    { id: string; name: string; endGoal: string; targetTime: string; completed: boolean; category: string; streak: number }[]
-  >([]);
+  const [habits, setHabits] = useState<Habit[]>(loadStoredHabits);
+
+  useEffect(() => {
+    localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(habits));
+  }, [habits]);
 
   /* ── theme tokens ─────────────────────────────────────────────────────────
      Dark:  page = #0a0a0a | sidebar = #111 | card = #161616 | inner = #1e1e1e

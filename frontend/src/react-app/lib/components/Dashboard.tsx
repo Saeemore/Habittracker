@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, Home, CheckCircle, BarChart2, User, Brain, TrendingUp, Trophy, X } from 'lucide-react';
+import { Flame, Home, CheckCircle, BarChart2, User, Brain, TrendingUp, Trophy, X, CalendarDays, Activity, Eye } from 'lucide-react';
 
 interface DashboardProps {
   isDarkMode: boolean;
@@ -16,6 +16,50 @@ const HERO_PICKS = [
 const DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 const WEEK_PROGRESS = [true, true, true, true, true, false, false];
 
+type DashboardHabit = {
+  id: string;
+  name: string;
+  category: string;
+  target: string;
+  time: string;
+  streak: number;
+  completedToday: boolean;
+};
+
+const HABITS_STORAGE_KEY = 'trackify:habits';
+
+const DEFAULT_HABITS: DashboardHabit[] = [
+  { id: 'reading', name: 'Reading', category: 'Learning', target: '30 mins', time: '08:00 PM', streak: 14, completedToday: true },
+  { id: 'meditation', name: 'Morning Meditation', category: 'Wellness', target: '10 mins', time: '06:30 AM', streak: 7, completedToday: true },
+  { id: 'workout', name: 'Workout', category: 'Fitness', target: '45 mins', time: '07:00 AM', streak: 5, completedToday: false },
+  { id: 'journal', name: 'Journaling', category: 'Mindfulness', target: '1 page', time: '09:30 PM', streak: 3, completedToday: false },
+];
+
+function loadDashboardHabits(): DashboardHabit[] {
+  try {
+    const stored = localStorage.getItem(HABITS_STORAGE_KEY);
+    if (!stored) return DEFAULT_HABITS;
+
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_HABITS;
+
+    return parsed.map((habit) => ({
+      id: String(habit.id),
+      name: String(habit.name || 'Untitled Habit'),
+      category: String(habit.category || 'Other'),
+      target: String(habit.endGoal || habit.target || 'Daily goal'),
+      time: String(habit.targetTime || habit.time || 'Any time'),
+      streak: Number(habit.streak || 0),
+      completedToday: Boolean(habit.completed),
+    }));
+  } catch {
+    return DEFAULT_HABITS;
+  }
+}
+
+const MONTH_PROGRESS = [100, 75, 100, 50, 75, 100, 25, 75, 100, 100, 50, 75, 75, 100, 50, 25, 75, 100, 75, 50, 100, 75, 0, 50, 75, 100, 100, 50, 75, 100];
+const MONTH_DAYS = Array.from({ length: 30 }, (_, index) => index + 1);
+
 const NAV_ITEMS = [
   { id: 'home', icon: Home, label: 'Home' },
   { id: 'habits', icon: CheckCircle, label: 'Habits' },
@@ -27,11 +71,49 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
   const username = localStorage.getItem('username') || 'User';
   const [bannerVisible, setBannerVisible] = useState(true);
   const [activeNav, setActiveNav] = useState('home');
+  const [dashboardHabits, setDashboardHabits] = useState<DashboardHabit[]>(loadDashboardHabits);
+  const [checkedHabits, setCheckedHabits] = useState<Record<string, boolean>>(
+    () => Object.fromEntries(loadDashboardHabits().map(habit => [habit.id, habit.completedToday]))
+  );
+
+  useEffect(() => {
+    const habits = loadDashboardHabits();
+    setDashboardHabits(habits);
+    setCheckedHabits(Object.fromEntries(habits.map(habit => [habit.id, habit.completedToday])));
+  }, []);
+
+  const toggleDashboardHabit = (id: string) => {
+    setCheckedHabits(prev => {
+      const next = { ...prev, [id]: !prev[id] };
+      const syncedHabits = dashboardHabits.map(habit => ({
+        id: habit.id,
+        name: habit.name,
+        endGoal: habit.target,
+        targetTime: habit.time,
+        completed: Boolean(next[habit.id]),
+        category: habit.category,
+        streak: habit.streak,
+      }));
+      localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(syncedHabits));
+      return next;
+    });
+  };
 
   const level = 12, currentXP = 1200, maxXP = 1500, streakDays = 15;
   const xpPercent = (currentXP / maxXP) * 100;
   const completedDays = WEEK_PROGRESS.filter(Boolean).length;
   const progressPercent = Math.round((completedDays / 7) * 100);
+  const completedToday = Object.values(checkedHabits).filter(Boolean).length;
+  const todayProgress = Math.round((completedToday / dashboardHabits.length) * 100);
+  const monthlyAverage = Math.round(MONTH_PROGRESS.reduce((sum, value) => sum + value, 0) / MONTH_PROGRESS.length);
+  const previousWeekAverage = Math.round(MONTH_PROGRESS.slice(15, 22).reduce((sum, value) => sum + value, 0) / 7);
+  const currentWeekAverage = Math.round(MONTH_PROGRESS.slice(23).reduce((sum, value) => sum + value, 0) / 7);
+  const consistencyTrend = currentWeekAverage - previousWeekAverage;
+  const missedHabits = dashboardHabits.filter(habit => !checkedHabits[habit.id]);
+  const topMissedHabit = missedHabits[0];
+  const aiAdvice = topMissedHabit
+    ? `I noticed ${topMissedHabit.name} is still open. Finish this one today to protect your consistency.`
+    : 'I see every habit marked today. Keep tomorrow light, but do not break the chain.';
 
   // ── theme tokens ──────────────────────────────────────────────────────────
   const bg = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
@@ -151,106 +233,164 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
             )}
           </AnimatePresence>
 
-          {/* ── Two-column layout on lg+, single column on mobile ─────────── */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+          ── Two-column layout on lg+, single column on mobile ───────────
+         
 
-            {/* LEFT: Daily Focus — takes 3 of 5 cols on lg */}
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className={`lg:col-span-3 border rounded-2xl p-7 ${card}`}>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className={`text-2xl font-black ${txt}`}>Daily Focus</h2>
-                <span className="text-green-500 text-sm font-black bg-green-500/10 px-4 py-1.5 rounded-full">{progressPercent}% Done</span>
-              </div>
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="grid grid-cols-1 xl:grid-cols-5 gap-6 items-stretch mt-6">
 
-              <div className={`rounded-xl p-6 mb-6 ${inner}`}>
-                <div className="flex items-start justify-between mb-6">
-                  <div>
-                    <h3 className={`text-4xl font-black ${txt}`}>Reading</h3>
-                    <p className={`text-base mt-1 ${muted}`}>Goal: 30 mins/day</p>
-                  </div>
-                  <span className="text-6xl leading-none">🤩</span>
+            <div className={`xl:col-span-2 border rounded-2xl p-6 ${card}`}>
+              <div className="flex items-center justify-between mb-5">
+                <div>
+                  <h2 className={`text-xl font-black ${txt}`}>Today's Habit Checklist</h2>
+                  <p className={`text-sm mt-1 ${muted}`}>{completedToday}/{dashboardHabits.length} created habits marked</p>
                 </div>
-
-                {/* Week tracker */}
-                <div className="flex items-center justify-between gap-2">
-                  {DAYS.map((day, i) => {
-                    const done = WEEK_PROGRESS[i];
-                    return (
-                      <div key={i} className="flex flex-col items-center gap-2 flex-1">
-                        <span className={`text-sm font-bold ${muted}`}>{day}</span>
-                        <motion.div
-                          initial={{ scale: 0.4, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ delay: 0.04 * i, type: 'spring', stiffness: 300 }}
-                          className={`w-full max-w-[56px] aspect-square rounded-full flex items-center justify-center text-base font-bold
-                            ${done
-                              ? 'bg-green-500 text-white shadow-md shadow-green-500/30'
-                              : isDarkMode ? 'bg-white/10' : 'bg-gray-200'}`}>
-                          {done ? '✓' : ''}
-                        </motion.div>
-                      </div>
-                    );
-                  })}
+                <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                  <CheckCircle size={22} className="text-green-500" />
                 </div>
               </div>
 
-              <motion.button
-                whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
-                className="w-full py-5 rounded-2xl bg-green-500 hover:bg-green-400 text-white font-black text-base tracking-[0.15em] shadow-lg shadow-green-500/25 transition-colors">
-                COMPLETE SESSION
-              </motion.button>
-            </motion.div>
+              <div className={`h-3 rounded-full overflow-hidden mb-5 ${isDarkMode ? 'bg-white/10' : 'bg-gray-200'}`}>
+                <motion.div
+                  animate={{ width: `${todayProgress}%` }}
+                  transition={{ duration: 0.45, ease: 'easeOut' }}
+                  className="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500"
+                />
+              </div>
 
-            {/* RIGHT: HabitHero Picks + Stats — takes 2 of 5 cols on lg */}
-            <div className="lg:col-span-2 flex flex-col gap-4">
-
-              {/* HabitHero Picks */}
-              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}>
-                <h2 className={`text-xl font-black mb-4 ${txt}`}>HabitHero Picks ✨</h2>
-                <div className="grid grid-cols-3 gap-4">
-                  {HERO_PICKS.map((c, i) => (
-                    <motion.button key={c.id}
-                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 + 0.07 * i }}
-                      whileHover={{ y: -4, transition: { duration: 0.18 } }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => setActiveSection('habits')}
-                      className={`rounded-2xl border-2 p-4 text-left transition-all
-                        ${isDarkMode ? `${c.darkBg} ${c.darkBorder}` : `bg-gradient-to-br ${c.lightGrad} ${c.lightBorder}`}`}>
-                      <div className={`w-14 h-14 rounded-full flex items-center justify-center text-3xl mb-3 ${isDarkMode ? 'bg-white/10' : 'bg-white/80'}`}>
-                        {c.icon}
-                      </div>
-                      <p className={`text-[11px] font-black tracking-widest mb-1 ${c.labelColor}`}>{c.label}</p>
-                      <p className={`text-sm font-bold leading-tight ${txt}`}>{c.title}</p>
+              <div className="space-y-3">
+                {dashboardHabits.map((habit, index) => {
+                  const done = checkedHabits[habit.id];
+                  return (
+                    <motion.button
+                      key={habit.id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.28 + index * 0.05 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => toggleDashboardHabit(habit.id)}
+                      className={`w-full flex items-center gap-4 rounded-xl border p-4 text-left transition-all duration-200
+                        ${done
+                          ? isDarkMode ? 'bg-green-500/10 border-green-500/25' : 'bg-green-50 border-green-200'
+                          : isDarkMode ? 'bg-white/5 border-white/5 hover:bg-white/10' : 'bg-gray-50 border-gray-100 hover:bg-gray-100'}`}
+                    >
+                      <span className={`w-7 h-7 rounded-lg border flex items-center justify-center flex-shrink-0 transition-colors
+                        ${done ? 'bg-green-500 border-green-500 text-white' : isDarkMode ? 'border-white/15' : 'border-gray-300'}`}>
+                        {done && <CheckCircle size={16} />}
+                      </span>
+                      <span className="flex-1 min-w-0">
+                        <span className={`block text-sm font-black truncate ${done ? 'text-green-500' : txt}`}>{habit.name}</span>
+                        <span className={`block text-xs mt-0.5 ${muted}`}>{habit.category} - {habit.target} - {habit.time}</span>
+                      </span>
+                      <span className="flex items-center gap-1 text-orange-500 text-xs font-black flex-shrink-0">
+                        <Flame size={13} className="fill-orange-500" />
+                        {habit.streak}d
+                      </span>
                     </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className={`xl:col-span-3 border rounded-2xl p-6 ${card}`}>
+              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <CalendarDays size={20} className="text-green-500" />
+                    <h2 className={`text-xl font-black ${txt}`}>Monthly Consistency</h2>
+                  </div>
+                  <p className={`text-sm mt-1 ${muted}`}>Ups, downs, and daily completion for this month</p>
+                </div>
+                <div className="grid grid-cols-3 gap-3 w-full md:w-auto">
+                  {[
+                    { label: 'Average', value: `${monthlyAverage}%` },
+                    { label: 'This Week', value: `${currentWeekAverage}%` },
+                    { label: 'Trend', value: `${consistencyTrend >= 0 ? '+' : ''}${consistencyTrend}%` },
+                  ].map(stat => (
+                    <div key={stat.label} className={`rounded-xl px-4 py-3 ${inner}`}>
+                      <p className={`text-[10px] font-black tracking-widest ${muted}`}>{stat.label}</p>
+                      <p className={`text-lg font-black ${stat.label === 'Trend' ? consistencyTrend >= 0 ? 'text-green-500' : 'text-orange-500' : txt}`}>
+                        {stat.value}
+                      </p>
+                    </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
 
-              {/* Growth + Badges */}
-              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="grid grid-cols-2 gap-4">
-                {[
-                  { icon: TrendingUp, label: 'GROWTH', value: '+12%', color: 'text-green-500', bg: 'bg-green-500/10' },
-                  { icon: Trophy, label: 'BADGES', value: '24', color: 'text-yellow-500', bg: 'bg-yellow-500/10' },
-                ].map(({ icon: Icon, label, value, color, bg: ibg }) => (
-                  <div key={label} className={`border rounded-2xl p-5 flex items-center gap-4 ${card}`}>
-                    <div className={`w-12 h-12 rounded-xl ${ibg} flex items-center justify-center flex-shrink-0`}>
-                      <Icon size={24} className={color} />
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                <div className="lg:col-span-3">
+                  <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                    {MONTH_DAYS.map(day => {
+                      const value = day === 23 ? todayProgress : MONTH_PROGRESS[day - 1];
+                      const cellTone = value >= 90
+                        ? 'bg-green-500 text-white shadow-md shadow-green-500/25'
+                        : value >= 70
+                          ? isDarkMode ? 'bg-green-500/35 text-green-100' : 'bg-green-200 text-green-800'
+                          : value >= 40
+                            ? isDarkMode ? 'bg-amber-500/25 text-amber-100' : 'bg-amber-100 text-amber-700'
+                            : value > 0
+                              ? isDarkMode ? 'bg-orange-500/20 text-orange-100' : 'bg-orange-100 text-orange-700'
+                              : isDarkMode ? 'bg-white/5 text-gray-600' : 'bg-gray-100 text-gray-400';
+
+                      return (
+                        <motion.div
+                          key={day}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.3 + day * 0.01 }}
+                          className={`aspect-square rounded-xl flex flex-col items-center justify-center ${cellTone}`}
+                        >
+                          <span className="text-xs font-black">{day}</span>
+                          <span className="text-[9px] font-bold opacity-80">{value}%</span>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="lg:col-span-2 flex flex-col">
+                  <div className={`rounded-xl p-4 flex-1 ${inner}`}>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Activity size={18} className="text-green-500" />
+                      <h3 className={`text-sm font-black ${txt}`}>Progress Graph</h3>
                     </div>
-                    <div>
-                      <p className={`text-xs font-bold tracking-wider ${muted}`}>{label}</p>
-                      <p className={`text-2xl font-black leading-tight ${txt}`}>{value}</p>
+                    <div className="h-40 flex items-end gap-1.5">
+                      {MONTH_PROGRESS.slice(15).map((value, index) => {
+                        const graphValue = index === 7 ? todayProgress : value;
+                        return (
+                          <div key={index} className="flex-1 flex flex-col items-center gap-1">
+                            <motion.div
+                              initial={{ height: 0 }}
+                              animate={{ height: `${Math.max(graphValue, 6)}%` }}
+                              transition={{ delay: 0.32 + index * 0.03, duration: 0.45 }}
+                              className={`w-full rounded-t-md ${graphValue >= 70 ? 'bg-green-500' : graphValue >= 40 ? 'bg-amber-400' : 'bg-orange-400'}`}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <p className={`text-xs leading-relaxed mt-4 ${muted}`}>
+                      {consistencyTrend >= 0
+                        ? `You are up ${consistencyTrend}% from last week. Keep protecting the routines that are already working.`
+                        : `You dipped ${Math.abs(consistencyTrend)}% from last week. The missed days are visible, but today's checklist can turn the line back up.`}
+                    </p>
+                    <div className={`mt-4 rounded-xl border p-4 ${isDarkMode ? 'bg-green-500/10 border-green-500/20' : 'bg-green-50 border-green-100'}`}>
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-green-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/25">
+                          <Eye size={16} className="text-white" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-black tracking-widest text-green-500 mb-1">AI WATCH</p>
+                          <p className={`text-xs font-bold leading-relaxed ${txt}`}>{aiAdvice}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </motion.div>
-
+                </div>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
