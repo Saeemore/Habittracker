@@ -93,7 +93,7 @@
 
 
 import { motion } from 'framer-motion';
-import { Award, Trophy, Star, Zap, Home, CheckCircle, User } from 'lucide-react';
+import { Trophy, Home, CheckCircle, User, type LucideIcon } from 'lucide-react';
 
 interface AchievementsSectionProps {
   isDarkMode: boolean;
@@ -107,7 +107,19 @@ const NAV_ITEMS = [
   { id: 'profile', icon: User, label: 'Profile' },
 ];
 
-const ACHIEVEMENTS = [];
+interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon: LucideIcon;
+  earned: boolean;
+  cardBg: string;
+  border: string;
+  iconBg: string;
+  iconColor: string;
+}
+
+const ACHIEVEMENTS: Achievement[] = [];
 
 export default function AchievementsSection({ isDarkMode, setActiveSection }: AchievementsSectionProps) {
 

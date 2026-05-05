@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import LoginPage from "@/react-app/pages/Login";
 import HomePage from "@/react-app/pages/Home";
-import UserOnboarding from "@/react-app/components/UserOnboarding";
+import UserOnboarding from "@/react-app/lib/components/UserOnboarding";
 import { ApiError, getAccessToken, setAccessToken } from "@/react-app/lib/api";
 import { me, refresh } from "@/react-app/lib/auth";
 
