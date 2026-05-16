@@ -1,7 +1,7 @@
 import * as React from "react"
 import { RadioGroup as RadioGroupPrimitive } from "radix-ui"
 
-import { cn } from "@/react-app/lib/utils"
+import { cn } from "./lib/utils"
 import { Circle } from "lucide-react"
 
 function RadioGroup({

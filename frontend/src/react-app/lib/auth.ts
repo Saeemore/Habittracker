@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 import { apiFetch, setAccessToken } from "../lib/api";
+=======
+import { apiFetch, setAccessToken } from "./api";
+>>>>>>> Stashed changes
 
 export type AuthUser = { id: string; email: string; username: string };
 

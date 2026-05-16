@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Check, Clock, Target, Heart, Zap, X, Home, CheckCircle, BarChart2, User, Flame } from 'lucide-react';
@@ -36,21 +40,6 @@ const NAV_ITEMS = [
   { id: 'profile', icon: User, label: 'Profile' },
 ];
 
-type Habit = { id: string; name: string; endGoal: string; targetTime: string; completed: boolean; category: string; streak: number };
-
-const HABITS_STORAGE_KEY = 'trackify:habits';
-
-function loadStoredHabits(): Habit[] {
-  try {
-    const stored = localStorage.getItem(HABITS_STORAGE_KEY);
-    if (!stored) return [];
-    const parsed = JSON.parse(stored);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
 export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSectionProps) {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formStep, setFormStep] = useState(0);
@@ -60,16 +49,35 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
   const [activeFilter, setActiveFilter] = useState('All');
   const [formData, setFormData] = useState({ name: '', why: '', endGoal: '', targetTime: '', category: '' });
 
-  const [habits, setHabits] = useState<Habit[]>(loadStoredHabits);
+  const [habits, setHabits] = useState<
+    { id: string; name: string; endGoal: string; targetTime: string; completed: boolean; category: string; streak: number }[]
+  >([]);
 
+<<<<<<< Updated upstream
   // ── NEW: predictions state ──────────────────────────────────────────────
   const [predictions, setPredictions] = useState<Record<string, any>>({});
 
   // ── NEW: save habits to localStorage whenever they change ───────────────
+=======
+  // ── NEW: predictions state ───────────────────────────────────────────────
+  const [predictions, setPredictions] = useState<Record<string, any>>({});
+
+  // ── NEW: fetch ML predictions whenever habits list changes ───────────────
+>>>>>>> Stashed changes
   useEffect(() => {
-    localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(habits));
+    if (!habits.length) return;
+    predictAllHabits(
+      habits.map((h) => ({ habit_name: h.name, streak_count: h.streak ?? 0 }))
+    )
+      .then((results) => {
+        const map: Record<string, any> = {};
+        results.forEach((r: any) => { map[r.habit_name] = r; });
+        setPredictions(map);
+      })
+      .catch(console.error);
   }, [habits]);
 
+<<<<<<< Updated upstream
   // ── NEW: fetch ML predictions whenever habits list changes ──────────────
   useEffect(() => {
     if (!habits.length) return;
@@ -82,6 +90,8 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
     }).catch(console.error);
   }, [habits]);
 
+=======
+>>>>>>> Stashed changes
   const BG    = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
   const CARD  = isDarkMode ? 'bg-[#161616] border-white/8' : 'bg-white border-gray-100';
   const HCARD = isDarkMode ? 'bg-[#1c1c1c] border-white/5' : 'bg-white border-gray-100';
@@ -215,13 +225,21 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
                       <div className={`w-2.5 h-2.5 rounded-full ${habit.completed ? 'bg-green-500' : cat.dot}`} />
                     </div>
 
+<<<<<<< Updated upstream
                     {/* Name + AI prediction badge + goal */}
+=======
+                    {/* Name */}
+>>>>>>> Stashed changes
                     <div>
                       <h3 className={`font-black text-base leading-snug ${habit.completed ? 'text-green-500' : TXT}`}>
                         {habit.name}
                       </h3>
 
+<<<<<<< Updated upstream
                       {/* ── AI prediction badge ───────────────────────────────── */}
+=======
+                      {/* ── NEW: AI prediction badge ─────────────────────────── */}
+>>>>>>> Stashed changes
                       {prediction && (
                         <span style={{
                           display: 'inline-block',
@@ -242,6 +260,10 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
                         </span>
                       )}
 
+<<<<<<< Updated upstream
+=======
+                      {/* Goal text */}
+>>>>>>> Stashed changes
                       <p className={`text-xs mt-0.5 ${MUTED}`}>{habit.endGoal}</p>
                     </div>
 
