@@ -86,22 +86,3 @@ export async function predictAllHabits(
   return res.json();
 }
 
-export async function predictHabit(habitName: string, streakCount: number) {
-  const res = await fetch('/api/ml/predict', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ habit_name: habitName, streak_count: streakCount }),
-  });
-  return res.json();
-}
-
-export async function predictAllHabits(
-  habits: { habit_name: string; streak_count: number }[]
-) {
-  const res = await fetch('/api/ml/predict/bulk', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ habits }),
-  });
-  return res.json();
-}

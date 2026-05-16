@@ -5,11 +5,7 @@ import ProgressSection from '../lib/components/ProgressSection';
 import HabitsSection from '../lib/components/HabitsSection';
 import AchievementsSection from '../lib/components/AchievementsSection';
 import SettingsSection from '../lib/components/SettingsSection';
-<<<<<<< Updated upstream
 // import AnalyticsDashboard from '../components/AnalyticsDashboard'
-=======
-// import AnalyticsDashboard from './components/AnalyticsDashboard'
->>>>>>> Stashed changes
 import AIChat from '../lib/components/AIChat';
 import ProfileSection from '../lib/components/ui/Profile';
 

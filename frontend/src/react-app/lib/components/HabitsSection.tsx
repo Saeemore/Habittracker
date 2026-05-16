@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Check, Clock, Target, Heart, Zap, X, Home, CheckCircle, BarChart2, User, Flame } from 'lucide-react';
@@ -53,17 +49,10 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
     { id: string; name: string; endGoal: string; targetTime: string; completed: boolean; category: string; streak: number }[]
   >([]);
 
-<<<<<<< Updated upstream
   // ── NEW: predictions state ──────────────────────────────────────────────
   const [predictions, setPredictions] = useState<Record<string, any>>({});
 
   // ── NEW: save habits to localStorage whenever they change ───────────────
-=======
-  // ── NEW: predictions state ───────────────────────────────────────────────
-  const [predictions, setPredictions] = useState<Record<string, any>>({});
-
-  // ── NEW: fetch ML predictions whenever habits list changes ───────────────
->>>>>>> Stashed changes
   useEffect(() => {
     if (!habits.length) return;
     predictAllHabits(
@@ -77,7 +66,6 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
       .catch(console.error);
   }, [habits]);
 
-<<<<<<< Updated upstream
   // ── NEW: fetch ML predictions whenever habits list changes ──────────────
   useEffect(() => {
     if (!habits.length) return;
@@ -90,8 +78,6 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
     }).catch(console.error);
   }, [habits]);
 
-=======
->>>>>>> Stashed changes
   const BG    = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
   const CARD  = isDarkMode ? 'bg-[#161616] border-white/8' : 'bg-white border-gray-100';
   const HCARD = isDarkMode ? 'bg-[#1c1c1c] border-white/5' : 'bg-white border-gray-100';
@@ -225,21 +211,13 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
                       <div className={`w-2.5 h-2.5 rounded-full ${habit.completed ? 'bg-green-500' : cat.dot}`} />
                     </div>
 
-<<<<<<< Updated upstream
                     {/* Name + AI prediction badge + goal */}
-=======
-                    {/* Name */}
->>>>>>> Stashed changes
                     <div>
                       <h3 className={`font-black text-base leading-snug ${habit.completed ? 'text-green-500' : TXT}`}>
                         {habit.name}
                       </h3>
 
-<<<<<<< Updated upstream
                       {/* ── AI prediction badge ───────────────────────────────── */}
-=======
-                      {/* ── NEW: AI prediction badge ─────────────────────────── */}
->>>>>>> Stashed changes
                       {prediction && (
                         <span style={{
                           display: 'inline-block',
@@ -260,10 +238,6 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
                         </span>
                       )}
 
-<<<<<<< Updated upstream
-=======
-                      {/* Goal text */}
->>>>>>> Stashed changes
                       <p className={`text-xs mt-0.5 ${MUTED}`}>{habit.endGoal}</p>
                     </div>
 
