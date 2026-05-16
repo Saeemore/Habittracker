@@ -1,4 +1,4 @@
-import { apiFetch, setAccessToken } from "@/react-app/lib/api";
+import { apiFetch, setAccessToken } from "../lib/api";
 
 export type AuthUser = { id: string; email: string; username: string };
 

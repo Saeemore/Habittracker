@@ -1,0 +1,55 @@
+services:
+
+  mongodb:
+    image: mongo:6.0
+    container_name: trackify-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: trackify
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - trackify-network
+
+  ml_service:
+    build:
+      context: ./ml_integration
+      dockerfile: Dockerfile
+    container_name: trackify-ml
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ml_integration:/app
+    networks:
+      - trackify-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trackify-backend
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - ML_SERVICE_URL=http://ml_service:8000
+      - MONGODB_URI=mongodb://mongodb:27017/trackify
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+      - ml_service
+    networks:
+      - trackify-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  trackify-network:
+    driver: bridge

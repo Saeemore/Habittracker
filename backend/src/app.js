@@ -13,6 +13,7 @@ const checkinsRouter = require("./routes/checkins");
 const { habitRemindersRouter, remindersRouter } = require("./routes/reminders");
 const notificationsRouter = require("./routes/notifications");
 const achievementsRouter = require("./routes/achievements");
+const mlRouter = require("./routes/ml");
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use("/api/habits/:habitId/reminders", habitRemindersRouter);
 app.use("/api/reminders", remindersRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/achievements", achievementsRouter);
+app.use("/api/ml", mlRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

@@ -1,0 +1,13 @@
+{
+  "name": "trackify",
+  "version": "1.0.0",
+  "description": "AI-Based Habit Tracker",
+  "scripts": {
+    "dev": "concurrently --names \"DOCKER,FRONTEND\" --prefix-colors \"green,blue\" \"docker-compose up\" \"npm run frontend\"",
+    "frontend": "cd frontend && npm run dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

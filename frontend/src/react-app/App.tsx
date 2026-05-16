@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
-import LoginPage from "@/react-app/pages/Login";
-import HomePage from "@/react-app/pages/Home";
-import UserOnboarding from "@/react-app/lib/components/UserOnboarding";
-import { ApiError, getAccessToken, setAccessToken } from "@/react-app/lib/api";
-import { me, refresh } from "@/react-app/lib/auth";
+import { useEffect, useRef, useState } from "react";
+import LoginPage from "./pages/Login";
+import HomePage from "./pages/Home";
+import UserOnboarding from "./lib/components/UserOnboarding";
+import { ApiError, getAccessToken, setAccessToken } from "./lib/api";
+import { me, refresh } from "./lib/auth";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
   const [isDarkMode] = useState(false);
+  const hasBootstrapped = useRef(false);
 
   useEffect(() => {
+    if (hasBootstrapped.current) return;
+    hasBootstrapped.current = true;
+
     let alive = true;
     let bootstrapFinished = false;
 
@@ -34,7 +38,6 @@ export default function App() {
             const refreshed = await refresh();
             setAccessToken(refreshed.accessToken);
           } catch {
-            // stale local session marker or missing refresh cookie
             localStorage.removeItem("isLoggedIn");
             localStorage.removeItem("username");
           }

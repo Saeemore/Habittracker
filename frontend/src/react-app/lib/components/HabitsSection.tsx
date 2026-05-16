@@ -1,381 +1,8 @@
-// import { useState } from 'react';
-// import { motion, AnimatePresence } from 'framer-motion';
-// import { Plus, Check, Clock, Target, Heart, Zap, X } from 'lucide-react';
-// import CelebrationModal from './CelebrationModal';
-
-// interface HabitsSectionProps {
-//   isDarkMode: boolean;
-// }
-
-// export default function HabitsSection({ isDarkMode }: HabitsSectionProps) {
-//   const [showCreateForm, setShowCreateForm] = useState(false);
-//   const [formStep, setFormStep] = useState(0);
-//   const [showCelebration, setShowCelebration] = useState(false);
-//   const [celebratedHabit, setCelebratedHabit] = useState('');
-//   const [formData, setFormData] = useState({
-//     name: '',
-//     why: '',
-//     endGoal: '',
-//     targetTime: '',
-//     category: '',
-//   });
-
-//   const [habits, setHabits] = useState([
-//     { id: '1', name: 'Morning Meditation', endGoal: '30 minutes daily', targetTime: '06:00', completed: false, category: 'Wellness', streak: 7 },
-//     { id: '2', name: 'Reading', endGoal: '30 pages daily', targetTime: '20:00', completed: false, category: 'Learning', streak: 14 },
-//     { id: '3', name: 'Exercise', endGoal: '45 minutes workout', targetTime: '07:00', completed: false, category: 'Fitness', streak: 5 },
-//     { id: '4', name: 'Journaling', endGoal: '10 minutes reflection', targetTime: '21:00', completed: false, category: 'Mindfulness', streak: 3 },
-//   ]);
-
-//   const categories = ['Fitness', 'Wellness', 'Learning', 'Mindfulness', 'Productivity', 'Social', 'Other'];
-
-//   const formSteps = [
-//     {
-//       title: 'What habit do you want to build?',
-//       subtitle: 'Be specific about what you want to do',
-//       field: 'name',
-//       icon: Target,
-//       placeholder: 'e.g., Morning Meditation, Daily Reading, Evening Walk',
-//     },
-//     {
-//       title: 'Why does this matter to you?',
-//       subtitle: 'Your reason will keep you motivated',
-//       field: 'why',
-//       icon: Heart,
-//       placeholder: 'e.g., To reduce stress and start my day with clarity',
-//     },
-//     {
-//       title: 'What success looks like?',
-//       subtitle: 'Define your target clearly',
-//       field: 'endGoal',
-//       icon: Zap,
-//       placeholder: 'e.g., Meditate for 30 minutes every morning',
-//     },
-//     {
-//       title: 'Pick your category',
-//       subtitle: 'Helps you organize your habits',
-//       field: 'category',
-//       icon: Target,
-//       type: 'select',
-//     },
-//     {
-//       title: 'When will you do this?',
-//       subtitle: 'Choose the best time for you',
-//       field: 'targetTime',
-//       icon: Clock,
-//       type: 'time',
-//     },
-//   ];
-
-//   const currentStep = formSteps[formStep];
-//   const StepIcon = currentStep.icon;
-
-//   const handleNext = () => {
-//     if (formStep < formSteps.length - 1) {
-//       setFormStep(formStep + 1);
-//     } else {
-//       const newHabit = {
-//         id: Date.now().toString(),
-//         name: formData.name,
-//         endGoal: formData.endGoal,
-//         targetTime: formData.targetTime,
-//         category: formData.category,
-//         completed: false,
-//         streak: 0,
-//       };
-//       setHabits([...habits, newHabit]);
-//       setShowCreateForm(false);
-//       setFormStep(0);
-//       setFormData({ name: '', why: '', endGoal: '', targetTime: '', category: '' });
-//     }
-//   };
-
-//   const toggleHabit = (id: string, habitName: string) => {
-//     const habit = habits.find(h => h.id === id);
-//     if (habit && !habit.completed) {
-//       setCelebratedHabit(habitName);
-//       setShowCelebration(true);
-//     }
-//     setHabits(habits.map(h => h.id === id ? { ...h, completed: !h.completed } : h));
-//   };
-
-//   const getCategoryColor = (category: string) => {
-//     const colors: Record<string, string> = {
-//       'Fitness': 'from-rose-500 to-orange-500',
-//       'Wellness': 'from-teal-500 to-emerald-500',
-//       'Learning': 'from-blue-500 to-indigo-500',
-//       'Mindfulness': 'from-purple-500 to-pink-500',
-//       'Productivity': 'from-amber-500 to-yellow-500',
-//       'Social': 'from-cyan-500 to-blue-500',
-//       'Other': 'from-gray-500 to-slate-500',
-//     };
-//     return colors[category] || colors['Other'];
-//   };
-
-//   return (
-//     <div className={`p-8 min-h-screen transition-colors duration-300 ${
-//       isDarkMode 
-//         ? 'bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900' 
-//         : 'bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50'
-//     }`}>
-//       <CelebrationModal
-//         isOpen={showCelebration}
-//         onClose={() => setShowCelebration(false)}
-//         habitName={celebratedHabit}
-//         isDarkMode={isDarkMode}
-//       />
-
-//       <div className="flex justify-between items-center mb-8">
-//         <div>
-//           <h1 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-//             Your Habits
-//           </h1>
-//           <p className={`mt-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-//             Build yourself one habit at a time
-//           </p>
-//         </div>
-//         <motion.button
-//           whileHover={{ scale: 1.05 }}
-//           whileTap={{ scale: 0.95 }}
-//           onClick={() => setShowCreateForm(true)}
-//           className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
-//         >
-//           <Plus size={20} />
-//           New Habit
-//         </motion.button>
-//       </div>
-
-//       {/* Create Habit Form - Redesigned */}
-//       <AnimatePresence>
-//         {showCreateForm && (
-//           <motion.div
-//             initial={{ opacity: 0 }}
-//             animate={{ opacity: 1 }}
-//             exit={{ opacity: 0 }}
-//             className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-//             onClick={() => setShowCreateForm(false)}
-//           >
-//             <motion.div
-//               initial={{ scale: 0.9, opacity: 0, y: 50 }}
-//               animate={{ scale: 1, opacity: 1, y: 0 }}
-//               exit={{ scale: 0.9, opacity: 0, y: 50 }}
-//               onClick={(e) => e.stopPropagation()}
-//               className={`rounded-3xl shadow-2xl p-8 max-w-lg w-full ${
-//                 isDarkMode 
-//                   ? 'bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700' 
-//                   : 'bg-white'
-//               }`}
-//             >
-//               <button
-//                 onClick={() => setShowCreateForm(false)}
-//                 className={`absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all ${
-//                   isDarkMode ? 'text-gray-400' : 'text-gray-600'
-//                 }`}
-//               >
-//                 <X size={20} />
-//               </button>
-
-//               {/* Header with icon */}
-//               <div className="flex items-center gap-4 mb-6">
-//                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-400 to-blue-500 flex items-center justify-center">
-//                   <StepIcon size={28} className="text-white" />
-//                 </div>
-//                 <div className="flex-1">
-//                   <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-//                     Create New Habit
-//                   </h2>
-//                   <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-//                     Step {formStep + 1} of {formSteps.length}
-//                   </p>
-//                 </div>
-//               </div>
-
-//               {/* Modern progress bar */}
-//               <div className="flex gap-2 mb-8">
-//                 {formSteps.map((_, index) => (
-//                   <div
-//                     key={index}
-//                     className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-//                       index <= formStep
-//                         ? 'bg-gradient-to-r from-teal-500 to-blue-600'
-//                         : isDarkMode
-//                         ? 'bg-gray-700'
-//                         : 'bg-gray-200'
-//                     }`}
-//                   />
-//                 ))}
-//               </div>
-
-//               <AnimatePresence mode="wait">
-//                 <motion.div
-//                   key={formStep}
-//                   initial={{ opacity: 0, x: 20 }}
-//                   animate={{ opacity: 1, x: 0 }}
-//                   exit={{ opacity: 0, x: -20 }}
-//                   transition={{ duration: 0.3 }}
-//                 >
-//                   <h3 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-//                     {currentStep.title}
-//                   </h3>
-//                   <p className={`text-sm mb-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-//                     {currentStep.subtitle}
-//                   </p>
-
-//                   {currentStep.type === 'time' ? (
-//                     <input
-//                       type="time"
-//                       value={formData[currentStep.field as keyof typeof formData]}
-//                       onChange={(e) => setFormData({ ...formData, [currentStep.field]: e.target.value })}
-//                       className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 transition-all text-lg ${
-//                         isDarkMode
-//                           ? 'bg-gray-700 border-gray-600 text-white focus:border-teal-500'
-//                           : 'border-gray-300 focus:border-teal-500'
-//                       }`}
-//                     />
-//                   ) : currentStep.type === 'select' ? (
-//                     <div className="grid grid-cols-2 gap-3">
-//                       {categories.map((cat) => (
-//                         <motion.button
-//                           key={cat}
-//                           whileHover={{ scale: 1.02 }}
-//                           whileTap={{ scale: 0.98 }}
-//                           onClick={() => setFormData({ ...formData, category: cat })}
-//                           className={`p-4 rounded-xl font-medium transition-all ${
-//                             formData.category === cat
-//                               ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-lg'
-//                               : isDarkMode
-//                               ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-//                               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-//                           }`}
-//                         >
-//                           {cat}
-//                         </motion.button>
-//                       ))}
-//                     </div>
-//                   ) : (
-//                     <textarea
-//                       placeholder={currentStep.placeholder}
-//                       value={formData[currentStep.field as keyof typeof formData]}
-//                       onChange={(e) => setFormData({ ...formData, [currentStep.field]: e.target.value })}
-//                       rows={3}
-//                       className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 resize-none transition-all ${
-//                         isDarkMode
-//                           ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-teal-500'
-//                           : 'border-gray-300 placeholder-gray-400 focus:border-teal-500'
-//                       }`}
-//                     />
-//                   )}
-//                 </motion.div>
-//               </AnimatePresence>
-
-//               <div className="flex gap-3 mt-8">
-//                 <button
-//                   onClick={() => formStep > 0 ? setFormStep(formStep - 1) : setShowCreateForm(false)}
-//                   className={`flex-1 py-3.5 rounded-xl font-semibold transition-all ${
-//                     isDarkMode
-//                       ? 'bg-gray-700 text-white hover:bg-gray-600'
-//                       : 'bg-gray-100 hover:bg-gray-200'
-//                   }`}
-//                 >
-//                   {formStep === 0 ? 'Cancel' : 'Back'}
-//                 </button>
-//                 <button
-//                   onClick={handleNext}
-//                   className="flex-1 py-3.5 bg-gradient-to-r from-teal-500 to-blue-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all"
-//                 >
-//                   {formStep === formSteps.length - 1 ? 'Create Habit' : 'Next'}
-//                 </button>
-//               </div>
-//             </motion.div>
-//           </motion.div>
-//         )}
-//       </AnimatePresence>
-
-//       {/* Habits Grid - Redesigned */}
-//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-//         {habits.map((habit, index) => (
-//           <motion.div
-//             key={habit.id}
-//             initial={{ opacity: 0, y: 20 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             transition={{ delay: index * 0.1 }}
-//             className={`rounded-2xl shadow-lg p-6 transition-all backdrop-blur-sm ${
-//               habit.completed
-//                 ? `bg-gradient-to-br ${getCategoryColor(habit.category)} text-white`
-//                 : isDarkMode
-//                 ? 'bg-gray-800/50 border border-gray-700 hover:border-gray-600'
-//                 : 'bg-white hover:shadow-xl'
-//             }`}
-//           >
-//             <div className="flex justify-between items-start mb-4">
-//               <div className="flex-1">
-//                 <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
-//                   habit.completed
-//                     ? 'bg-white/30'
-//                     : isDarkMode
-//                     ? 'bg-gray-700 text-gray-300'
-//                     : 'bg-gray-100 text-gray-700'
-//                 }`}>
-//                   {habit.category}
-//                 </span>
-//                 <h3 className={`font-bold text-xl mt-3 ${
-//                   habit.completed ? 'text-white' : isDarkMode ? 'text-white' : 'text-gray-900'
-//                 }`}>
-//                   {habit.name}
-//                 </h3>
-//                 <p className={`text-sm mt-2 ${
-//                   habit.completed ? 'text-white/80' : isDarkMode ? 'text-gray-400' : 'text-gray-600'
-//                 }`}>
-//                   {habit.endGoal}
-//                 </p>
-//               </div>
-//             </div>
-
-//             <div className={`flex items-center gap-2 text-sm mb-4 ${
-//               habit.completed ? 'text-white/90' : isDarkMode ? 'text-gray-400' : 'text-gray-600'
-//             }`}>
-//               <Clock size={16} />
-//               <span>{habit.targetTime}</span>
-//               <span className="mx-2">•</span>
-//               <span className="font-semibold">{habit.streak} day streak</span>
-//             </div>
-
-//             <motion.button
-//               whileHover={{ scale: 1.02 }}
-//               whileTap={{ scale: 0.98 }}
-//               onClick={() => toggleHabit(habit.id, habit.name)}
-//               className={`w-full py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${
-//                 habit.completed
-//                   ? 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30'
-//                   : 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-md hover:shadow-lg'
-//               }`}
-//             >
-//               {habit.completed ? (
-//                 <>
-//                   <Check size={20} />
-//                   Completed Today
-//                 </>
-//               ) : (
-//                 'Mark as Done'
-//               )}
-//             </motion.button>
-//           </motion.div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Check, Clock, Target, Heart, Zap, X, Home, CheckCircle, BarChart2, User, Flame } from 'lucide-react';
 import CelebrationModal from './CelebrationModal';
+import { predictAllHabits } from '../api';
 
 interface HabitsSectionProps {
   isDarkMode: boolean;
@@ -384,7 +11,6 @@ interface HabitsSectionProps {
 
 const CATEGORIES = ['Fitness', 'Wellness', 'Learning', 'Mindfulness', 'Productivity', 'Social', 'Other'];
 
-// Category colors — exactly matching the screenshot badges
 const CAT: Record<string, { badge: string; darkBadge: string; dot: string }> = {
   Fitness: { badge: 'bg-rose-100 text-rose-600', darkBadge: 'bg-rose-500/20 text-rose-400', dot: 'bg-rose-400' },
   Wellness: { badge: 'bg-teal-100 text-teal-600', darkBadge: 'bg-teal-500/20 text-teal-400', dot: 'bg-teal-400' },
@@ -436,32 +62,44 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
 
   const [habits, setHabits] = useState<Habit[]>(loadStoredHabits);
 
+  // ── NEW: predictions state ──────────────────────────────────────────────
+  const [predictions, setPredictions] = useState<Record<string, any>>({});
+
+  // ── NEW: save habits to localStorage whenever they change ───────────────
   useEffect(() => {
     localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(habits));
   }, [habits]);
 
-  /* ── theme tokens ─────────────────────────────────────────────────────────
-     Dark:  page = #0a0a0a | sidebar = #111 | card = #161616 | inner = #1e1e1e
-     Light: page = gray-100 | sidebar/card = white
-  ───────────────────────────────────────────────────────────────────────── */
-  const BG = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
-  const CARD = isDarkMode ? 'bg-[#161616] border-white/8' : 'bg-white border-gray-100';
-  // habit card is slightly lighter than the page card
+  // ── NEW: fetch ML predictions whenever habits list changes ──────────────
+  useEffect(() => {
+    if (!habits.length) return;
+    predictAllHabits(
+      habits.map((h) => ({ habit_name: h.name, streak_count: h.streak ?? 0 }))
+    ).then((results) => {
+      const map: Record<string, any> = {};
+      results.forEach((r: any) => { map[r.habit_name] = r; });
+      setPredictions(map);
+    }).catch(console.error);
+  }, [habits]);
+
+  const BG    = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
+  const CARD  = isDarkMode ? 'bg-[#161616] border-white/8' : 'bg-white border-gray-100';
   const HCARD = isDarkMode ? 'bg-[#1c1c1c] border-white/5' : 'bg-white border-gray-100';
-  const TXT = isDarkMode ? 'text-white' : 'text-gray-900';
+  const TXT   = isDarkMode ? 'text-white' : 'text-gray-900';
   const MUTED = isDarkMode ? 'text-gray-500' : 'text-gray-400';
-  const HOV = isDarkMode ? 'hover:bg-white/5' : 'hover:bg-gray-50';
+  const HOV   = isDarkMode ? 'hover:bg-white/5' : 'hover:bg-gray-50';
   const INPUT = isDarkMode
     ? 'bg-[#1e1e1e] border-white/10 text-white placeholder-gray-600 focus:border-green-500'
     : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-green-500';
 
-  const step = FORM_STEPS[formStep];
+  const step     = FORM_STEPS[formStep];
   const StepIcon = step.icon;
 
-  const filtered = activeFilter === 'All' ? habits
-    : activeFilter === 'Done' ? habits.filter(h => h.completed)
-      : activeFilter === 'Pending' ? habits.filter(h => !h.completed)
-        : habits.filter(h => h.category === activeFilter);
+  const filtered =
+    activeFilter === 'All'     ? habits :
+    activeFilter === 'Done'    ? habits.filter(h => h.completed) :
+    activeFilter === 'Pending' ? habits.filter(h => !h.completed) :
+    habits.filter(h => h.category === activeFilter);
 
   const handleNext = () => {
     if (formStep < FORM_STEPS.length - 1) {
@@ -498,41 +136,6 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
         isDarkMode={isDarkMode}
       />
 
-      {/* ═══ SIDEBAR ══════════════════════════════════════════════════════════ */}
-      {/* <aside className={`hidden md:flex flex-col h-full w-[72px] xl:w-64 border-r flex-shrink-0 transition-all duration-300 ${SB}`}>
-        <div className={`flex items-center gap-3 px-4 xl:px-5 py-5 border-b ${DIV}`}>
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/20">
-            <Zap size={17} className="text-white fill-white" />
-          </div>
-          <span className={`hidden xl:block font-black text-lg tracking-tight ${TXT}`}>HabitHero</span>
-        </div>
-
-        <nav className="flex flex-col gap-1 p-2 xl:p-3 flex-1">
-          {NAV_ITEMS.map(({ id, icon: Icon, label }) => {
-            const active = activeNav === id;
-            return (
-              <button key={id}
-                onClick={() => { setActiveNav(id); if (id !== 'habits') setActiveSection?.(id); }}
-                className={`flex items-center gap-3 px-3 py-3 rounded-xl w-full transition-all duration-200
-                  ${active ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : `${MUTED} ${HOV}`}`}>
-                <Icon size={19} className="flex-shrink-0" />
-                <span className={`hidden xl:block text-sm font-semibold ${active ? 'text-white' : ''}`}>{label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        <div className={`p-2 xl:p-3 border-t ${DIV}`}>
-          <div className={`flex items-center gap-3 p-2 rounded-xl ${HOV} cursor-pointer`}>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-400 to-green-500 flex items-center justify-center text-white font-black text-xs flex-shrink-0">U</div>
-            <div className="hidden xl:block min-w-0">
-              <p className={`text-xs font-bold truncate ${TXT}`}>User</p>
-              <p className={`text-[10px] ${MUTED}`}>Level 12</p>
-            </div>
-          </div>
-        </div>
-      </aside> */}
-
       {/* ═══ MAIN ════════════════════════════════════════════════════════════ */}
       <div className="flex-1 min-w-0 h-full overflow-y-auto">
         <div className="p-4 md:p-5 xl:p-6 pb-24 md:pb-6">
@@ -545,17 +148,19 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
               <p className={`text-xs mt-0.5 ${MUTED}`}>Build yourself one habit at a time</p>
             </div>
             <div className="flex items-center gap-3">
-              {/* 0/4 progress counter — matches screenshot */}
               <div className="flex items-center gap-2">
                 <div className={`w-20 h-1.5 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-gray-200'}`}>
-                  <div className="h-full rounded-full bg-green-500 transition-all duration-700"
-                    style={{ width: `${Math.round((habits.filter(h => h.completed).length / habits.length) * 100)}%` }} />
+                  <div
+                    className="h-full rounded-full bg-green-500 transition-all duration-700"
+                    style={{ width: `${habits.length ? Math.round((habits.filter(h => h.completed).length / habits.length) * 100) : 0}%` }}
+                  />
                 </div>
                 <span className={`text-xs font-black ${MUTED}`}>
                   {habits.filter(h => h.completed).length}/{habits.length}
                 </span>
               </div>
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+              <motion.button
+                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                 onClick={() => setShowCreateForm(true)}
                 className="flex items-center gap-2 px-4 py-2.5 bg-green-500 hover:bg-green-400 text-white text-sm font-black rounded-xl shadow-lg shadow-green-500/25 transition-colors">
                 <Plus size={16} />
@@ -581,10 +186,11 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
           </motion.div>
 
           {/* ── Habits grid ──────────────────────────────────────────────────── */}
-          {/* 1 col mobile → 2 col sm → 3 col lg → 4 col xl */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filtered.map((habit, index) => {
-              const cat = CAT[habit.category] || CAT['Other'];
+              const cat        = CAT[habit.category] || CAT['Other'];
+              const prediction = predictions[habit.name];
+
               return (
                 <motion.div key={habit.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -599,6 +205,7 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
 
                   {/* Card body */}
                   <div className="p-5 flex flex-col gap-3 flex-1">
+
                     {/* Category badge + dot */}
                     <div className="flex items-center justify-between">
                       <span className={`text-[10px] font-black tracking-wider px-2.5 py-0.5 rounded-full
@@ -608,11 +215,33 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
                       <div className={`w-2.5 h-2.5 rounded-full ${habit.completed ? 'bg-green-500' : cat.dot}`} />
                     </div>
 
-                    {/* Name + goal */}
+                    {/* Name + AI prediction badge + goal */}
                     <div>
                       <h3 className={`font-black text-base leading-snug ${habit.completed ? 'text-green-500' : TXT}`}>
                         {habit.name}
                       </h3>
+
+                      {/* ── AI prediction badge ───────────────────────────────── */}
+                      {prediction && (
+                        <span style={{
+                          display: 'inline-block',
+                          fontSize: '10px',
+                          fontWeight: 700,
+                          padding: '2px 8px',
+                          borderRadius: '12px',
+                          marginTop: '5px',
+                          marginBottom: '2px',
+                          background:
+                            prediction.risk_level === 'high'   ? '#FCEBEB' :
+                            prediction.risk_level === 'medium' ? '#FAEEDA' : '#EAF3DE',
+                          color:
+                            prediction.risk_level === 'high'   ? '#A32D2D' :
+                            prediction.risk_level === 'medium' ? '#854F0B' : '#3B6D11',
+                        }}>
+                          {Math.round(prediction.completion_probability * 100)}% chance today
+                        </span>
+                      )}
+
                       <p className={`text-xs mt-0.5 ${MUTED}`}>{habit.endGoal}</p>
                     </div>
 
@@ -626,7 +255,7 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
                     </div>
                   </div>
 
-                  {/* CTA button — full-width, flush to card bottom */}
+                  {/* CTA button */}
                   <motion.button
                     whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
                     onClick={() => toggleHabit(habit.id, habit.name)}
@@ -682,7 +311,7 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
         </div>
       </div>
 
-      {/* ═══ CREATE HABIT MODAL ═══════════════════════════════════════════════ */}
+      {/* ═══ CREATE HABIT MODAL ══════════════════════════════════════════════ */}
       <AnimatePresence>
         {showCreateForm && (
           <motion.div

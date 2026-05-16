@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, Sparkles } from "lucide-react";
-import { ApiError, setAccessToken } from "@/react-app/lib/api";
-import { login, register } from "@/react-app/lib/auth";
+import { ApiError, setAccessToken } from "../lib/api";
+import { login, register } from "../lib/auth";
 
 interface LoginPageProps {
   onLoginSuccess: (username?: string) => void;
