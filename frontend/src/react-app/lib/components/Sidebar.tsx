@@ -42,7 +42,7 @@ export default function Sidebar({
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/20">
           <Zap size={17} className="text-white fill-white" />
         </div>
-        <span className={`font-black text-lg tracking-tight ${txt}`}>HabitAI</span>
+        <span className={`font-black text-lg tracking-tight ${txt}`}>Trackify</span>
       </div>
 
       {/* ── Navigation ───────────────────────────────────────────────────────── */}
