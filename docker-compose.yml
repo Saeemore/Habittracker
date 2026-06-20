@@ -38,6 +38,7 @@ services:
       - PORT=4000
       - ML_SERVICE_URL=http://ml_service:8000
       - MONGODB_URI=mongodb://mongodb:27017/trackify
+      - GEMINI_API_KEY=AIzaSyBiBw8-VcOtcy0KeF14SNjudy82KXcotoA
     volumes:
       - ./backend:/app
       - /app/node_modules

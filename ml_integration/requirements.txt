@@ -6,3 +6,4 @@ numpy
 python-dotenv
 httpx
 pytest
+google-generativeai

@@ -25,8 +25,3 @@ main().catch((error) => {
   console.error("[backend] fatal:", error);
   process.exit(1);
 });
-
-const mlRouter = require ("./routes/ml");
-
-// Add alongside your existing routes:
-app.use("/api/ml", mlRouter);

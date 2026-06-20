@@ -14,8 +14,12 @@ const { habitRemindersRouter, remindersRouter } = require("./routes/reminders");
 const notificationsRouter = require("./routes/notifications");
 const achievementsRouter = require("./routes/achievements");
 const mlRouter = require("./routes/ml");
-
+const chatRouter = require("./routes/chat");
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
+
+// const app = express();
 
 app.use(helmet());
 app.use(
@@ -40,6 +44,13 @@ app.get("/health", (_req, res) => {
   res.json({ ok: true });
 });
 
+// Swagger API Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: "Trackify API Docs",
+}));
+
+
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true });
 });
@@ -53,6 +64,7 @@ app.use("/api/reminders", remindersRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/achievements", achievementsRouter);
 app.use("/api/ml", mlRouter);
+app.use("/api/chat", chatRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
