@@ -7,10 +7,72 @@ const {
 
 const router = Router();
 
+/**
+ * @swagger
+ * /api/ml/health:
+ *   get:
+ *     summary: Check ML service health
+ *     tags: [ML]
+ *     responses:
+ *       200:
+ *         description: ML service status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ml_available:
+ *                   type: boolean
+ *                   example: true
+ */
+
 router.get("/health", async (_req, res) => {
   const ok = await checkMLHealth();
   res.json({ ml_available: ok });
 });
+
+/**
+ * @swagger
+ * /api/ml/predict:
+ *   post:
+ *     summary: Predict habit completion probability
+ *     tags: [ML]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - habit_name
+ *             properties:
+ *               habit_name:
+ *                 type: string
+ *                 example: Morning Run
+ *               streak_count:
+ *                 type: integer
+ *                 example: 7
+ *     responses:
+ *       200:
+ *         description: Prediction result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 habit_name:
+ *                   type: string
+ *                 completion_probability:
+ *                   type: number
+ *                   example: 0.848
+ *                 will_complete:
+ *                   type: boolean
+ *                 risk_level:
+ *                   type: string
+ *                   enum: [low, medium, high]
+ *       503:
+ *         description: ML service unavailable
+ */
 
 router.post("/predict", async (req, res) => {
   try {

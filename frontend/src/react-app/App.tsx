@@ -26,7 +26,7 @@ export default function App() {
       localStorage.removeItem("username");
       setIsLoggedIn(false);
       setIsBootstrapping(false);
-    }, 9000);
+    }, 3000);
 
     async function bootstrap() {
       try {

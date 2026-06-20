@@ -1,261 +1,257 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
-
-interface AIChatProps {
-  isDarkMode: boolean;
-}
+import { Send, X, Bot, User, Sparkles, Zap, BarChart2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
-  id: string;
+  role: 'user' | 'ai';
   text: string;
-  sender: 'user' | 'ai';
   timestamp: Date;
 }
 
-export default function AIChat({ isDarkMode }: AIChatProps) {
-  const [isOpen, setIsOpen] = useState(false);
+interface Habit {
+  name: string;
+  category: string;
+  streak: number;
+  completed: boolean;
+}
+
+interface AIChatProps {
+  isDarkMode: boolean;
+  habits?: Habit[];
+}
+
+export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: '1',
-      text: "Hi! I'm your habit coach. I can help you stay on track, suggest new habits, or give you tips. How can I help you today?",
-      sender: 'ai',
+      role: 'ai',
+      text: "Hi! I'm Trackify AI 🌟 Your personal habit coach. Ask me anything about your habits, or tap a quick action below!",
       timestamp: new Date(),
-    },
+    }
   ]);
-  const [inputText, setInputText] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const BG    = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-50';
+  const CARD  = isDarkMode ? 'bg-[#161616] border-white/8' : 'bg-white border-gray-100';
+  const TXT   = isDarkMode ? 'text-white' : 'text-gray-900';
+  const MUTED = isDarkMode ? 'text-gray-400' : 'text-gray-500';
+  const INPUT = isDarkMode
+    ? 'bg-[#1e1e1e] border-white/10 text-white placeholder-gray-600'
+    : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400';
 
   useEffect(() => {
-    scrollToBottom();
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const quickReplies = [
-    'How do I stay consistent?',
-    'Suggest a new habit',
-    'Why am I struggling?',
-    'Tips for motivation',
-  ];
+  const sendMessage = async (text: string) => {
+    if (!text.trim()) return;
 
-  const getAIResponse = (userMessage: string): string => {
-    const lowerMessage = userMessage.toLowerCase();
-    
-    if (lowerMessage.includes('consistent') || lowerMessage.includes('consistency')) {
-      return "Great question! Consistency comes from three things: Start small (just 2 minutes at first), tie your habit to an existing routine (after coffee, after lunch), and track your progress daily. What habit are you working on?";
-    } else if (lowerMessage.includes('suggest') || lowerMessage.includes('new habit')) {
-      return "I'd love to help! What area would you like to improve? Common categories are: Fitness (walking, stretching), Learning (reading, courses), Wellness (meditation, sleep), or Productivity (planning, focus time). Pick one and I'll suggest specific habits!";
-    } else if (lowerMessage.includes('struggling') || lowerMessage.includes('hard')) {
-      return "It's normal to struggle sometimes! Here's what helps: Break it into smaller steps, remove obstacles (prep the night before), and forgive yourself when you miss a day. The key is getting back on track the next day. Which habit is giving you trouble?";
-    } else if (lowerMessage.includes('motivat') || lowerMessage.includes('inspired')) {
-      return "Here's a powerful tip: Focus on your 'why'. Why does this habit matter to you? Write it down and read it every morning. Also, celebrate small wins - did it today? That's amazing! Stack small victories and you'll build unstoppable momentum.";
-    } else if (lowerMessage.includes('thanks') || lowerMessage.includes('thank you')) {
-      return "You're welcome! Remember, you're building something great here. Every day you show up, you're winning. Keep going! 💪";
-    } else {
-      return "I'm here to help you succeed! You can ask me about staying consistent, building new habits, overcoming struggles, or getting motivated. What would you like to know?";
+    const userMessage: Message = { role: 'user', text, timestamp: new Date() };
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, habits }),
+      });
+      const data = await res.json();
+      setMessages(prev => [...prev, {
+        role: 'ai',
+        text: data.reply || 'Sorry, I could not generate a response.',
+        timestamp: new Date(),
+      }]);
+    } catch {
+      setMessages(prev => [...prev, {
+        role: 'ai',
+        text: 'Sorry, I am having trouble connecting. Please try again! 🔄',
+        timestamp: new Date(),
+      }]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleSendMessage = () => {
-    if (!inputText.trim()) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: inputText,
-      sender: 'user',
-      timestamp: new Date(),
-    };
-
-    setMessages([...messages, userMessage]);
-    setInputText('');
-    setIsTyping(true);
-
-    setTimeout(() => {
-      const aiResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        text: getAIResponse(inputText),
-        sender: 'ai',
+  const handleMotivate = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/chat/motivate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ habits }),
+      });
+      const data = await res.json();
+      setMessages(prev => [...prev, {
+        role: 'ai',
+        text: data.reply,
         timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, aiResponse]);
-      setIsTyping(false);
-    }, 1000 + Math.random() * 1000);
+      }]);
+    } catch {
+      setMessages(prev => [...prev, {
+        role: 'ai',
+        text: 'Could not fetch motivation. Try again! 🔄',
+        timestamp: new Date(),
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleQuickReply = (reply: string) => {
-    setInputText(reply);
+  const handleAnalyze = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/chat/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ habits }),
+      });
+      const data = await res.json();
+      setMessages(prev => [...prev, {
+        role: 'ai',
+        text: data.reply,
+        timestamp: new Date(),
+      }]);
+    } catch {
+      setMessages(prev => [...prev, {
+        role: 'ai',
+        text: 'Could not analyze habits. Try again! 🔄',
+        timestamp: new Date(),
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <>
-      {/* Chat Toggle Button */}
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.button
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-br from-teal-500 to-blue-600 rounded-full shadow-2xl flex items-center justify-center z-50 group"
-          >
-            <MessageCircle size={28} className="text-white" />
-            <motion.div
-              className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 rounded-full flex items-center justify-center"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <Sparkles size={12} className="text-white" />
+    <div className={`flex flex-col ${BG} transition-colors duration-300 rounded-2xl border ${CARD} overflow-hidden`} style={{ height: '550px' }}>
+
+      {/* Header */}
+      <div className={`flex items-center gap-3 px-5 py-4 border-b ${CARD}`}>
+        <div className="w-10 h-10 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+          <Bot size={20} className="text-green-500" />
+        </div>
+        <div>
+          <h1 className={`text-base font-black ${TXT}`}>Trackify AI</h1>
+          <p className={`text-xs ${MUTED}`}>Your personal habit coach</p>
+        </div>
+        <div className="ml-auto flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className={`text-xs font-medium ${MUTED}`}>Online</span>
+        </div>
+      </div>
+
+      {/* Quick actions */}
+      <div className={`flex gap-2 px-4 py-3 border-b ${isDarkMode ? 'border-white/5' : 'border-gray-100'}`}>
+        <button onClick={handleMotivate}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all
+            ${isDarkMode ? 'bg-green-500/10 text-green-400 hover:bg-green-500/20' : 'bg-green-50 text-green-600 hover:bg-green-100'}`}>
+          <Sparkles size={11} />
+          Motivate me
+        </button>
+        <button onClick={handleAnalyze}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all
+            ${isDarkMode ? 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/20' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'}`}>
+          <BarChart2 size={11} />
+          Analyze habits
+        </button>
+        <button onClick={() => sendMessage("What are the best tips for building habits that stick?")}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all
+            ${isDarkMode ? 'bg-purple-500/10 text-purple-400 hover:bg-purple-500/20' : 'bg-purple-50 text-purple-600 hover:bg-purple-100'}`}>
+          <Zap size={11} />
+          Habit tips
+        </button>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4" style={{ minHeight: 0 }}>
+        <AnimatePresence>
+          {messages.map((msg, i) => (
+            <motion.div key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+
+              {/* Avatar */}
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0
+                ${msg.role === 'ai'
+                  ? 'bg-green-500/10 border border-green-500/20'
+                  : isDarkMode ? 'bg-white/10' : 'bg-gray-100'}`}>
+                {msg.role === 'ai'
+                  ? <Bot size={14} className="text-green-500" />
+                  : <User size={14} className={isDarkMode ? 'text-gray-300' : 'text-gray-600'} />}
+              </div>
+
+              {/* Bubble */}
+              <div className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed
+                ${msg.role === 'ai'
+                  ? isDarkMode
+                    ? 'bg-[#1c1c1c] border border-white/5 text-gray-200'
+                    : 'bg-white border border-gray-100 text-gray-800 shadow-sm'
+                  : 'bg-green-500 text-white'}`}>
+                  {msg.role === 'ai' ? (
+                    <ReactMarkdown
+                       components={{
+                        p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                        strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+                        em: ({ children }) => <em className="italic">{children}</em>,
+                        ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
+                        li: ({ children }) => <li className="text-sm">{children}</li>,
+                      }}
+                    > 
+                {msg.text}
+                </ReactMarkdown>
+                  ) : (
+                    msg.text
+                  )}  
+              </div>
             </motion.div>
-          </motion.button>
-        )}
-      </AnimatePresence>
+          ))}
+        </AnimatePresence>
 
-      {/* Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className={`fixed bottom-6 right-6 w-96 h-[600px] rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden ${
-              isDarkMode 
-                ? 'bg-gray-800 border border-gray-700' 
-                : 'bg-white border border-gray-200'
-            }`}
-          >
-            {/* Header */}
-            <div className="bg-gradient-to-r from-teal-500 to-blue-600 p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <Sparkles size={20} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-white">Habit Coach</h3>
-                  <p className="text-xs text-white/80">Always here to help</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors"
-              >
-                <X size={20} className="text-white" />
-              </button>
+        {/* Loading indicator */}
+        {isLoading && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            className="flex gap-3">
+            <div className="w-8 h-8 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+              <Bot size={14} className="text-green-500" />
             </div>
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((message) => (
-                <motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                      message.sender === 'user'
-                        ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-br-sm'
-                        : isDarkMode
-                        ? 'bg-gray-700 text-gray-200 rounded-bl-sm'
-                        : 'bg-gray-100 text-gray-900 rounded-bl-sm'
-                    }`}
-                  >
-                    <p className="text-sm leading-relaxed">{message.text}</p>
-                  </div>
-                </motion.div>
-              ))}
-
-              {isTyping && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex justify-start"
-                >
-                  <div className={`rounded-2xl px-4 py-3 rounded-bl-sm ${
-                    isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
-                  }`}>
-                    <div className="flex gap-1">
-                      <motion.div
-                        className={`w-2 h-2 rounded-full ${isDarkMode ? 'bg-gray-400' : 'bg-gray-600'}`}
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
-                      />
-                      <motion.div
-                        className={`w-2 h-2 rounded-full ${isDarkMode ? 'bg-gray-400' : 'bg-gray-600'}`}
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
-                      />
-                      <motion.div
-                        className={`w-2 h-2 rounded-full ${isDarkMode ? 'bg-gray-400' : 'bg-gray-600'}`}
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Quick Replies */}
-            {messages.length <= 2 && (
-              <div className={`px-4 py-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-                <p className={`text-xs mb-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Quick questions:
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {quickReplies.map((reply) => (
-                    <button
-                      key={reply}
-                      onClick={() => handleQuickReply(reply)}
-                      className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
-                        isDarkMode
-                          ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {reply}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Input */}
-            <div className={`p-4 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                  placeholder="Type your message..."
-                  className={`flex-1 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 ${
-                    isDarkMode
-                      ? 'bg-gray-700 text-white placeholder-gray-400'
-                      : 'bg-gray-100 placeholder-gray-500'
-                  }`}
-                />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleSendMessage}
-                  disabled={!inputText.trim()}
-                  className="w-12 h-12 bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Send size={20} className="text-white" />
-                </motion.button>
+            <div className={`px-4 py-3 rounded-2xl ${isDarkMode ? 'bg-[#1c1c1c] border border-white/5' : 'bg-white border border-gray-100 shadow-sm'}`}>
+              <div className="flex gap-1">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
-    </>
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Input */}
+      <div className={`px-4 py-4 border-t sticky bottom-0 ${isDarkMode ? 'border-white/5 bg-[#0a0a0a]' : 'border-gray-100 bg-white'}`}>
+        <div className="flex gap-3">
+          <input
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
+            placeholder="Ask your habit coach..."
+            className={`flex-1 px-4 py-3 border rounded-xl text-sm focus:outline-none focus:border-green-500 transition-colors ${INPUT}`}
+          />
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => sendMessage(input)}
+            disabled={!input.trim() || isLoading}
+            className="w-11 h-11 bg-green-500 hover:bg-green-400 disabled:opacity-40 text-white rounded-xl flex items-center justify-center transition-colors">
+            <Send size={16} />
+          </motion.button>
+        </div>
+      </div>
+    </div>
   );
 }
