@@ -102,7 +102,7 @@ export default function Sidebar({
           </div>
           <div className="flex-1 min-w-0">
             <p className={`text-xs font-bold truncate ${txt}`}>{username}</p>
-            <p className={`text-[10px] ${muted}`}>Level 12</p>
+            {/* <p className={`text-[10px] ${muted}`}>Level 12</p> */}
           </div>
           <button
             onClick={onLogout}

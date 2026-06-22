@@ -1,8 +1,9 @@
-import { motion } from 'framer-motion';
+import { useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     Home, CheckCircle, BarChart2, User,
     Trophy, Globe, Flame, Shield, Sun, Lock,
-    Pencil, Users, RefreshCw, Settings, Share2, Brain
+    Pencil, Settings, Share2, Brain
 } from 'lucide-react';
 
 interface ProfileSectionProps {
@@ -17,15 +18,79 @@ const NAV_ITEMS = [
     { id: 'profile', icon: User, label: 'Profile' },
 ];
 
-// Year of Growth heatmap — 4 rows x 16 cols (Jan–Apr)
-const MONTHS = ['JAN', 'FEB', 'MAR', 'APR'];
-const HEATMAP: number[][] = [
-    [0, 1, 2, 3, 4, 2, 1, 3, 4, 3, 2, 1, 2, 3, 4, 3],
-    [1, 2, 3, 4, 3, 2, 1, 0, 2, 4, 3, 2, 1, 2, 3, 4],
-    [2, 3, 4, 2, 1, 3, 4, 2, 0, 1, 2, 3, 4, 3, 2, 1],
-    [3, 4, 2, 1, 2, 3, 4, 3, 2, 1, 0, 2, 3, 4, 3, 2],
-];
+const HABITS_STORAGE_KEY = 'trackify:habits';
+const MONTHLY_PROGRESS_STORAGE_KEY = 'trackify:monthly-consistency';
+const HEATMAP_COLUMNS = 8;
+const MONTH_LABELS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
+type StoredHabit = {
+    id: string;
+    name: string;
+    completed: boolean;
+    streak: number;
+    targetTime?: string;
+};
+
+function getUserStorageKey(baseKey: string, username: string) {
+    const userKey = username.trim().toLowerCase() || 'user';
+    return `${baseKey}:${encodeURIComponent(userKey)}`;
+}
+
+function loadUserHabits(username: string): StoredHabit[] {
+    try {
+        const stored = localStorage.getItem(getUserStorageKey(HABITS_STORAGE_KEY, username));
+        const parsed = stored ? JSON.parse(stored) : [];
+        if (!Array.isArray(parsed)) return [];
+
+       return parsed.map((habit, index) => ({
+    id: String(habit.id || habit.name || `habit-${index}`),
+    name: String(habit.name || 'Untitled Habit'),
+    completed: Boolean(habit.completed),
+    streak: Number(habit.streak || 0),
+    targetTime: habit.targetTime || habit.time,
+}));
+    } catch {
+        return [];
+    }
+}
+
+function loadMonthlyProgress(username: string, daysInMonth: number): number[] {
+    try {
+        const stored = localStorage.getItem(getUserStorageKey(MONTHLY_PROGRESS_STORAGE_KEY, username));
+        const parsed = stored ? JSON.parse(stored) : [];
+        const progress = Array.isArray(parsed) ? parsed : [];
+
+        return Array.from({ length: daysInMonth }, (_, index) => {
+            const value = Number(progress[index]);
+            return Number.isFinite(value) ? Math.max(0, Math.min(100, Math.round(value))) : 0;
+        });
+    } catch {
+        return Array(daysInMonth).fill(0);
+    }
+}
+
+function progressToHeatValue(value: number) {
+    if (value <= 0) return 0;
+    if (value <= 25) return 1;
+    if (value <= 50) return 2;
+    if (value <= 75) return 3;
+    return 4;
+}
+
+function buildMonthlyHeatmap(monthProgress: number[]) {
+    return Array.from({ length: 4 }, (_, row) =>
+        Array.from({ length: HEATMAP_COLUMNS }, (_, column) => {
+            const dayIndex = row * HEATMAP_COLUMNS + column;
+            return dayIndex < monthProgress.length ? progressToHeatValue(monthProgress[dayIndex]) : 0;
+        })
+    );
+}
+
+function isMorningHabit(habit: StoredHabit) {
+    if (!habit.targetTime) return false;
+    const hour = Number(String(habit.targetTime).split(':')[0]);
+    return Number.isFinite(hour) && hour < 10;
+}
 const MINI_ACHIEVEMENTS = [
     { id: '1', label: '7-Day\nWarrior', icon: Shield, earned: true, color: 'text-green-400', bg: 'bg-green-500/15', border: 'border-green-500/25' },
     { id: '2', label: 'Early\nBird', icon: Sun, earned: true, color: 'text-amber-400', bg: 'bg-amber-500/15', border: 'border-amber-500/25' },
@@ -34,7 +99,50 @@ const MINI_ACHIEVEMENTS = [
 ];
 
 export default function ProfileSection({ isDarkMode, setActiveSection }: ProfileSectionProps) {
-    const username = localStorage.getItem('username') || 'Alex Rivera';
+    const username = localStorage.getItem('username') || 'User';
+
+
+    const [showEditProfile, setShowEditProfile] = useState(false);
+
+const [editedName, setEditedName] = useState(
+  localStorage.getItem('username') || 'User'
+);
+
+const handleSaveProfile = () => {
+  if (!editedName.trim()) return;
+
+  localStorage.setItem('username', editedName.trim());
+
+  setShowEditProfile(false);
+
+  window.location.reload();
+};
+    const today = new Date();
+    const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+    const monthLabel = MONTH_LABELS[today.getMonth()];
+    const firstName = username.split(' ')[0] || 'You';
+
+    const habits = useMemo(() => loadUserHabits(username), [username]);
+    const monthlyProgress = useMemo(() => loadMonthlyProgress(username, daysInMonth), [daysInMonth, username]);
+    const heatmap = useMemo(() => buildMonthlyHeatmap(monthlyProgress), [monthlyProgress]);
+
+    const completedToday = habits.filter((habit) => habit.completed).length;
+    const totalStreakDays = habits.reduce((sum, habit) => sum + habit.streak, 0);
+    const bestStreak = habits.reduce((max, habit) => Math.max(max, habit.streak), 0);
+    const activeDaysThisMonth = monthlyProgress.filter((value) => value > 0).length;
+    const averageConsistency = monthlyProgress.length
+        ? Math.round(monthlyProgress.reduce((sum, value) => sum + value, 0) / monthlyProgress.length)
+        : 0;
+    const totalXP = totalStreakDays * 25 + completedToday * 50 + activeDaysThisMonth * 20;
+    const level = Math.max(1, Math.floor(totalXP / 600) + 1);
+    const currentLevelXP = totalXP % 600;
+    const xpPercent = Math.min(100, Math.round((currentLevelXP / 600) * 100));
+    const morningHabitCount = habits.filter(isMorningHabit).length;
+    const morningHabitPercent = habits.length ? Math.round((morningHabitCount / habits.length) * 100) : 0;
+    const habitStyle = morningHabitPercent >= 60 ? 'Morning Enthusiast' : habits.length ? 'Balanced Builder' : 'Fresh Starter';
+    const habitStyleCopy = habits.length
+        ? `${firstName}, ${morningHabitPercent}% of your habits are scheduled before 10 AM. Your profile now reflects your saved habit routine.`
+        : `${firstName}, create and complete habits to unlock a richer personalized activity map.`;
 
     /* ── theme tokens ────────────────────────────────────────────────────── */
     const BG = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
@@ -121,7 +229,7 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                             </div>
                             {/* LVL badge */}
                             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-green-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-lg shadow-green-500/30 whitespace-nowrap">
-                                LVL 12
+                                LVL {level}
                             </div>
                         </div>
 
@@ -132,11 +240,11 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                         <div className="w-full max-w-xs mt-5">
                             <div className={`relative h-8 rounded-full overflow-hidden ${isDarkMode ? 'bg-white/10' : 'bg-gray-200'}`}>
                                 <motion.div
-                                    initial={{ width: 0 }} animate={{ width: '75%' }}
+                                    initial={{ width: 0 }} animate={{ width: `${xpPercent}%` }}
                                     transition={{ duration: 1.2, ease: 'easeOut', delay: 0.2 }}
                                     className="absolute inset-y-0 left-0 rounded-full bg-green-500" />
                                 <span className="absolute inset-0 flex items-center justify-center text-xs font-black text-white z-10">
-                                    450 / 600 XP
+                                    {currentLevelXP} / 600 XP
                                 </span>
                             </div>
                             <p className={`text-center text-[10px] font-black tracking-widest mt-1.5 ${MUTED}`}>
@@ -150,10 +258,10 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                         transition={{ delay: 0.1 }}
                         className="grid grid-cols-2 gap-3 mb-4">
                         {[
-                            { icon: Flame, label: 'Total Streak', value: '15 days', color: 'text-orange-400', bg: 'bg-orange-500/10' },
-                            { icon: CheckCircle, label: 'Completed', value: '128', color: 'text-green-400', bg: 'bg-green-500/10' },
-                            { icon: Trophy, label: 'Best Streak', value: '42 days', color: 'text-amber-400', bg: 'bg-amber-500/10' },
-                            { icon: Globe, label: 'Global Rank', value: '#1,402', color: 'text-blue-400', bg: 'bg-blue-500/10' },
+                            { icon: Flame, label: 'Total Streak', value: `${totalStreakDays} days`, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+                            { icon: CheckCircle, label: 'Today Done', value: `${completedToday}/${habits.length}`, color: 'text-green-400', bg: 'bg-green-500/10' },
+                            { icon: Trophy, label: 'Best Streak', value: `${bestStreak} days`, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+                            { icon: Globe, label: 'Month Avg', value: `${averageConsistency}%`, color: 'text-blue-400', bg: 'bg-blue-500/10' },
                         ].map(({ icon: Icon, label, value, color, bg }) => (
                             <div key={label} className={`border rounded-2xl p-4 ${HCARD}`}>
                                 <div className={`w-9 h-9 rounded-xl ${bg} flex items-center justify-center mb-3`}>
@@ -208,9 +316,9 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                             </div>
                             <h3 className={`text-sm font-black ${TXT}`}>Your Habit Style</h3>
                         </div>
-                        <p className={`text-base font-black mb-1 ${TXT}`}>Morning Enthusiast</p>
+                        <p className={`text-base font-black mb-1 ${TXT}`}>{habitStyle}</p>
                         <p className={`text-xs leading-relaxed ${MUTED}`}>
-                            {username.split(' ')[0]}, you're 84% more likely to complete habits before 10 AM. Your focus peaks early, and you thrive on structure.
+                            {habitStyleCopy}
                         </p>
                     </motion.div>
 
@@ -218,24 +326,30 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.25 }}
                         className={`border rounded-2xl p-5 mb-4 ${CARD}`}>
-                        <h3 className={`text-base font-black mb-4 ${TXT}`}>Year of Growth</h3>
+                        <div className="flex items-start justify-between gap-4 mb-4">
+                            <div>
+                                <h3 className={`text-base font-black ${TXT}`}>Your {monthLabel} Growth</h3>
+                                <p className={`text-xs mt-0.5 ${MUTED}`}>{firstName}'s saved completion activity</p>
+                            </div>
+                            <span className="text-xs font-black text-green-500">{averageConsistency}%</span>
+                        </div>
                         <div className="overflow-x-auto">
                             <div className="min-w-[280px]">
-                                {HEATMAP.map((row, ri) => (
+                                {heatmap.map((row, ri) => (
                                     <div key={ri} className="flex gap-1.5 mb-1.5">
                                         {row.map((v, ci) => (
                                             <motion.div key={ci}
                                                 initial={{ opacity: 0, scale: 0.5 }}
                                                 animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ delay: 0.008 * (ri * 16 + ci), type: 'spring', stiffness: 300 }}
+                                                transition={{ delay: 0.008 * (ri * HEATMAP_COLUMNS + ci), type: 'spring', stiffness: 300 }}
                                                 className={`flex-1 aspect-square rounded-sm ${heatColor(v)}`} />
                                         ))}
                                     </div>
                                 ))}
                                 {/* Month labels */}
                                 <div className="flex mt-2">
-                                    {MONTHS.map(m => (
-                                        <div key={m} className={`flex-1 text-[9px] font-black tracking-wider ${MUTED}`}>{m}</div>
+                                    {['W1', 'W2', 'W3', 'W4'].map((week) => (
+                                        <div key={week} className={`flex-1 text-[9px] font-black tracking-wider ${MUTED}`}>{week}</div>
                                     ))}
                                 </div>
                             </div>
@@ -246,7 +360,7 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
                         className="flex flex-col gap-3">
-                        <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
+                        <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} onClick={() => setShowEditProfile(true)}
                             className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl font-black text-sm transition-all
                 ${isDarkMode
                                     ? 'bg-[#1c1c1c] border border-white/5 text-white hover:border-white/10'
@@ -259,7 +373,7 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                         </motion.button>
 
                         {/* Friends + Sync Data */}
-                        <div className="grid grid-cols-2 gap-3">
+                        {/* <div className="grid grid-cols-2 gap-3">
                             {[
                                 { icon: Users, label: 'Friends', color: 'text-green-400' },
                                 { icon: RefreshCw, label: 'Sync Data', color: 'text-green-400' },
@@ -271,12 +385,62 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                                     <span className={TXT}>{label}</span>
                                 </motion.button>
                             ))}
-                        </div>
+                        </div> */}
                     </motion.div>
 
                 </div>
             </div>
 
+
+<AnimatePresence>
+  {showEditProfile && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+    >
+      <motion.div
+        initial={{ scale: 0.9 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0.9 }}
+        className={`w-[90%] max-w-md rounded-2xl p-6 ${
+          isDarkMode ? 'bg-[#161616]' : 'bg-white'
+        }`}
+      >
+        <h2 className={`text-xl font-black mb-4 ${TXT}`}>
+          Edit Profile
+        </h2>
+
+        <input
+          value={editedName}
+          onChange={(e) => setEditedName(e.target.value)}
+          className={`w-full px-4 py-3 rounded-xl border ${
+            isDarkMode
+              ? 'bg-[#1f1f1f] border-white/10 text-white'
+              : 'bg-gray-50 border-gray-200'
+          }`}
+        />
+
+        <div className="flex justify-end gap-3 mt-4">
+          <button
+            onClick={() => setShowEditProfile(false)}
+            className="px-4 py-2 rounded-xl bg-gray-500 text-white"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={handleSaveProfile}
+            className="px-4 py-2 rounded-xl bg-green-500 text-white"
+          >
+            Save
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
             {/* ═══ MOBILE NAV ═════════════════════════════════════════════════════ */}
             <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 md:hidden">
                 <div className={`flex items-center gap-1 px-3 py-2 rounded-full shadow-2xl border
