@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, X, Bot, User, Sparkles, Zap, BarChart2 } from 'lucide-react';
+import { Send, Bot, User, Sparkles, Zap, BarChart2, Minimize2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 interface Message {
@@ -22,6 +22,7 @@ interface AIChatProps {
 }
 
 export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'ai',
@@ -127,7 +128,19 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
   };
 
   return (
-    <div className={`flex flex-col ${BG} transition-colors duration-300 rounded-2xl border ${CARD} overflow-hidden`} style={{ height: '550px' }}>
+    <div className="pointer-events-none fixed bottom-20 right-4 z-[60] md:bottom-6 md:right-6">
+      <AnimatePresence mode="wait">
+        {isOpen ? (
+          <motion.section
+            key="chat-panel"
+            role="dialog"
+            aria-label="Trackify AI chat"
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: 20 }}
+            transition={{ type: 'spring', stiffness: 360, damping: 30 }}
+            className={`pointer-events-auto flex h-[min(600px,calc(100vh-7rem))] w-[calc(100vw-2rem)] max-w-[400px] flex-col overflow-hidden rounded-2xl border shadow-2xl ${BG} ${CARD}`}
+          >
 
       {/* Header */}
       <div className={`flex items-center gap-3 px-5 py-4 border-b ${CARD}`}>
@@ -138,9 +151,22 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
           <h1 className={`text-base font-black ${TXT}`}>Trackify AI</h1>
           <p className={`text-xs ${MUTED}`}>Your personal habit coach</p>
         </div>
-        <div className="ml-auto flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span className={`text-xs font-medium ${MUTED}`}>Online</span>
+        <div className="ml-auto flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span className={`hidden text-xs font-medium sm:inline ${MUTED}`}>Online</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            aria-label="Minimize chatbot"
+            title="Minimize chatbot"
+            className={`flex h-9 w-9 items-center justify-center rounded-xl transition-colors ${
+              isDarkMode ? 'text-gray-400 hover:bg-white/10 hover:text-white' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
+            }`}
+          >
+            <Minimize2 size={17} />
+          </button>
         </div>
       </div>
 
@@ -152,7 +178,7 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
           <Sparkles size={11} />
           Motivate me
         </button>
-        <button onClick={handleAnalyze}
+        <button onClick={() => sendMessage("What are the best ways to track my habits?")}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all
             ${isDarkMode ? 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/20' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'}`}>
           <BarChart2 size={11} />
@@ -252,6 +278,26 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
           </motion.button>
         </div>
       </div>
+          </motion.section>
+        ) : (
+          <motion.button
+            key="chat-launcher"
+            type="button"
+            onClick={() => setIsOpen(true)}
+            aria-label="Open Trackify AI chatbot"
+            title="Open Trackify AI"
+            initial={{ opacity: 0, scale: 0.75 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.75 }}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.94 }}
+            className="pointer-events-auto relative flex h-14 w-14 items-center justify-center rounded-full border border-green-300/40 bg-green-500 text-white shadow-[0_12px_35px_rgba(34,197,94,0.4)] transition-colors hover:bg-green-400 md:h-16 md:w-16"
+          >
+            <Bot size={27} />
+            <span className="absolute right-0 top-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-emerald-300" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

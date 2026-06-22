@@ -164,6 +164,7 @@ async def chat(req: ChatRequest):
                 f"- {h.get('name', 'Unknown')} (streak: {h.get('streak', 0)} days, completed: {h.get('completed', False)})"
                 for h in req.habits
             ])
+        full_prompt = f"{SYSTEM_PROMPT}\n\n{context}\n\nUser: {message}\n\nTrackify AI:"    
 
         model = genai.GenerativeModel(
             model_name="gemini-1.5-pro",
@@ -172,11 +173,14 @@ async def chat(req: ChatRequest):
                 top_p=0.95,
                 max_output_tokens=300,
             ),
-            system_instruction=SYSTEM_PROMPT
+            # system_instruction=SYSTEM_PROMPT
         )
-        user_message = req.message + context
-        response = model.generate_content(user_message)
+        response = model.generate_content(full_prompt)
         return ChatResponse(reply=response.text)
+   
+        # user_message = req.message + context
+        # response = model.generate_content(user_message)
+        # return ChatResponse(reply=response.text)
 
     except Exception as e:
         print(f"Gemini error: {e}")
@@ -205,6 +209,8 @@ async def motivate(req: MotivateRequest):
                 for h in req.habits
             ])
 
+        full_prompt = f"{SYSTEM_PROMPT}\n\n{context}\n\nUser: {message}\n\nTrackify AI:"        
+
         model = genai.GenerativeModel(
             model_name="gemini-1.5-pro",
             generation_config=genai.types.GenerationConfig(
@@ -212,11 +218,13 @@ async def motivate(req: MotivateRequest):
                 top_p=0.95,
                 max_output_tokens=300,
             ),
-            system_instruction=SYSTEM_PROMPT
+            # system_instruction=SYSTEM_PROMPT
         )
-        user_message = message + context
-        response = model.generate_content(user_message)
+        response = model.generate_content(full_prompt)
         return ChatResponse(reply=response.text)
+   
+        # response = model.generate_content(user_message)
+        # return ChatResponse(reply=response.text)
 
     except Exception as e:
         print(f"Gemini error: {e}")
@@ -235,6 +243,7 @@ async def analyze(req: MotivateRequest):
                 f"- {h.get('name', 'Unknown')} (streak: {h.get('streak', 0)} days, completed: {h.get('completed', False)})"
                 for h in req.habits
             ])
+        full_prompt = f"{SYSTEM_PROMPT}\n\n{context}\n\nUser: {message}\n\nTrackify AI:"
 
         model = genai.GenerativeModel(
             model_name="gemini-1.5-pro",
@@ -243,11 +252,13 @@ async def analyze(req: MotivateRequest):
                 top_p=0.95,
                 max_output_tokens=400,
             ),
-            system_instruction=SYSTEM_PROMPT
+            # system_instruction=SYSTEM_PROMPT
         )
-        user_message = "Analyze my habit patterns and give me 2-3 specific actionable insights." + context
-        response = model.generate_content(user_message)
+        response = model.generate_content(full_prompt)
         return ChatResponse(reply=response.text)
+        # user_message = "Analyze my habit patterns and give me 2-3 specific actionable insights." + context
+        # response = model.generate_content(user_message)
+        # return ChatResponse(reply=response.text)
 
     except Exception as e:
         print(f"Gemini error: {e}")

@@ -2,6 +2,15 @@ const { Router } = require("express");
 
 const router = Router();
 
+const SYSTEM_INSTRUCTION = [
+  "You are Trackify AI, a friendly and knowledgeable personal habit coach.",
+  "Answer the user's question directly without repeating or quoting it.",
+  "Be conversational, warm, encouraging, and specific.",
+  "Keep most answers under 120 words and use emojis only occasionally.",
+  "Use habit data when it is available. If it is not available, simply answer the question without mentioning missing data.",
+  "You may also answer questions unrelated to habits like a friendly general assistant."
+].join("\n");
+
 function normalizeHabits(habits) {
   if (!Array.isArray(habits)) return [];
 
@@ -17,7 +26,7 @@ function normalizeHabits(habits) {
 }
 
 function summarizeHabits(habits) {
-  if (!habits.length) return "No habit data was provided.";
+  if (!habits.length) return "No current habits are available for personalization.";
 
   const completed = habits.filter((habit) => habit.completed).length;
   const bestStreak = habits.reduce((max, habit) => Math.max(max, habit.streak), 0);
@@ -27,7 +36,8 @@ function summarizeHabits(habits) {
 }
 
 function fallbackReply(kind, message, habits) {
-  const summary = summarizeHabits(habits);
+  const hasHabits = habits.length > 0;
+  const summary = hasHabits ? ` ${summarizeHabits(habits)}` : "";
 
   if (kind === "motivate") {
     return `You are building proof that you can keep promises to yourself. Pick the smallest next action, do it now, and let the streak take care of itself. ${summary}`;
@@ -37,7 +47,7 @@ function fallbackReply(kind, message, habits) {
     return `Habit snapshot: ${summary} Look for the habit with the lowest streak and make it easier: reduce the target, attach it to an existing routine, and track it immediately after doing it.`;
   }
 
-  return `Here is a practical habit-coach take: ${message ? `"${message}" starts with one tiny repeatable action.` : "start tiny and repeat consistently."} Make the next step obvious, less than two minutes, and tied to a cue you already have. ${summary}`;
+  return `Start with one tiny, repeatable action. Make it take less than two minutes, attach it to a cue already in your day, and track it immediately after you finish. Once that feels automatic, increase the difficulty gradually.${summary}`;
 }
 
 async function generateAiReply(prompt) {
@@ -48,7 +58,12 @@ async function generateAiReply(prompt) {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: prompt
+      contents: prompt,
+      config: {
+        systemInstruction: SYSTEM_INSTRUCTION,
+        temperature: 0.8,
+        maxOutputTokens: 300
+      }
     });
 
     return response.text || null;
@@ -64,11 +79,9 @@ async function reply(req, res, kind) {
   const habits = normalizeHabits(req.body?.habits);
   const summary = summarizeHabits(habits);
   const prompt = [
-    "You are Trackify AI, a concise and encouraging habit coach.",
-    "Give specific, actionable advice. Keep the response under 120 words.",
-    `User message: ${message || "No direct message."}`,
-    `Habit summary: ${summary}`,
-    `Request type: ${kind}.`
+    `Request type: ${kind}`,
+    `Habit context: ${summary}`,
+    `User: ${message || (kind === "motivate" ? "Motivate me." : "Analyze my habits.")}`
   ].join("\n");
 
 /**
