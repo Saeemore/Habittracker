@@ -1,20 +1,12 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, Home, CheckCircle, BarChart2, User, Brain, TrendingUp, Trophy, X, CalendarDays, Activity, Eye } from 'lucide-react';
+import { Flame, Home, CheckCircle, BarChart2, User, Brain, X, CalendarDays, Activity, Eye } from 'lucide-react';
+import { getDisplayUsername, loadStoredHabits, saveStoredHabits, type StoredHabit } from '../storage';
 
 interface DashboardProps {
   isDarkMode: boolean;
   setActiveSection: (section: string) => void;
 }
-
-const HERO_PICKS = [
-  { id: '1', label: 'ZEN ZONE', title: '5-min Morning Calm', icon: '🧘', lightGrad: 'from-amber-50 to-yellow-100', darkBg: 'bg-amber-950/40', lightBorder: 'border-yellow-200', darkBorder: 'border-yellow-800/60', labelColor: 'text-yellow-500' },
-  { id: '2', label: 'BOOK WORM', title: 'Atomic Habits: Ch. 4', icon: '📖', lightGrad: 'from-violet-50 to-purple-100', darkBg: 'bg-violet-950/40', lightBorder: 'border-purple-200', darkBorder: 'border-purple-800/60', labelColor: 'text-purple-500' },
-  { id: '3', label: 'EARLY BIRD', title: 'Sleep by 10:00 PM', icon: '🌙', lightGrad: 'from-sky-50 to-cyan-100', darkBg: 'bg-sky-950/40', lightBorder: 'border-cyan-200', darkBorder: 'border-cyan-800/60', labelColor: 'text-cyan-500' },
-];
-
-const DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-const WEEK_PROGRESS = [true, true, true, true, true, false, false];
 
 type DashboardHabit = {
   id: string;
@@ -26,51 +18,32 @@ type DashboardHabit = {
   completedToday: boolean;
 };
 
-const HABITS_STORAGE_KEY = 'trackify:habits';
-
-const DEFAULT_HABITS: DashboardHabit[] = [
-  { id: 'reading', name: 'Reading', category: 'Learning', target: '30 mins', time: '08:00 PM', streak: 14, completedToday: true },
-  { id: 'meditation', name: 'Morning Meditation', category: 'Wellness', target: '10 mins', time: '06:30 AM', streak: 7, completedToday: true },
-  { id: 'workout', name: 'Workout', category: 'Fitness', target: '45 mins', time: '07:00 AM', streak: 5, completedToday: false },
-  { id: 'journal', name: 'Journaling', category: 'Mindfulness', target: '1 page', time: '09:30 PM', streak: 3, completedToday: false },
-];
-
 function loadDashboardHabits(): DashboardHabit[] {
-  try {
-    const stored = localStorage.getItem(HABITS_STORAGE_KEY);
-    if (!stored) return DEFAULT_HABITS;
-
-    const parsed = JSON.parse(stored);
-    if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_HABITS;
-
-    return parsed.map((habit) => ({
-      id: String(habit.id),
-      name: String(habit.name || 'Untitled Habit'),
-      category: String(habit.category || 'Other'),
-      target: String(habit.endGoal || habit.target || 'Daily goal'),
-      time: String(habit.targetTime || habit.time || 'Any time'),
-      streak: Number(habit.streak || 0),
-      completedToday: Boolean(habit.completed),
-    }));
-  } catch {
-    return DEFAULT_HABITS;
-  }
+  return loadStoredHabits().map((habit) => ({
+    id: habit.id,
+    name: habit.name,
+    category: habit.category,
+    target: habit.endGoal,
+    time: habit.targetTime,
+    streak: habit.streak,
+    completedToday: habit.completed,
+  }));
 }
 
 const MONTH_PROGRESS = [100, 75, 100, 50, 75, 100, 25, 75, 100, 100, 50, 75, 75, 100, 50, 25, 75, 100, 75, 50, 100, 75, 0, 50, 75, 100, 100, 50, 75, 100];
 const MONTH_DAYS = Array.from({ length: 30 }, (_, index) => index + 1);
 
 const NAV_ITEMS = [
-  { id: 'home', icon: Home, label: 'Home' },
+  { id: 'dashboard', icon: Home, label: 'Home' },
   { id: 'habits', icon: CheckCircle, label: 'Habits' },
-  { id: 'stats', icon: BarChart2, label: 'Stats' },
+  { id: 'progress', icon: BarChart2, label: 'Stats' },
   { id: 'profile', icon: User, label: 'Profile' },
 ];
 
 export default function Dashboard({ isDarkMode, setActiveSection }: DashboardProps) {
-  const username = localStorage.getItem('username') || 'User';
+  const username = getDisplayUsername();
   const [bannerVisible, setBannerVisible] = useState(true);
-  const [activeNav, setActiveNav] = useState('home');
+  const [activeNav, setActiveNav] = useState('dashboard');
   const [dashboardHabits, setDashboardHabits] = useState<DashboardHabit[]>(loadDashboardHabits);
   const [checkedHabits, setCheckedHabits] = useState<Record<string, boolean>>(
     () => Object.fromEntries(loadDashboardHabits().map(habit => [habit.id, habit.completedToday]))
@@ -94,24 +67,28 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
         category: habit.category,
         streak: habit.streak,
       }));
-      localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(syncedHabits));
+      saveStoredHabits(syncedHabits as StoredHabit[]);
       return next;
     });
   };
 
-  const level = 12, currentXP = 1200, maxXP = 1500, streakDays = 15;
-  const xpPercent = (currentXP / maxXP) * 100;
-  const completedDays = WEEK_PROGRESS.filter(Boolean).length;
-  const progressPercent = Math.round((completedDays / 7) * 100);
+  const currentXP = dashboardHabits.reduce((sum, habit) => sum + habit.streak * 25 + (checkedHabits[habit.id] ? 50 : 0), 0);
+  const level = Math.max(1, Math.floor(currentXP / 300) + 1);
+  const currentLevelXP = currentXP % 300;
+  const maxXP = 300;
+  const streakDays = dashboardHabits.length ? Math.max(...dashboardHabits.map(habit => habit.streak)) : 0;
+  const xpPercent = dashboardHabits.length ? (currentLevelXP / maxXP) * 100 : 0;
   const completedToday = Object.values(checkedHabits).filter(Boolean).length;
-  const todayProgress = Math.round((completedToday / dashboardHabits.length) * 100);
+  const todayProgress = dashboardHabits.length ? Math.round((completedToday / dashboardHabits.length) * 100) : 0;
   const monthlyAverage = Math.round(MONTH_PROGRESS.reduce((sum, value) => sum + value, 0) / MONTH_PROGRESS.length);
   const previousWeekAverage = Math.round(MONTH_PROGRESS.slice(15, 22).reduce((sum, value) => sum + value, 0) / 7);
   const currentWeekAverage = Math.round(MONTH_PROGRESS.slice(23).reduce((sum, value) => sum + value, 0) / 7);
   const consistencyTrend = currentWeekAverage - previousWeekAverage;
   const missedHabits = dashboardHabits.filter(habit => !checkedHabits[habit.id]);
   const topMissedHabit = missedHabits[0];
-  const aiAdvice = topMissedHabit
+  const aiAdvice = !dashboardHabits.length
+    ? 'Start by creating your first habit. Once you have a routine, this dashboard will coach you with real progress.'
+    : topMissedHabit
     ? `I noticed ${topMissedHabit.name} is still open. Finish this one today to protect your consistency.`
     : 'I see every habit marked today. Keep tomorrow light, but do not break the chain.';
 
@@ -181,7 +158,7 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
                       transition={{ duration: 1.2, ease: 'easeOut' }}
                       className="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500" />
                   </div>
-                  <span className={`text-sm flex-shrink-0 font-semibold ${muted}`}>{currentXP} / {maxXP} XP</span>
+                    <span className={`text-sm flex-shrink-0 font-semibold ${muted}`}>{currentLevelXP} / {maxXP} XP</span>
                 </div>
               </div>
             </div>
@@ -233,8 +210,6 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
             )}
           </AnimatePresence>
 
-          ── Two-column layout on lg+, single column on mobile ───────────
-         
 
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
@@ -260,7 +235,18 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
               </div>
 
               <div className="space-y-3">
-                {dashboardHabits.map((habit, index) => {
+                {!dashboardHabits.length ? (
+                  <div className={`rounded-xl border p-5 text-center ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-gray-50 border-gray-100'}`}>
+                    <p className={`text-sm font-black ${txt}`}>No habits yet</p>
+                    <p className={`text-xs mt-1 ${muted}`}>Create your first habit to start tracking progress from zero.</p>
+                    <button
+                      onClick={() => setActiveSection('habits')}
+                      className="mt-4 rounded-xl bg-green-500 px-4 py-2 text-sm font-black text-white transition-colors hover:bg-green-400"
+                    >
+                      Create your first habit
+                    </button>
+                  </div>
+                ) : dashboardHabits.map((habit, index) => {
                   const done = checkedHabits[habit.id];
                   return (
                     <motion.button

@@ -5,7 +5,9 @@ const UserSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true, index: true },
     username: { type: String, required: true, unique: true, index: true },
     passwordHash: { type: String, required: true },
-    refreshTokenHashes: { type: [String], required: true, default: [] }
+    refreshTokenHashes: { type: [String], required: true, default: [] },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date }
   },
   { timestamps: true }
 );

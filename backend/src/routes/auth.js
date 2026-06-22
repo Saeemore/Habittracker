@@ -62,8 +62,23 @@ const { Router } = require("express");
 const { asyncHandler } = require("../utils/asyncHandler");
 const { validate } = require("../middleware/validate");
 const { requireAuth } = require("../middleware/auth");
-const { RegisterBodySchema, LoginBodySchema } = require("../validators/authSchemas");
-const { register, login, refresh, logout, me } = require("../controllers/authController");
+const {
+  RegisterBodySchema,
+  LoginBodySchema,
+  ForgotPasswordSchema,
+  ResetPasswordSchema,
+  UpdateProfileSchema
+} = require("../validators/authSchemas");
+const {
+  register,
+  login,
+  refresh,
+  logout,
+  me,
+  forgotPassword,
+  resetPassword,
+  updateProfile
+} = require("../controllers/authController");
 
 const router = Router();
 
@@ -72,5 +87,8 @@ router.post("/login", validate({ body: LoginBodySchema }), asyncHandler(login));
 router.post("/refresh", asyncHandler(refresh));
 router.post("/logout", asyncHandler(logout));
 router.get("/me", requireAuth, asyncHandler(me));
+router.post("/forgot-password", validate({ body: ForgotPasswordSchema }), asyncHandler(forgotPassword));
+router.post("/reset-password", validate({ body: ResetPasswordSchema }), asyncHandler(resetPassword));
+router.put("/profile", requireAuth, validate({ body: UpdateProfileSchema }), asyncHandler(updateProfile));
 
 module.exports = router;

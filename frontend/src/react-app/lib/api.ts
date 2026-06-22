@@ -21,12 +21,42 @@ export class ApiError extends Error {
 }
 
 export function getAccessToken(): string | null {
-  return localStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken");
+  if (token === "null" || token === "undefined") {
+    return null;
+  }
+  return token;
 }
 
 export function setAccessToken(token: string | null) {
   if (!token) localStorage.removeItem("accessToken");
   else localStorage.setItem("accessToken", token);
+}
+
+export function isTokenExpired(token: string): boolean {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return true;
+    const payloadB64 = parts[1];
+    if (!payloadB64) return true;
+
+    const base64 = payloadB64.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      window
+        .atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+
+    const { exp } = JSON.parse(jsonPayload) as { exp?: number };
+    if (!exp) return false;
+
+    // Return true if expired (with a 10s clock skew buffer)
+    return Date.now() >= exp * 1000 - 10000;
+  } catch {
+    return true;
+  }
 }
 
 function normalizePath(path: string) {

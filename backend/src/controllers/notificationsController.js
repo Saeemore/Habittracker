@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const { AppError } = require("../middleware/error");
 const { NotificationEventModel } = require("../models/NotificationEvent");
+const { notifySyncComplete } = require("../services/notificationService");
 
 async function listNotifications(req, res) {
   if (!req.user) throw new AppError("Unauthorized", 401, "UNAUTHORIZED");
@@ -26,4 +27,29 @@ async function dismissNotification(req, res) {
   res.json({ notification });
 }
 
-module.exports = { listNotifications, dismissNotification };
+async function dismissAll(req, res) {
+  if (!req.user) throw new AppError("Unauthorized", 401, "UNAUTHORIZED");
+  await NotificationEventModel.updateMany(
+    { userId: req.user.id, status: { $ne: "dismissed" } },
+    { $set: { status: "dismissed" } }
+  );
+  res.json({ ok: true });
+}
+
+async function getUnreadCount(req, res) {
+  if (!req.user) throw new AppError("Unauthorized", 401, "UNAUTHORIZED");
+  const count = await NotificationEventModel.countDocuments({
+    userId: req.user.id,
+    status: { $ne: "dismissed" }
+  });
+  res.json({ count });
+}
+
+async function createSyncNotification(req, res) {
+  if (!req.user) throw new AppError("Unauthorized", 401, "UNAUTHORIZED");
+  const { uploadCount = 0, downloadCount = 0 } = req.body;
+  await notifySyncComplete(req.user.id, uploadCount, downloadCount);
+  res.json({ ok: true });
+}
+
+module.exports = { listNotifications, dismissNotification, dismissAll, getUnreadCount, createSyncNotification };

@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Check, Clock, Target, Heart, Zap, X, Home, CheckCircle, BarChart2, User, Flame } from 'lucide-react';
 import CelebrationModal from './CelebrationModal';
-import { predictAllHabits } from '../api';
+import { predictAllHabits, apiFetch } from '../api';
+import { loadStoredHabits, saveStoredHabits, type StoredHabit } from '../storage';
 
 interface HabitsSectionProps {
   isDarkMode: boolean;
@@ -30,11 +31,23 @@ const FORM_STEPS = [
 ];
 
 const NAV_ITEMS = [
-  { id: 'home', icon: Home, label: 'Home' },
+  { id: 'dashboard', icon: Home, label: 'Home' },
   { id: 'habits', icon: CheckCircle, label: 'Habits' },
-  { id: 'stats', icon: BarChart2, label: 'Stats' },
+  { id: 'progress', icon: BarChart2, label: 'Stats' },
   { id: 'profile', icon: User, label: 'Profile' },
 ];
+
+type Habit = StoredHabit;
+
+type HabitPrediction = {
+  habit_name: string;
+  completion_probability: number;
+  risk_level: string;
+};
+
+function loadHabits(): Habit[] {
+  return loadStoredHabits();
+}
 
 export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSectionProps) {
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -45,37 +58,44 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
   const [activeFilter, setActiveFilter] = useState('All');
   const [formData, setFormData] = useState({ name: '', why: '', endGoal: '', targetTime: '', category: '' });
 
-  const [habits, setHabits] = useState<
-    { id: string; name: string; endGoal: string; targetTime: string; completed: boolean; category: string; streak: number }[]
-  >([]);
-
-  // ── NEW: predictions state ──────────────────────────────────────────────
-  const [predictions, setPredictions] = useState<Record<string, any>>({});
+  const [habits, setHabits] = useState<Habit[]>(loadHabits);
+  const [predictions, setPredictions] = useState<Record<string, HabitPrediction>>({});
 
   // ── NEW: save habits to localStorage whenever they change ───────────────
   useEffect(() => {
-    if (!habits.length) return;
-    predictAllHabits(
-      habits.map((h) => ({ habit_name: h.name, streak_count: h.streak ?? 0 }))
-    )
-      .then((results) => {
-        const map: Record<string, any> = {};
-        results.forEach((r: any) => { map[r.habit_name] = r; });
-        setPredictions(map);
-      })
-      .catch(console.error);
+    saveStoredHabits(habits);
   }, [habits]);
 
   // ── NEW: fetch ML predictions whenever habits list changes ──────────────
   useEffect(() => {
-    if (!habits.length) return;
+    if (!habits.length) {
+      setPredictions({});
+      return;
+    }
+
+    let cancelled = false;
+
     predictAllHabits(
-      habits.map((h) => ({ habit_name: h.name, streak_count: h.streak ?? 0 }))
-    ).then((results) => {
-      const map: Record<string, any> = {};
-      results.forEach((r: any) => { map[r.habit_name] = r; });
-      setPredictions(map);
-    }).catch(console.error);
+      habits.map((habit) => ({ habit_name: habit.name, streak_count: habit.streak ?? 0 }))
+    )
+      .then((results) => {
+        if (cancelled || !Array.isArray(results)) return;
+
+        const nextPredictions: Record<string, HabitPrediction> = {};
+        results.forEach((result: HabitPrediction) => {
+          nextPredictions[result.habit_name] = result;
+        });
+        setPredictions(nextPredictions);
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          console.error(error);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [habits]);
 
   const BG    = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
@@ -118,8 +138,19 @@ export default function HabitsSection({ isDarkMode, setActiveSection }: HabitsSe
 
   const toggleHabit = (id: string, name: string) => {
     const h = habits.find(h => h.id === id);
-    if (h && !h.completed) { setCelebratedHabit(name); setShowCelebration(true); }
+    const willComplete = h && !h.completed;
+    if (willComplete) { setCelebratedHabit(name); setShowCelebration(true); }
     setHabits(prev => prev.map(h => h.id === id ? { ...h, completed: !h.completed } : h));
+
+    // Fire-and-forget checkin API call so backend can create notifications
+    const today = new Date().toISOString().split('T')[0];
+    const isMongoId = /^[0-9a-fA-F]{24}$/.test(id);
+    if (isMongoId) {
+      apiFetch(`/habits/${id}/checkins`, {
+        method: 'POST',
+        body: JSON.stringify({ date: today, completed: !!willComplete, note: '' })
+      }).catch(() => { /* ignore */ });
+    }
   };
 
   return (

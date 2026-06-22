@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { AppError } = require("../middleware/error");
 const { HabitModel } = require("../models/Habit");
 const { HabitCheckinModel } = require("../models/HabitCheckin");
+const { notifyHabitCompleted, notifyStreakMilestone } = require("../services/notificationService");
 
 function dateToDayNumber(date) {
   const [y, m, d] = date.split("-").map((n) => Number(n));
@@ -65,6 +66,12 @@ async function upsertCheckin(req, res) {
   habit.longestStreak = longest;
   habit.lastCheckinDate = lastDate;
   await habit.save();
+
+  // Fire-and-forget notifications for habit completion & streak milestones
+  if (completed) {
+    notifyHabitCompleted(req.user.id, habitId, habit.name);
+    notifyStreakMilestone(req.user.id, habitId, habit.name, current);
+  }
 
   res.status(201).json({ checkin, habit });
 }

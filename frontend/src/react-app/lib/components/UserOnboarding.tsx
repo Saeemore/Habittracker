@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sun, Target, Zap, AlertCircle, Clock, Flame, Star, FileText, ArrowRight, Check
 } from 'lucide-react';
+import { setOnboardingComplete, setOnboardingData } from '../storage';
 
 interface UserOnboardingProps {
   onComplete: () => void;
@@ -115,8 +116,8 @@ export default function UserOnboarding({ onComplete, isDarkMode = false }: UserO
     if (step < totalSteps - 1) {
       setStep(s => s + 1);
     } else {
-      localStorage.setItem('onboardingComplete', 'true');
-      localStorage.setItem('onboardingData', JSON.stringify(answers));
+      setOnboardingComplete(true);
+      setOnboardingData(answers);
       onComplete();
     }
   };

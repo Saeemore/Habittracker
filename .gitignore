@@ -1,3 +1,6 @@
 backend/.env
 ml_integration/.env
 ml_integration/.env
+backend/.env.example
+backend/.env
+password_reset_log.txt

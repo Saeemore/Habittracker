@@ -62,6 +62,8 @@ services:
       - /app/node_modules
     depends_on:
       - backend
+    environment:
+      - BACKEND_URL=http://backend:4000
     networks:
       - trackify-network      
 

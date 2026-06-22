@@ -1,10 +1,13 @@
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const path = require("path");
 
 const { env } = require("../config/env");
 const { UserModel } = require("../models/User");
 const { AppError } = require("../middleware/error");
+const { notifyProfileUpdated, notifyPasswordChanged, notifyWelcome } = require("../services/notificationService");
 
 function sha256(value) {
   return crypto.createHash("sha256").update(value).digest("hex");
@@ -50,6 +53,10 @@ async function register(req, res) {
   await user.save();
 
   setRefreshCookie(res, refreshToken);
+
+  // Welcome notification (fire-and-forget)
+  notifyWelcome(String(user._id), user.username);
+
   res.status(201).json({
     accessToken,
     user: { id: String(user._id), email: user.email, username: user.username }
@@ -142,4 +149,101 @@ async function me(req, res) {
   res.json({ user: { id: String(user._id), email: user.email, username: user.username } });
 }
 
-module.exports = { register, login, refresh, logout, me };
+async function forgotPassword(req, res) {
+  const { email } = req.body;
+  const user = await UserModel.findOne({ email });
+  if (!user) throw new AppError("No account found with this email", 404, "NOT_FOUND");
+
+  // Generate a 6-digit random code
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+  // Save the code and expiry (15 mins)
+  user.resetPasswordToken = code;
+  user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+  await user.save();
+
+  // Log code to terminal
+  console.log("==========================================");
+  console.log(`[MAIL MOCK] Password reset code for ${user.email}: ${code}`);
+  console.log("==========================================");
+
+  // Write code to log file in workspace
+  try {
+    const logPath = path.join(__dirname, "../../../password_reset_log.txt");
+    const logContent = `[${new Date().toISOString()}] Password reset code for ${user.email} (${user.username}): ${code}\n`;
+    fs.appendFileSync(logPath, logContent, "utf8");
+  } catch (err) {
+    console.error("Failed to write password reset log file:", err);
+  }
+
+  res.json({ ok: true, message: "Verification code sent to your email." });
+}
+
+async function resetPassword(req, res) {
+  const { email, code, password } = req.body;
+
+  const user = await UserModel.findOne({
+    email,
+    resetPasswordToken: code,
+    resetPasswordExpires: { $gt: Date.now() }
+  });
+
+  if (!user) throw new AppError("Invalid or expired verification code", 400, "BAD_REQUEST");
+
+  // Update password and clear reset fields
+  const passwordHash = await bcrypt.hash(password, 10);
+  user.passwordHash = passwordHash;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  user.refreshTokenHashes = []; // clear sessions for security
+  await user.save();
+
+  // Notify password changed (fire-and-forget)
+  notifyPasswordChanged(String(user._id));
+
+  res.json({ ok: true, message: "Password has been reset successfully." });
+}
+
+async function updateProfile(req, res) {
+  if (!req.user) throw new AppError("Unauthorized", 401, "UNAUTHORIZED");
+  const { username, email } = req.body;
+
+  // Check if email or username is already taken by another user
+  const existing = await UserModel.findOne({
+    _id: { $ne: req.user.id },
+    $or: [{ username }, { email }]
+  });
+
+  if (existing) {
+    throw new AppError("Username or email already in use by another account", 409, "CONFLICT");
+  }
+
+  const user = await UserModel.findById(req.user.id);
+  if (!user) throw new AppError("User not found", 404, "NOT_FOUND");
+
+  user.username = username;
+  user.email = email;
+  await user.save();
+
+  // Notify profile updated (fire-and-forget)
+  notifyProfileUpdated(String(user._id));
+
+  res.json({
+    user: {
+      id: String(user._id),
+      email: user.email,
+      username: user.username
+    }
+  });
+}
+
+module.exports = {
+  register,
+  login,
+  refresh,
+  logout,
+  me,
+  forgotPassword,
+  resetPassword,
+  updateProfile
+};

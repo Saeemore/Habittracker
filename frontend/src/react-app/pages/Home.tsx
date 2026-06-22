@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import Sidebar from '../lib/components/Sidebar';
+import { loadStoredHabits, getSessionUser, type SessionUser } from '../lib/storage';
 import Dashboard from '../lib/components/Dashboard';
-import ProgressSection from '../lib/components/ProgressSection';
-import HabitsSection from '../lib/components/HabitsSection';
-import AchievementsSection from '../lib/components/AchievementsSection';
-import SettingsSection from '../lib/components/SettingsSection';
-// import AnalyticsDashboard from '../components/AnalyticsDashboard'
 import AIChat from '../lib/components/AIChat';
-import ProfileSection from '../lib/components/ui/Profile';
+
+const ProgressSection = lazy(() => import('../lib/components/ProgressSection'));
+const HabitsSection = lazy(() => import('../lib/components/HabitsSection'));
+const AchievementsSection = lazy(() => import('../lib/components/AchievementsSection'));
+const SettingsSection = lazy(() => import('../lib/components/SettingsSection'));
+const ProfileSection = lazy(() => import('../lib/components/ui/Profile'));
 
 interface HomePageProps {
   onLogout: () => void;
@@ -16,10 +17,34 @@ interface HomePageProps {
 export default function HomePage({ onLogout }: HomePageProps) {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [currentUser, setCurrentUser] = useState<SessionUser | null>(() => getSessionUser());
+
+  const handleUserUpdate = (updatedUser: SessionUser) => {
+    setCurrentUser(updatedUser);
+  };
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
+
+  const sectionFallback = (
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="animate-pulse space-y-4">
+        <div className="h-28 rounded-3xl bg-gray-200" />
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+          <div className="h-64 rounded-3xl bg-gray-200 xl:col-span-2" />
+          <div className="h-64 rounded-3xl bg-gray-200" />
+        </div>
+      </div>
+    </div>
+  );
+
+  useEffect(() => {
+    const warmupTimer = window.setTimeout(() => {
+      void import('../lib/components/HabitsSection');
+    }, 1200);
+    return () => window.clearTimeout(warmupTimer);
+  }, []);
 
   const renderSection = () => {
     switch (activeSection) {
@@ -27,15 +52,22 @@ export default function HomePage({ onLogout }: HomePageProps) {
         return <Dashboard isDarkMode={isDarkMode} setActiveSection={setActiveSection} />;
 
       case 'progress':
-        return <ProgressSection isDarkMode={isDarkMode} />;
+        return <ProgressSection isDarkMode={isDarkMode} setActiveSection={setActiveSection} />;
       case 'habits':
-        return <HabitsSection isDarkMode={isDarkMode} />;
+        return <HabitsSection isDarkMode={isDarkMode} setActiveSection={setActiveSection} />;
       case 'achievements':
-        return <AchievementsSection isDarkMode={isDarkMode} />;
+        return <AchievementsSection isDarkMode={isDarkMode} setActiveSection={setActiveSection} />;
       case 'settings':
         return <SettingsSection isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />;
       case 'profile':
-        return <ProfileSection isDarkMode={isDarkMode} setActiveSection={setActiveSection} />;
+        return (
+          <ProfileSection
+            isDarkMode={isDarkMode}
+            setActiveSection={setActiveSection}
+            currentUser={currentUser}
+            onUserUpdate={handleUserUpdate}
+          />
+        );
       default:
         return <Dashboard isDarkMode={isDarkMode} setActiveSection={setActiveSection} />;
     }
@@ -49,11 +81,14 @@ export default function HomePage({ onLogout }: HomePageProps) {
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleDarkMode}
         onLogout={onLogout}
+        username={currentUser?.username || 'User'}
       />
       <div className="ml-64 w-full">
-        {renderSection()}
+        <Suspense fallback={sectionFallback}>
+          {renderSection()}
+        </Suspense>
       </div>
-      <AIChat isDarkMode={isDarkMode} />
+      <AIChat isDarkMode={isDarkMode} habits={loadStoredHabits()} />
     </div>
   );
 }

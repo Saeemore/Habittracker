@@ -15,7 +15,7 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:4000",
+        target: process.env.BACKEND_URL || "http://127.0.0.1:4000",
         changeOrigin: true,
         secure: false,
       },
@@ -25,7 +25,17 @@ export default defineConfig({
     exclude: ["@cloudflare/unenv-preset"],
   },
   build: {
-    chunkSizeWarningLimit: 5000,
+    chunkSizeWarningLimit: 900,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "react-vendor": ["react", "react-dom"],
+          "animation-vendor": ["framer-motion"],
+          "icons-vendor": ["lucide-react"],
+          "markdown-vendor": ["react-markdown"],
+        },
+      },
+    },
   },
   resolve: {
     alias: {

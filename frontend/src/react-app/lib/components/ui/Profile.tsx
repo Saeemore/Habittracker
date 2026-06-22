@@ -1,23 +1,21 @@
-import { motion } from 'framer-motion';
+import { useState, FormEvent } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     Home, CheckCircle, BarChart2, User,
     Trophy, Globe, Flame, Shield, Sun, Lock,
-    Pencil, Users, RefreshCw, Settings, Share2, Brain
+    Pencil, Users, RefreshCw, Settings, Share2, Brain, X, KeyRound
 } from 'lucide-react';
+import { ApiError, apiFetch } from '../../api';
+import { updateProfile, forgotPassword, resetPassword } from '../../auth';
+import { type SessionUser, type StoredHabit, loadStoredHabits, saveStoredHabits } from '../../storage';
 
 interface ProfileSectionProps {
     isDarkMode: boolean;
     setActiveSection?: (section: string) => void;
+    currentUser: SessionUser | null;
+    onUserUpdate?: (updatedUser: SessionUser) => void;
 }
 
-const NAV_ITEMS = [
-    { id: 'home', icon: Home, label: 'Home' },
-    { id: 'habits', icon: CheckCircle, label: 'Habits' },
-    { id: 'stats', icon: BarChart2, label: 'Stats' },
-    { id: 'profile', icon: User, label: 'Profile' },
-];
-
-// Year of Growth heatmap — 4 rows x 16 cols (Jan–Apr)
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR'];
 const HEATMAP: number[][] = [
     [0, 1, 2, 3, 4, 2, 1, 3, 4, 3, 2, 1, 2, 3, 4, 3],
@@ -33,8 +31,27 @@ const MINI_ACHIEVEMENTS = [
     { id: '4', label: 'Deep\nFocus', icon: Lock, earned: false, color: 'text-gray-600', bg: 'bg-white/5', border: 'border-white/5' },
 ];
 
-export default function ProfileSection({ isDarkMode, setActiveSection }: ProfileSectionProps) {
-    const username = localStorage.getItem('username') || 'Alex Rivera';
+export default function ProfileSection({ isDarkMode, setActiveSection, currentUser, onUserUpdate }: ProfileSectionProps) {
+    const username = currentUser?.username || localStorage.getItem('username') || 'Alex Rivera';
+    const userEmail = currentUser?.email || localStorage.getItem('trackify:session-user') ? JSON.parse(localStorage.getItem('trackify:session-user') || '{}').email : '';
+
+    /* ── modals states ─────────────────────────────────────────────────── */
+    const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+    const [editUsername, setEditUsername] = useState(username);
+    const [editEmail, setEditEmail] = useState(userEmail || '');
+    const [editError, setEditError] = useState('');
+    const [editLoading, setEditLoading] = useState(false);
+
+    const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+    const [changeStep, setChangeStep] = useState(1); // 1 = send code, 2 = verify & reset
+    const [changeCode, setChangeCode] = useState('');
+    const [changePassword, setChangePassword] = useState('');
+    const [changeError, setChangeError] = useState('');
+    const [changeSuccess, setChangeSuccess] = useState('');
+    const [changeLoading, setChangeLoading] = useState(false);
+
+    const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
+    const [syncMessage, setSyncMessage] = useState('');
 
     /* ── theme tokens ────────────────────────────────────────────────────── */
     const BG = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
@@ -43,6 +60,9 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
     const TXT = isDarkMode ? 'text-white' : 'text-gray-900';
     const MUTED = isDarkMode ? 'text-gray-500' : 'text-gray-400';
     const HOV = isDarkMode ? 'hover:bg-white/5' : 'hover:bg-gray-50';
+    const INPUT = isDarkMode
+        ? 'bg-[#222] border-white/10 text-white placeholder-gray-600 focus:border-green-500 focus:ring-1 focus:ring-green-500'
+        : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-green-500 focus:ring-1 focus:ring-green-500';
 
     const heatColor = (v: number) => {
         if (v === 0) return isDarkMode ? 'bg-white/5' : 'bg-gray-100';
@@ -52,45 +72,173 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
         return 'bg-green-400';
     };
 
+    /* ── Handlers ───────────────────────────────────────────────────────── */
+    const handleEditProfileSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!editUsername || !editEmail) {
+            setEditError('Please fill in all fields');
+            return;
+        }
+        setEditLoading(true);
+        setEditError('');
+        try {
+            const result = await updateProfile({ username: editUsername, email: editEmail });
+            if (onUserUpdate) {
+                onUserUpdate(result.user);
+            }
+            setIsEditProfileOpen(false);
+        } catch (err) {
+            if (err instanceof ApiError) setEditError(err.message);
+            else setEditError('Failed to update profile. Please try again.');
+        } finally {
+            setEditLoading(false);
+        }
+    };
+
+    const handleRequestChangeCode = async () => {
+        if (!userEmail) {
+            setChangeError('No email associated with this account');
+            return;
+        }
+        setChangeLoading(true);
+        setChangeError('');
+        setChangeSuccess('');
+        try {
+            await forgotPassword(userEmail);
+            setChangeSuccess('Code sent! Check backend console / password_reset_log.txt');
+            setChangeStep(2);
+        } catch (err) {
+            if (err instanceof ApiError) setChangeError(err.message);
+            else setChangeError('Failed to send verification code.');
+        } finally {
+            setChangeLoading(false);
+        }
+    };
+
+    const handleChangePasswordSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!changeCode || !changePassword) {
+            setChangeError('Please fill in all fields');
+            return;
+        }
+        if (changeCode.length !== 6) {
+            setChangeError('Code must be 6 digits');
+            return;
+        }
+        setChangeLoading(true);
+        setChangeError('');
+        setChangeSuccess('');
+        try {
+            await resetPassword(userEmail, changeCode, changePassword);
+            setChangeSuccess('Password changed successfully!');
+            setTimeout(() => {
+                setIsChangePasswordOpen(false);
+                setChangeStep(1);
+                setChangeCode('');
+                setChangePassword('');
+                setChangeSuccess('');
+            }, 2000);
+        } catch (err) {
+            if (err instanceof ApiError) setChangeError(err.message);
+            else setChangeError('Failed to change password. Please verify the code.');
+        } finally {
+            setChangeLoading(false);
+        }
+    };
+
+    const handleSyncData = async () => {
+        setSyncStatus('syncing');
+        setSyncMessage('Connecting to cloud database...');
+        try {
+            // Simulate networking delay for visual polish
+            await new Promise(r => setTimeout(r, 1200));
+            
+            // 1. Fetch remote habits
+            setSyncMessage('Downloading database habits...');
+            const { habits: remoteHabits } = await apiFetch<{ habits: any[] }>('/habits');
+            
+            // 2. Load local habits
+            setSyncMessage('Syncing local habits offline progress...');
+            const localHabits = loadStoredHabits(currentUser);
+            const updatedLocalHabits: StoredHabit[] = [...localHabits];
+            
+            // 3. Post local habits without Mongo ObjectId to the backend
+            let uploadCount = 0;
+            for (let i = 0; i < updatedLocalHabits.length; i++) {
+                const local = updatedLocalHabits[i];
+                const isMongoId = /^[0-9a-fA-F]{24}$/.test(local.id);
+                if (!isMongoId) {
+                    uploadCount++;
+                    const { habit: created } = await apiFetch<{ habit: any }>('/habits', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            name: local.name,
+                            endGoal: local.endGoal || 'Daily goal',
+                            category: local.category || 'Other',
+                            targetTime: local.targetTime || 'Any time'
+                        })
+                    });
+                    updatedLocalHabits[i] = {
+                        ...local,
+                        id: created._id
+                    };
+                }
+            }
+
+            // 4. Match names / ids of remote habits
+            let downloadCount = 0;
+            for (const remote of remoteHabits) {
+                const existsLocally = updatedLocalHabits.some(l => l.id === remote._id || l.name.toLowerCase() === remote.name.toLowerCase());
+                if (!existsLocally) {
+                    downloadCount++;
+                    updatedLocalHabits.push({
+                        id: remote._id,
+                        name: remote.name,
+                        endGoal: remote.endGoal || '',
+                        targetTime: remote.targetTime || '',
+                        completed: false,
+                        category: remote.category || 'Other',
+                        streak: remote.currentStreak || 0
+                    });
+                } else {
+                    const idx = updatedLocalHabits.findIndex(l => l.name.toLowerCase() === remote.name.toLowerCase());
+                    if (idx !== -1) {
+                        updatedLocalHabits[idx] = {
+                            ...updatedLocalHabits[idx],
+                            id: remote._id,
+                            streak: Math.max(updatedLocalHabits[idx].streak, remote.currentStreak || 0)
+                        };
+                    }
+                }
+            }
+
+            // 5. Save updated array to localStorage
+            saveStoredHabits(updatedLocalHabits, currentUser);
+            
+            setSyncStatus('success');
+            setSyncMessage(`Sync completed! Uploaded ${uploadCount} habits, downloaded ${downloadCount} habits.`);
+
+            // Fire-and-forget: create a sync notification on the backend
+            apiFetch('/notifications/sync-complete', {
+                method: 'POST',
+                body: JSON.stringify({ uploadCount, downloadCount })
+            }).catch(() => { /* ignore */ });
+            
+            // Auto close success status after 3 seconds
+            setTimeout(() => {
+                setSyncStatus('idle');
+                setSyncMessage('');
+            }, 3500);
+
+        } catch (err) {
+            setSyncStatus('error');
+            if (err instanceof ApiError) setSyncMessage(err.message);
+            else setSyncMessage('Sync failed. Please check your network connection.');
+        }
+    };
+
     return (
-        <div className={`flex h-screen overflow-hidden ${BG} transition-colors duration-300`}>
-
-            {/* ═══ SIDEBAR ════════════════════════════════════════════════════════ */}
-            {/* <aside className={`hidden md:flex flex-col h-full w-[72px] xl:w-64 border-r flex-shrink-0 transition-all duration-300 ${SB}`}>
-                <div className={`flex items-center gap-3 px-4 xl:px-5 py-5 border-b ${DIV}`}>
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/20">
-                        <Zap size={17} className="text-white fill-white" />
-                    </div>
-                    <span className={`hidden xl:block font-black text-lg tracking-tight ${TXT}`}>HabitHero</span>
-                </div>
-
-                <nav className="flex flex-col gap-1 p-2 xl:p-3 flex-1">
-                    {NAV_ITEMS.map(({ id, icon: Icon, label }) => {
-                        const active = id === 'profile';
-                        return (
-                            <button key={id}
-                                onClick={() => setActiveSection?.(id)}
-                                className={`flex items-center gap-3 px-3 py-3 rounded-xl w-full transition-all duration-200
-                  ${active ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : `${MUTED} ${HOV}`}`}>
-                                <Icon size={19} className="flex-shrink-0" />
-                                <span className={`hidden xl:block text-sm font-semibold ${active ? 'text-white' : ''}`}>{label}</span>
-                            </button>
-                        );
-                    })}
-                </nav>
-
-                <div className={`p-2 xl:p-3 border-t ${DIV}`}>
-                    <div className={`flex items-center gap-3 p-2 rounded-xl ${HOV} cursor-pointer`}>
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-400 to-green-500 flex items-center justify-center text-white font-black text-xs flex-shrink-0">
-                            {username[0]?.toUpperCase()}
-                        </div>
-                        <div className="hidden xl:block min-w-0">
-                            <p className={`text-xs font-bold truncate ${TXT}`}>{username}</p>
-                            <p className={`text-[10px] ${MUTED}`}>Level 12</p>
-                        </div>
-                    </div>
-                </div>
-            </aside> */}
+        <div className={`flex h-screen overflow-hidden ${BG} transition-colors duration-300 relative`}>
 
             {/* ═══ MAIN ═══════════════════════════════════════════════════════════ */}
             <div className="flex-1 min-w-0 h-full overflow-y-auto">
@@ -186,7 +334,7 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                                         transition={{ delay: 0.08 * i, type: 'spring', stiffness: 280 }}
                                         className="flex flex-col items-center gap-1.5">
                                         <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center
-                      ${a.earned ? `${a.bg} ${a.border}` : isDarkMode ? 'bg-white/5 border-white/5 opacity-40' : 'bg-gray-100 border-gray-200 opacity-40'}`}>
+                                            ${a.earned ? `${a.bg} ${a.border}` : isDarkMode ? 'bg-white/5 border-white/5 opacity-40' : 'bg-gray-100 border-gray-200 opacity-40'}`}>
                                             <Icon size={22} className={a.earned ? a.color : isDarkMode ? 'text-gray-600' : 'text-gray-400'} />
                                         </div>
                                         <p className={`text-[9px] font-bold text-center leading-tight whitespace-pre-line ${a.earned ? MUTED : isDarkMode ? 'text-gray-700' : 'text-gray-300'}`}>
@@ -242,13 +390,21 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                         </div>
                     </motion.div>
 
-                    {/* ── Edit Profile button ──────────────────────────────────────────── */}
+                    {/* ── Action Rows (Edit Profile, Friends, Sync Data) ────────────────── */}
                     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
                         className="flex flex-col gap-3">
-                        <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
+                        <motion.button 
+                            onClick={() => {
+                                setEditUsername(username);
+                                setEditEmail(userEmail || '');
+                                setEditError('');
+                                setIsEditProfileOpen(true);
+                            }}
+                            whileHover={{ scale: 1.01 }} 
+                            whileTap={{ scale: 0.98 }}
                             className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl font-black text-sm transition-all
-                ${isDarkMode
+                                ${isDarkMode
                                     ? 'bg-[#1c1c1c] border border-white/5 text-white hover:border-white/10'
                                     : 'bg-gray-900 text-white hover:bg-gray-800'}`}>
                             <div className="flex items-center gap-3">
@@ -258,36 +414,267 @@ export default function ProfileSection({ isDarkMode, setActiveSection }: Profile
                             <span className={MUTED}>›</span>
                         </motion.button>
 
-                        {/* Friends + Sync Data */}
                         <div className="grid grid-cols-2 gap-3">
-                            {[
-                                { icon: Users, label: 'Friends', color: 'text-green-400' },
-                                { icon: RefreshCw, label: 'Sync Data', color: 'text-green-400' },
-                            ].map(({ icon: Icon, label, color }) => (
-                                <motion.button key={label}
-                                    whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                                    className={`flex items-center justify-center gap-2 py-4 rounded-2xl border font-black text-sm transition-all ${HCARD} ${HOV}`}>
-                                    <Icon size={16} className={color} />
-                                    <span className={TXT}>{label}</span>
-                                </motion.button>
-                            ))}
+                            <motion.button
+                                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                                className={`flex items-center justify-center gap-2 py-4 rounded-2xl border font-black text-sm transition-all ${HCARD} ${HOV}`}>
+                                <Users size={16} className="text-green-400" />
+                                <span className={TXT}>Friends</span>
+                            </motion.button>
+                            
+                            <motion.button
+                                onClick={handleSyncData}
+                                disabled={syncStatus === 'syncing'}
+                                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                                className={`flex items-center justify-center gap-2 py-4 rounded-2xl border font-black text-sm transition-all ${HCARD} ${HOV} disabled:opacity-50`}>
+                                <RefreshCw size={16} className={`text-green-400 ${syncStatus === 'syncing' ? 'animate-spin' : ''}`} />
+                                <span className={TXT}>
+                                    {syncStatus === 'syncing' ? 'Syncing...' : 'Sync Data'}
+                                </span>
+                            </motion.button>
                         </div>
+                        
+                        {/* Inline status messages for sync */}
+                        {syncMessage && (
+                            <motion.p
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className={`text-xs text-center font-semibold mt-1 py-2 px-4 rounded-xl border ${
+                                    syncStatus === 'success' 
+                                        ? 'text-green-400 bg-green-500/10 border-green-500/20' 
+                                        : syncStatus === 'error'
+                                        ? 'text-red-400 bg-red-500/10 border-red-500/20'
+                                        : 'text-gray-400 bg-white/5 border-white/5'
+                                }`}
+                            >
+                                {syncMessage}
+                            </motion.p>
+                        )}
                     </motion.div>
 
                 </div>
             </div>
 
+            {/* ═══ EDIT PROFILE MODAL ══════════════════════════════════════════════ */}
+            <AnimatePresence>
+                {isEditProfileOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                        {/* Backdrop */}
+                        <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsEditProfileOpen(false)}
+                            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        />
+                        
+                        {/* Modal Container */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className={`relative w-full max-w-md p-6 rounded-3xl border shadow-2xl ${CARD} overflow-hidden`}
+                        >
+                            <div className="flex items-center justify-between mb-5">
+                                <h3 className={`text-lg font-black ${TXT}`}>Edit Profile</h3>
+                                <button 
+                                    onClick={() => setIsEditProfileOpen(false)}
+                                    className={`w-8 h-8 rounded-full border flex items-center justify-center ${HCARD} ${HOV} transition-colors`}
+                                >
+                                    <X size={15} className={MUTED} />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleEditProfileSubmit} className="space-y-4">
+                                <div>
+                                    <label className={`block text-xs font-bold mb-2 tracking-wider ${MUTED}`}>USERNAME</label>
+                                    <input 
+                                        type="text" 
+                                        value={editUsername}
+                                        onChange={(e) => setEditUsername(e.target.value)}
+                                        className={`w-full px-4 py-3 rounded-xl border text-sm focus:outline-none transition-all ${INPUT}`}
+                                        placeholder="Username"
+                                        disabled={editLoading}
+                                    />
+                                </div>
+                                <div>
+                                    <label className={`block text-xs font-bold mb-2 tracking-wider ${MUTED}`}>EMAIL ADDRESS</label>
+                                    <input 
+                                        type="email" 
+                                        value={editEmail}
+                                        onChange={(e) => setEditEmail(e.target.value)}
+                                        className={`w-full px-4 py-3 rounded-xl border text-sm focus:outline-none transition-all ${INPUT}`}
+                                        placeholder="your@email.com"
+                                        disabled={editLoading}
+                                    />
+                                </div>
+
+                                {editError && (
+                                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-xs bg-red-500/10 py-2 px-3 rounded-lg border border-red-500/20 text-center">
+                                        {editError}
+                                    </motion.p>
+                                )}
+
+                                <div className="pt-2 flex flex-col gap-2">
+                                    <motion.button 
+                                        type="submit"
+                                        disabled={editLoading}
+                                        whileHover={{ scale: 1.01 }} 
+                                        whileTap={{ scale: 0.98 }}
+                                        className="w-full py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-black text-sm shadow-lg shadow-green-500/20 transition-colors disabled:opacity-75"
+                                    >
+                                        {editLoading ? 'Saving...' : 'Save Changes'}
+                                    </motion.button>
+                                    
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setIsEditProfileOpen(false);
+                                            setChangeError('');
+                                            setChangeSuccess('');
+                                            setChangeStep(1);
+                                            setChangeCode('');
+                                            setChangePassword('');
+                                            setIsChangePasswordOpen(true);
+                                        }}
+                                        className={`w-full py-3 rounded-xl border flex items-center justify-center gap-2 font-black text-sm transition-all ${HCARD} ${HOV}`}
+                                    >
+                                        <KeyRound size={16} className="text-green-400" />
+                                        <span className={TXT}>Change Password</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
+            {/* ═══ CHANGE PASSWORD MODAL ══════════════════════════════════════════ */}
+            <AnimatePresence>
+                {isChangePasswordOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                        {/* Backdrop */}
+                        <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsChangePasswordOpen(false)}
+                            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        />
+                        
+                        {/* Modal Container */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className={`relative w-full max-w-md p-6 rounded-3xl border shadow-2xl ${CARD} overflow-hidden`}
+                        >
+                            <div className="flex items-center justify-between mb-5">
+                                <h3 className={`text-lg font-black ${TXT}`}>Change Password</h3>
+                                <button 
+                                    onClick={() => setIsChangePasswordOpen(false)}
+                                    className={`w-8 h-8 rounded-full border flex items-center justify-center ${HCARD} ${HOV} transition-colors`}
+                                >
+                                    <X size={15} className={MUTED} />
+                                </button>
+                            </div>
+
+                            <p className={`text-xs leading-relaxed mb-4 ${MUTED}`}>
+                                For your security, we will send a 6-digit verification code to <span className={`font-bold ${TXT}`}>{userEmail}</span>.
+                            </p>
+
+                            {changeStep === 1 ? (
+                                <div className="space-y-4">
+                                    {changeError && (
+                                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-xs bg-red-500/10 py-2 px-3 rounded-lg border border-red-500/20 text-center">
+                                            {changeError}
+                                        </motion.p>
+                                    )}
+                                    {changeSuccess && (
+                                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-green-400 text-xs bg-green-500/10 py-2 px-3 rounded-lg border border-green-500/20 text-center">
+                                            {changeSuccess}
+                                        </motion.p>
+                                    )}
+                                    <motion.button 
+                                        type="button"
+                                        onClick={handleRequestChangeCode}
+                                        disabled={changeLoading}
+                                        whileHover={{ scale: 1.01 }} 
+                                        whileTap={{ scale: 0.98 }}
+                                        className="w-full py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-black text-sm shadow-lg shadow-green-500/20 transition-colors disabled:opacity-75"
+                                    >
+                                        {changeLoading ? 'Requesting...' : 'Request Verification Code'}
+                                    </motion.button>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleChangePasswordSubmit} className="space-y-4">
+                                    <div>
+                                        <label className={`block text-xs font-bold mb-2 tracking-wider ${MUTED}`}>6-DIGIT CODE</label>
+                                        <input 
+                                            type="text" 
+                                            value={changeCode}
+                                            onChange={(e) => setChangeCode(e.target.value)}
+                                            maxLength={6}
+                                            className={`w-full px-4 py-3 rounded-xl border text-sm focus:outline-none transition-all ${INPUT}`}
+                                            placeholder="123456"
+                                            disabled={changeLoading}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className={`block text-xs font-bold mb-2 tracking-wider ${MUTED}`}>NEW PASSWORD</label>
+                                        <input 
+                                            type="password" 
+                                            value={changePassword}
+                                            onChange={(e) => setChangePassword(e.target.value)}
+                                            className={`w-full px-4 py-3 rounded-xl border text-sm focus:outline-none transition-all ${INPUT}`}
+                                            placeholder="Enter new password"
+                                            disabled={changeLoading}
+                                        />
+                                    </div>
+
+                                    {changeError && (
+                                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-xs bg-red-500/10 py-2 px-3 rounded-lg border border-red-500/20 text-center">
+                                            {changeError}
+                                        </motion.p>
+                                    )}
+                                    {changeSuccess && (
+                                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-green-400 text-xs bg-green-500/10 py-2 px-3 rounded-lg border border-green-500/20 text-center">
+                                            {changeSuccess}
+                                        </motion.p>
+                                    )}
+
+                                    <motion.button 
+                                        type="submit"
+                                        disabled={changeLoading}
+                                        whileHover={{ scale: 1.01 }} 
+                                        whileTap={{ scale: 0.98 }}
+                                        className="w-full py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-black text-sm shadow-lg shadow-green-500/20 transition-colors disabled:opacity-75"
+                                    >
+                                        {changeLoading ? 'Changing Password...' : 'Change Password'}
+                                    </motion.button>
+                                </form>
+                            )}
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
             {/* ═══ MOBILE NAV ═════════════════════════════════════════════════════ */}
             <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 md:hidden">
                 <div className={`flex items-center gap-1 px-3 py-2 rounded-full shadow-2xl border
-          ${isDarkMode ? 'bg-[#111] border-white/10' : 'bg-gray-900 border-gray-800'}`}>
-                    {NAV_ITEMS.map(({ id, icon: Icon }) => {
+                    ${isDarkMode ? 'bg-[#111] border-white/10' : 'bg-gray-900 border-gray-800'}`}>
+                    {[
+                        { id: 'home', icon: Home },
+                        { id: 'habits', icon: CheckCircle },
+                        { id: 'stats', icon: BarChart2 },
+                        { id: 'profile', icon: User },
+                    ].map(({ id, icon: Icon }) => {
                         const active = id === 'profile';
                         return (
                             <button key={id}
                                 onClick={() => setActiveSection?.(id)}
                                 className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-200
-                  ${active ? 'bg-green-500 shadow-lg shadow-green-500/40' : 'text-gray-500 hover:bg-white/10'}`}>
+                                    ${active ? 'bg-green-500 shadow-lg shadow-green-500/40' : 'text-gray-500 hover:bg-white/10'}`}>
                                 <Icon size={19} className={active ? 'text-white' : ''} />
                             </button>
                         );

@@ -1,4 +1,5 @@
 import { apiFetch, setAccessToken } from "./api";
+import { clearSession } from "./storage";
 
 export type AuthUser = { id: string; email: string; username: string };
 
@@ -29,8 +30,36 @@ export async function refresh(): Promise<{ accessToken: string }> {
 export async function logout(): Promise<{ ok: true }> {
   const result = await apiFetch<{ ok: true }>("/auth/logout", { method: "POST" });
   setAccessToken(null);
-  localStorage.removeItem("username");
-  localStorage.removeItem("isLoggedIn");
+  clearSession();
   return result;
 }
+
+export async function forgotPassword(email: string): Promise<{ ok: boolean; message: string }> {
+  return apiFetch("/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify({ email })
+  });
+}
+
+export async function resetPassword(
+  email: string,
+  code: string,
+  password: string
+): Promise<{ ok: boolean; message: string }> {
+  return apiFetch("/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify({ email, code, password })
+  });
+}
+
+export async function updateProfile(params: {
+  username: string;
+  email: string;
+}): Promise<{ user: AuthUser }> {
+  return apiFetch("/auth/profile", {
+    method: "PUT",
+    body: JSON.stringify(params)
+  });
+}
+
 

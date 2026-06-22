@@ -17,4 +17,25 @@ const LoginBodySchema = z
     path: ["email"]
   });
 
-module.exports = { RegisterBodySchema, LoginBodySchema };
+const ForgotPasswordSchema = z.object({
+  email: z.string().email()
+});
+
+const ResetPasswordSchema = z.object({
+  email: z.string().email(),
+  code: z.string().length(6),
+  password: z.string().min(6).max(200)
+});
+
+const UpdateProfileSchema = z.object({
+  username: z.string().min(2).max(32),
+  email: z.string().email()
+});
+
+module.exports = {
+  RegisterBodySchema,
+  LoginBodySchema,
+  ForgotPasswordSchema,
+  ResetPasswordSchema,
+  UpdateProfileSchema
+};

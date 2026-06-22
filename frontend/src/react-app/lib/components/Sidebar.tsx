@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Home, TrendingUp, CheckCircle, Award, User, Settings, LogOut, Zap, Sun, Moon } from 'lucide-react';
+import NotificationsPanel from './NotificationsPanel';
 
 interface SidebarProps {
   activeSection: string;
@@ -7,6 +8,7 @@ interface SidebarProps {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
   onLogout: () => void;
+  username: string;
 }
 
 export default function Sidebar({
@@ -14,9 +16,9 @@ export default function Sidebar({
   setActiveSection,
   isDarkMode,
   toggleDarkMode,
-  onLogout
+  onLogout,
+  username
 }: SidebarProps) {
-  const username = localStorage.getItem('username') || 'User';
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
@@ -38,11 +40,14 @@ export default function Sidebar({
     <div className={`w-64 h-screen fixed left-0 top-0 border-r flex flex-col overflow-y-auto transition-all duration-300 ${bg} ${border}`}>
 
       {/* ── Logo ─────────────────────────────────────────────────────────────── */}
-      <div className={`flex items-center gap-3 px-5 py-5 border-b ${divider}`}>
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/20">
-          <Zap size={17} className="text-white fill-white" />
+      <div className={`flex items-center justify-between px-5 py-5 border-b ${divider}`}>
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/20">
+            <Zap size={17} className="text-white fill-white" />
+          </div>
+          <span className={`font-black text-lg tracking-tight ${txt}`}>Trackify</span>
         </div>
-        <span className={`font-black text-lg tracking-tight ${txt}`}>Trackify</span>
+        <NotificationsPanel isDarkMode={isDarkMode} />
       </div>
 
       {/* ── Navigation ───────────────────────────────────────────────────────── */}
