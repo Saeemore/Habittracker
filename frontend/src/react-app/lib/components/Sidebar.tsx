@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Home, TrendingUp, CheckCircle, Award, User, Settings, LogOut, Zap, Sun, Moon } from 'lucide-react';
+import { Home, TrendingUp, CheckCircle, Award, User, Settings, LogOut, Sun, Moon } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 
 interface SidebarProps {
   activeSection: string;
@@ -38,11 +39,18 @@ export default function Sidebar({
     <div className={`w-64 h-screen fixed left-0 top-0 border-r flex flex-col overflow-y-auto transition-all duration-300 ${bg} ${border}`}>
 
       {/* ── Logo ─────────────────────────────────────────────────────────────── */}
-      <div className={`flex items-center gap-3 px-5 py-5 border-b ${divider}`}>
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/20">
-          <Zap size={17} className="text-white fill-white" />
+      <div className={`flex items-center gap-3 px-5 py-4 border-b ${divider}`}>
+        <BrandLogo
+          className={`h-11 w-11 flex-shrink-0 rounded-2xl border shadow-lg shadow-emerald-500/15 ${
+            isDarkMode
+              ? 'border-emerald-400/15 bg-emerald-400/5'
+              : 'border-emerald-100 bg-emerald-50/80'
+          }`}
+        />
+        <div className="min-w-0">
+          <span className={`block font-black text-lg leading-tight tracking-tight ${txt}`}>Trackify</span>
+          <span className={`block text-[10px] font-semibold tracking-wide ${muted}`}>BUILD BETTER DAYS</span>
         </div>
-        <span className={`font-black text-lg tracking-tight ${txt}`}>Trackify</span>
       </div>
 
       {/* ── Navigation ───────────────────────────────────────────────────────── */}

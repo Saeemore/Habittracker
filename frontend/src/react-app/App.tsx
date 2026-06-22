@@ -4,6 +4,7 @@ import HomePage from "./pages/Home";
 import UserOnboarding from "./lib/components/UserOnboarding";
 import { ApiError, getAccessToken, setAccessToken } from "./lib/api";
 import { me, refresh } from "./lib/auth";
+import BrandLogo from "./lib/components/BrandLogo";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -94,8 +95,9 @@ export default function App() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100 px-6">
         <div className="flex flex-col items-center gap-4 text-center">
-          <div className="w-14 h-14 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/25">
-            <div className="w-6 h-6 rounded-full border-4 border-white/40 border-t-white animate-spin" />
+          <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-100 bg-white shadow-lg shadow-emerald-500/20">
+            <BrandLogo className="h-14 w-14" />
+            <div className="absolute inset-0 rounded-2xl border-2 border-transparent border-t-emerald-500 animate-spin" />
           </div>
           <div>
             <p className="text-lg font-black text-gray-900">Trackify</p>
