@@ -78,14 +78,14 @@ export default function CelebrationModal({ isOpen, onClose, habitName, isDarkMod
             exit={{ scale: 0.5, opacity: 0, y: 50 }}
             transition={{ type: 'spring', duration: 0.5 }}
             onClick={(e) => e.stopPropagation()}
-            className={`relative rounded-3xl shadow-2xl p-8 max-w-md w-full ${
-              isDarkMode ? 'bg-gradient-to-br from-gray-800 to-gray-900' : 'bg-gradient-to-br from-white to-gray-50'
+            className={`relative rounded-3xl shadow-2xl p-8 max-w-md w-full border ${
+              isDarkMode ? 'bg-[#111111] border-white/5' : 'bg-white border-gray-100'
             }`}
           >
             <button
               onClick={onClose}
-              className={`absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              className={`absolute top-4 right-4 p-2 rounded-xl transition-all ${
+                isDarkMode ? 'text-gray-500 hover:bg-white/5' : 'text-gray-500 hover:bg-gray-100'
               }`}
             >
               <X size={20} />
@@ -102,7 +102,7 @@ export default function CelebrationModal({ isOpen, onClose, habitName, isDarkMod
                 times: [0, 0.3, 0.6, 1],
               }}
             >
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg">
+              <div className="w-24 h-24 rounded-full bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/25">
                 <Award size={48} className="text-white" />
               </div>
             </motion.div>
@@ -111,7 +111,7 @@ export default function CelebrationModal({ isOpen, onClose, habitName, isDarkMod
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className={`text-2xl font-bold text-center mb-2 ${
+              className={`text-2xl font-black text-center mb-2 ${
                 isDarkMode ? 'text-white' : 'text-gray-900'
               }`}
             >
@@ -122,21 +122,21 @@ export default function CelebrationModal({ isOpen, onClose, habitName, isDarkMod
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className={`text-center mb-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+              className={`text-center mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
             >
-              You completed <span className="font-bold text-teal-500">{habitName}</span>
+              You completed <span className="font-bold text-green-500">{habitName}</span>
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
-              className={`p-4 rounded-2xl text-center ${
-                isDarkMode ? 'bg-gray-700/50' : 'bg-gradient-to-br from-teal-50 to-emerald-50'
+              className={`p-4 rounded-2xl text-center border ${
+                isDarkMode ? 'bg-green-500/10 border-green-500/20' : 'bg-green-50 border-green-200'
               }`}
             >
               <p className={`text-lg font-medium italic ${
-                isDarkMode ? 'text-teal-400' : 'text-teal-700'
+                isDarkMode ? 'text-green-400' : 'text-green-700'
               }`}>
                 "{quote}"
               </p>

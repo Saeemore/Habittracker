@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { ApiError, setAccessToken } from "../lib/api";
-import { type AuthUser, login, register, forgotPassword, resetPassword } from "../lib/auth";
+import { login, register } from "../lib/auth";
+import BrandLogo from "../lib/components/BrandLogo";
 
 interface LoginPageProps {
   onLoginSuccess: (user: AuthUser) => void;
@@ -289,24 +290,17 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
         <div className="flex justify-center mb-8">
           <motion.div
             className="relative"
-            animate={
-              isLoading
-                ? { rotate: 360 }
-                : {}
-            }
-            transition={
-              isLoading
-                ? { duration: 2, repeat: Infinity, ease: 'linear' }
-                : {}
-            }
+            animate={isLoading ? { scale: [1, 0.96, 1] } : { y: [0, -4, 0] }}
+            transition={{ duration: isLoading ? 1.2 : 4, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 flex items-center justify-center shadow-lg relative">
-              <TrendingUp size={40} className="text-white" />
+            <div className="relative flex h-28 w-28 items-center justify-center rounded-[2rem] border border-emerald-300/20 bg-white/[0.07] shadow-2xl shadow-emerald-500/25 backdrop-blur-md">
+              <div className="absolute inset-3 rounded-2xl bg-emerald-400/10 blur-md" />
+              <BrandLogo className="relative h-24 w-24" />
               {!isLoading && (
                 <motion.div
                   className="absolute -top-2 -right-2"
                   animate={{
-                    scale: [1, 1.2, 1],
+                    scale: [1, 1.15, 1],
                     rotate: [0, 20, 0],
                   }}
                   transition={{
@@ -315,8 +309,11 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
                     ease: 'easeInOut',
                   }}
                 >
-                  <Sparkles size={20} className="text-yellow-400" />
+                  <Sparkles size={20} className="text-emerald-200" />
                 </motion.div>
+              )}
+              {isLoading && (
+                <div className="absolute inset-1 rounded-[1.8rem] border-2 border-transparent border-t-emerald-300 animate-spin" />
               )}
             </div>
           </motion.div>

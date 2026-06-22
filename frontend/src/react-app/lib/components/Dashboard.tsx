@@ -30,8 +30,20 @@ function loadDashboardHabits(): DashboardHabit[] {
   }));
 }
 
-const MONTH_PROGRESS = [100, 75, 100, 50, 75, 100, 25, 75, 100, 100, 50, 75, 75, 100, 50, 25, 75, 100, 75, 50, 100, 75, 0, 50, 75, 100, 100, 50, 75, 100];
-const MONTH_DAYS = Array.from({ length: 30 }, (_, index) => index + 1);
+function loadMonthlyProgress(username: string, daysInMonth: number): number[] {
+  try {
+    const stored = localStorage.getItem(getUserStorageKey(MONTHLY_PROGRESS_STORAGE_KEY, username));
+    const parsed = stored ? JSON.parse(stored) : [];
+    const progress = Array.isArray(parsed) ? parsed : [];
+
+    return Array.from({ length: daysInMonth }, (_, index) => {
+      const value = Number(progress[index]);
+      return Number.isFinite(value) ? Math.max(0, Math.min(100, Math.round(value))) : 0;
+    });
+  } catch {
+    return Array(daysInMonth).fill(0);
+  }
+}
 
 const NAV_ITEMS = [
   { id: 'dashboard', icon: Home, label: 'Home' },
@@ -46,14 +58,16 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
   const [activeNav, setActiveNav] = useState('dashboard');
   const [dashboardHabits, setDashboardHabits] = useState<DashboardHabit[]>(loadDashboardHabits);
   const [checkedHabits, setCheckedHabits] = useState<Record<string, boolean>>(
-    () => Object.fromEntries(loadDashboardHabits().map(habit => [habit.id, habit.completedToday]))
+    () => Object.fromEntries(loadDashboardHabits(username).map(habit => [habit.id, habit.completedToday]))
   );
+  const [monthProgress, setMonthProgress] = useState<number[]>(() => loadMonthlyProgress(username, monthDayCount));
 
   useEffect(() => {
-    const habits = loadDashboardHabits();
+    const habits = loadDashboardHabits(username);
     setDashboardHabits(habits);
     setCheckedHabits(Object.fromEntries(habits.map(habit => [habit.id, habit.completedToday])));
-  }, []);
+    setMonthProgress(loadMonthlyProgress(username, monthDayCount));
+  }, [monthDayCount, username]);
 
   const toggleDashboardHabit = (id: string) => {
     setCheckedHabits(prev => {
@@ -72,26 +86,95 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
     });
   };
 
-  const currentXP = dashboardHabits.reduce((sum, habit) => sum + habit.streak * 25 + (checkedHabits[habit.id] ? 50 : 0), 0);
-  const level = Math.max(1, Math.floor(currentXP / 300) + 1);
-  const currentLevelXP = currentXP % 300;
-  const maxXP = 300;
-  const streakDays = dashboardHabits.length ? Math.max(...dashboardHabits.map(habit => habit.streak)) : 0;
-  const xpPercent = dashboardHabits.length ? (currentLevelXP / maxXP) * 100 : 0;
+  // const level = 12, currentXP = 1200, maxXP = 1500, streakDays = 15;
+  // const xpPercent = (currentXP / maxXP) * 100;
   const completedToday = Object.values(checkedHabits).filter(Boolean).length;
-  const todayProgress = dashboardHabits.length ? Math.round((completedToday / dashboardHabits.length) * 100) : 0;
-  const monthlyAverage = Math.round(MONTH_PROGRESS.reduce((sum, value) => sum + value, 0) / MONTH_PROGRESS.length);
-  const previousWeekAverage = Math.round(MONTH_PROGRESS.slice(15, 22).reduce((sum, value) => sum + value, 0) / 7);
-  const currentWeekAverage = Math.round(MONTH_PROGRESS.slice(23).reduce((sum, value) => sum + value, 0) / 7);
-  const consistencyTrend = currentWeekAverage - previousWeekAverage;
-  const missedHabits = dashboardHabits.filter(habit => !checkedHabits[habit.id]);
-  const topMissedHabit = missedHabits[0];
-  const aiAdvice = !dashboardHabits.length
-    ? 'Start by creating your first habit. Once you have a routine, this dashboard will coach you with real progress.'
-    : topMissedHabit
-    ? `I noticed ${topMissedHabit.name} is still open. Finish this one today to protect your consistency.`
-    : 'I see every habit marked today. Keep tomorrow light, but do not break the chain.';
 
+const todayProgress = dashboardHabits.length
+  ? Math.round((completedToday / dashboardHabits.length) * 100)
+  : 0;
+
+const activeMonthProgress = monthProgress.map((value, index) =>
+  index === todayDay - 1 ? todayProgress : value
+);
+
+const monthlyAverage = activeMonthProgress.length
+  ? Math.round(
+      activeMonthProgress.reduce((sum, value) => sum + value, 0) /
+      activeMonthProgress.length
+    )
+  : 0;
+
+const previousWeekData = activeMonthProgress.slice(
+  Math.max(0, todayDay - 15),
+  Math.max(0, todayDay - 8)
+);
+
+const currentWeekData = activeMonthProgress.slice(
+  Math.max(0, todayDay - 7),
+  todayDay
+);
+
+const previousWeekAverage = previousWeekData.length
+  ? Math.round(
+      previousWeekData.reduce((sum, value) => sum + value, 0) /
+      previousWeekData.length
+    )
+  : 0;
+
+const currentWeekAverage = currentWeekData.length
+  ? Math.round(
+      currentWeekData.reduce((sum, value) => sum + value, 0) /
+      currentWeekData.length
+    )
+  : 0;
+
+const consistencyTrend = currentWeekAverage - previousWeekAverage;
+
+/* =========================
+   DYNAMIC LEVEL SYSTEM
+   ========================= */
+
+const streakDays = dashboardHabits.reduce(
+  (max, habit) => Math.max(max, habit.streak || 0),
+  0
+);
+const dangerHabit = dashboardHabits.find(
+  habit => habit.streak >= 3 && !checkedHabits[habit.id]
+);
+const streakXP = dashboardHabits.reduce(
+  (sum, habit) => sum + (habit.streak || 0) * 25,
+  0
+);
+
+const completionXP = completedToday * 50;
+
+const consistencyXP = monthlyAverage * 2;
+
+const totalXP = streakXP + completionXP + consistencyXP;
+
+const level = Math.max(
+  1,
+  Math.floor(totalXP / 600) + 1
+);
+
+const maxXP = 600;
+
+const currentXP = totalXP % maxXP;
+
+const xpPercent = Math.min(
+  100,
+  Math.round((currentXP / maxXP) * 100)
+);
+ 
+
+  useEffect(() => {
+    setMonthProgress(prev => {
+      const nextMonthProgress = prev.map((value, index) => index === todayDay - 1 ? todayProgress : value);
+      localStorage.setItem(userMonthlyProgressStorageKey, JSON.stringify(nextMonthProgress));
+      return nextMonthProgress[todayDay - 1] === prev[todayDay - 1] ? prev : nextMonthProgress;
+    });
+  }, [todayDay, todayProgress, userMonthlyProgressStorageKey]);
   // ── theme tokens ──────────────────────────────────────────────────────────
   const bg = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-100';
   const card = isDarkMode ? 'bg-[#161616] border-white/5' : 'bg-white border-gray-100';
@@ -168,6 +251,36 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
             </div>
           </motion.div>
 
+
+
+
+
+{dangerHabit && (
+  <motion.div
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 p-5"
+  >
+    <div className="flex items-center gap-3">
+      <Flame className="text-red-500" size={22} />
+      <div>
+        <p className="font-black text-red-500">
+          ⚠️ Streak Emergency
+        </p>
+
+        <p className={`text-sm mt-1 ${txt}`}>
+          "{dangerHabit.name}" is sitting at
+          <span className="font-black text-red-500">
+            {" "}🔥 {dangerHabit.streak} days
+          </span>
+          .
+          Miss today and watch your hard-earned streak evaporate into digital dust.
+        </p>
+      </div>
+    </div>
+  </motion.div>
+)}
+
           {/* ── AI Motivator banner ────────────────────────────────────────── */}
           <AnimatePresence>
             {bannerVisible && (
@@ -210,6 +323,7 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
             )}
           </AnimatePresence>
 
+         
 
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
@@ -269,10 +383,16 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
                         <span className={`block text-sm font-black truncate ${done ? 'text-green-500' : txt}`}>{habit.name}</span>
                         <span className={`block text-xs mt-0.5 ${muted}`}>{habit.category} - {habit.target} - {habit.time}</span>
                       </span>
-                      <span className="flex items-center gap-1 text-orange-500 text-xs font-black flex-shrink-0">
+                      {/* <span className="flex items-center gap-1 text-orange-500 text-xs font-black flex-shrink-0">
                         <Flame size={13} className="fill-orange-500" />
                         {habit.streak}d
-                      </span>
+                      </span> */}
+                      {habit.streak >= 3 && (
+  <span className="flex items-center gap-1 text-orange-500 text-xs font-black flex-shrink-0">
+    <Flame size={13} className="fill-orange-500" />
+    {habit.streak}d
+  </span>
+)}
                     </motion.button>
                   );
                 })}
@@ -304,11 +424,11 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                <div className="lg:col-span-3">
-                  <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
-                    {MONTH_DAYS.map(day => {
-                      const value = day === 23 ? todayProgress : MONTH_PROGRESS[day - 1];
+              <div className="grid grid-cols-1 gap-6">
+                <div>
+                  <div className="grid grid-cols-5 sm:grid-cols-10 gap-3">
+                    {monthDays.map(day => {
+                      const value = activeMonthProgress[day - 1] ?? 0;
                       const cellTone = value >= 90
                         ? 'bg-green-500 text-white shadow-md shadow-green-500/25'
                         : value >= 70
@@ -325,7 +445,7 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.3 + day * 0.01 }}
-                          className={`aspect-square rounded-xl flex flex-col items-center justify-center ${cellTone}`}
+                          className={`aspect-square rounded-xl flex flex-col items-center justify-center gap-1 ${cellTone}`}
                         >
                           <span className="text-xs font-black">{day}</span>
                           <span className="text-[9px] font-bold opacity-80">{value}%</span>
@@ -335,45 +455,7 @@ export default function Dashboard({ isDarkMode, setActiveSection }: DashboardPro
                   </div>
                 </div>
 
-                <div className="lg:col-span-2 flex flex-col">
-                  <div className={`rounded-xl p-4 flex-1 ${inner}`}>
-                    <div className="flex items-center gap-2 mb-4">
-                      <Activity size={18} className="text-green-500" />
-                      <h3 className={`text-sm font-black ${txt}`}>Progress Graph</h3>
-                    </div>
-                    <div className="h-40 flex items-end gap-1.5">
-                      {MONTH_PROGRESS.slice(15).map((value, index) => {
-                        const graphValue = index === 7 ? todayProgress : value;
-                        return (
-                          <div key={index} className="flex-1 flex flex-col items-center gap-1">
-                            <motion.div
-                              initial={{ height: 0 }}
-                              animate={{ height: `${Math.max(graphValue, 6)}%` }}
-                              transition={{ delay: 0.32 + index * 0.03, duration: 0.45 }}
-                              className={`w-full rounded-t-md ${graphValue >= 70 ? 'bg-green-500' : graphValue >= 40 ? 'bg-amber-400' : 'bg-orange-400'}`}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <p className={`text-xs leading-relaxed mt-4 ${muted}`}>
-                      {consistencyTrend >= 0
-                        ? `You are up ${consistencyTrend}% from last week. Keep protecting the routines that are already working.`
-                        : `You dipped ${Math.abs(consistencyTrend)}% from last week. The missed days are visible, but today's checklist can turn the line back up.`}
-                    </p>
-                    <div className={`mt-4 rounded-xl border p-4 ${isDarkMode ? 'bg-green-500/10 border-green-500/20' : 'bg-green-50 border-green-100'}`}>
-                      <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-green-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/25">
-                          <Eye size={16} className="text-white" />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-black tracking-widest text-green-500 mb-1">AI WATCH</p>
-                          <p className={`text-xs font-bold leading-relaxed ${txt}`}>{aiAdvice}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </motion.div>

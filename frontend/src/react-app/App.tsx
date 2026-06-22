@@ -1,34 +1,9 @@
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import { ApiError, getAccessToken, setAccessToken, isTokenExpired } from "./lib/api";
-import { type AuthUser, me, refresh } from "./lib/auth";
-import {
-  clearSession,
-  getOnboardingComplete,
-  isSessionLoggedIn,
-  migrateLegacyLocalDataForUser,
-  setSessionLoggedIn,
-  setSessionUser,
-} from "./lib/storage";
-
-const LoginPage = lazy(() => import("./pages/Login"));
-const HomePage = lazy(() => import("./pages/Home"));
-const UserOnboarding = lazy(() => import("./lib/components/UserOnboarding"));
-
-function ScreenLoader({ message }: { message: string }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-6">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/25">
-          <div className="w-6 h-6 rounded-full border-4 border-white/40 border-t-white animate-spin" />
-        </div>
-        <div>
-          <p className="text-lg font-black text-gray-900">Trackify</p>
-          <p className="text-sm text-gray-500 mt-1">{message}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { useEffect, useRef, useState } from "react";
+import LoginPage from "./pages/Login";
+import HomePage from "./pages/Home";
+import UserOnboarding from "./lib/components/UserOnboarding";
+import { ApiError, getAccessToken, setAccessToken } from "./lib/api";
+import { me, refresh } from "./lib/auth";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -164,7 +139,19 @@ export default function App() {
   };
 
   if (isBootstrapping) {
-    return <ScreenLoader message="Loading your dashboard..." />;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 px-6">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="w-14 h-14 rounded-2xl bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/25">
+            <div className="w-6 h-6 rounded-full border-4 border-white/40 border-t-white animate-spin" />
+          </div>
+          <div>
+            <p className="text-lg font-black text-gray-900">Trackify</p>
+            <p className="text-sm text-gray-500 mt-1">Loading your dashboard...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!isLoggedIn) {
