@@ -18,6 +18,13 @@ type DashboardHabit = {
   completedToday: boolean;
 };
 
+const MONTHLY_PROGRESS_STORAGE_KEY = 'trackify:monthly-consistency';
+
+function getUserStorageKey(baseKey: string, username: string) {
+  const userKey = username.trim().toLowerCase() || 'user';
+  return `${baseKey}:${encodeURIComponent(userKey)}`;
+}
+
 function loadDashboardHabits(): DashboardHabit[] {
   return loadStoredHabits().map((habit) => ({
     id: habit.id,
@@ -54,16 +61,22 @@ const NAV_ITEMS = [
 
 export default function Dashboard({ isDarkMode, setActiveSection }: DashboardProps) {
   const username = getDisplayUsername();
+  const today = new Date();
+  const monthDayCount = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const todayDay = today.getDate();
+  const monthDays = Array.from({ length: monthDayCount }, (_, i) => i + 1);
+  const userMonthlyProgressStorageKey = getUserStorageKey(MONTHLY_PROGRESS_STORAGE_KEY, username);
+
   const [bannerVisible, setBannerVisible] = useState(true);
   const [activeNav, setActiveNav] = useState('dashboard');
   const [dashboardHabits, setDashboardHabits] = useState<DashboardHabit[]>(loadDashboardHabits);
   const [checkedHabits, setCheckedHabits] = useState<Record<string, boolean>>(
-    () => Object.fromEntries(loadDashboardHabits(username).map(habit => [habit.id, habit.completedToday]))
+    () => Object.fromEntries(loadDashboardHabits().map(habit => [habit.id, habit.completedToday]))
   );
   const [monthProgress, setMonthProgress] = useState<number[]>(() => loadMonthlyProgress(username, monthDayCount));
 
   useEffect(() => {
-    const habits = loadDashboardHabits(username);
+    const habits = loadDashboardHabits();
     setDashboardHabits(habits);
     setCheckedHabits(Object.fromEntries(habits.map(habit => [habit.id, habit.completedToday])));
     setMonthProgress(loadMonthlyProgress(username, monthDayCount));
@@ -241,7 +254,7 @@ const xpPercent = Math.min(
                       transition={{ duration: 1.2, ease: 'easeOut' }}
                       className="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500" />
                   </div>
-                    <span className={`text-sm flex-shrink-0 font-semibold ${muted}`}>{currentLevelXP} / {maxXP} XP</span>
+                    <span className={`text-sm flex-shrink-0 font-semibold ${muted}`}>{currentXP} / {maxXP} XP</span>
                 </div>
               </div>
             </div>

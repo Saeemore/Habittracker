@@ -3,6 +3,8 @@ import { clearSession } from "./storage";
 
 export type AuthUser = { id: string; email: string; username: string };
 
+let refreshInFlight: Promise<{ accessToken: string }> | null = null;
+
 export async function login(params: {
   email?: string;
   username?: string;
@@ -24,7 +26,13 @@ export async function me(): Promise<{ user: AuthUser }> {
 }
 
 export async function refresh(): Promise<{ accessToken: string }> {
-  return apiFetch("/auth/refresh", { method: "POST" });
+  if (refreshInFlight) return refreshInFlight;
+
+  refreshInFlight = apiFetch<{ accessToken: string }>("/auth/refresh", { method: "POST" }).finally(() => {
+    refreshInFlight = null;
+  });
+
+  return refreshInFlight;
 }
 
 export async function logout(): Promise<{ ok: true }> {

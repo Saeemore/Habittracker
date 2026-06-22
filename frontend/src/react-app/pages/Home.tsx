@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import Sidebar from '../lib/components/Sidebar';
-import { loadStoredHabits, getSessionUser, type SessionUser } from '../lib/storage';
+import { getSessionUser, type SessionUser } from '../lib/storage';
 import Dashboard from '../lib/components/Dashboard';
 import AIChat from '../lib/components/AIChat';
 
@@ -88,7 +88,7 @@ export default function HomePage({ onLogout }: HomePageProps) {
           {renderSection()}
         </Suspense>
       </div>
-      <AIChat isDarkMode={isDarkMode} habits={loadStoredHabits()} />
+      <AIChat isDarkMode={isDarkMode} />
     </div>
   );
 }

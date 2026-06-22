@@ -98,26 +98,33 @@ async function refresh(req, res) {
 
   if (!payload.userId) throw new AppError("Invalid refresh token payload", 401, "UNAUTHORIZED");
 
-  const user = await UserModel.findById(payload.userId);
-  if (!user) throw new AppError("User not found", 401, "UNAUTHORIZED");
-
   const oldHash = sha256(refreshToken);
-  if (!user.refreshTokenHashes.includes(oldHash)) {
-    user.refreshTokenHashes = [];
-    await user.save();
-    throw new AppError("Refresh token not recognized", 401, "UNAUTHORIZED");
+  const newAccessToken = signAccessToken(String(payload.userId));
+  const newRefreshToken = signRefreshToken(String(payload.userId));
+  const newHash = sha256(newRefreshToken);
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const user = await UserModel.findById(payload.userId);
+    if (!user) throw new AppError("User not found", 401, "UNAUTHORIZED");
+
+    if (!user.refreshTokenHashes.includes(oldHash)) {
+      user.refreshTokenHashes = [];
+      await user.save();
+      throw new AppError("Refresh token not recognized", 401, "UNAUTHORIZED");
+    }
+
+    user.refreshTokenHashes = user.refreshTokenHashes.filter((h) => h !== oldHash);
+    user.refreshTokenHashes.push(newHash);
+    capRefreshHashes(user);
+
+    try {
+      await user.save();
+      setRefreshCookie(res, newRefreshToken);
+      return res.json({ accessToken: newAccessToken });
+    } catch (err) {
+      if (err.name !== "VersionError" || attempt === 2) throw err;
+    }
   }
-
-  const newAccessToken = signAccessToken(String(user._id));
-  const newRefreshToken = signRefreshToken(String(user._id));
-
-  user.refreshTokenHashes = user.refreshTokenHashes.filter((h) => h !== oldHash);
-  user.refreshTokenHashes.push(sha256(newRefreshToken));
-  capRefreshHashes(user);
-  await user.save();
-
-  setRefreshCookie(res, newRefreshToken);
-  res.json({ accessToken: newAccessToken });
 }
 
 async function logout(req, res) {

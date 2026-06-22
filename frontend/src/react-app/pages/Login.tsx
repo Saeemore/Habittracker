@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, TrendingUp } from "lucide-react";
 import { ApiError, setAccessToken } from "../lib/api";
-import { login, register } from "../lib/auth";
+import { AuthUser, forgotPassword, login, register, resetPassword } from "../lib/auth";
 import BrandLogo from "../lib/components/BrandLogo";
 
 interface LoginPageProps {

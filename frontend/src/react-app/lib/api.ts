@@ -75,7 +75,8 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
   const res = await fetch(normalizePath(path), {
     ...init,
     headers,
-    credentials: "include"
+    credentials: "include",
+    cache: "no-store",
   });
 
 

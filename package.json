@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "AI-Based Habit Tracker",
   "scripts": {
-    "dev": "run-p docker frontend",
+    "dev": "run-p backend frontend",
+    "dev:docker": "run-p docker frontend",
     "docker": "docker-compose up",
+    "backend": "cd backend && npm run dev",
     "frontend": "cd frontend && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

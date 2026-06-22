@@ -16,6 +16,7 @@ const achievementsRouter = require("./routes/achievements");
 const mlRouter = require("./routes/ml");
 const chatRouter = require("./routes/chat");
 const app = express();
+app.set("etag", false);
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 

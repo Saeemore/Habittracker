@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Bot, User, Sparkles, Zap, BarChart2, Minimize2 } from 'lucide-react';
+import { Send, Bot, User, Sparkles, Zap, BarChart2, Minimize2, CalendarClock } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { apiFetch } from '../api';
+import { buildChatUserContext, fetchChatUserContext } from '../chatContext';
 
 interface Message {
   role: 'user' | 'ai';
@@ -9,29 +11,22 @@ interface Message {
   timestamp: Date;
 }
 
-interface Habit {
-  name: string;
-  category: string;
-  streak: number;
-  completed: boolean;
-}
-
 interface AIChatProps {
   isDarkMode: boolean;
-  habits?: Habit[];
 }
 
-export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
+export default function AIChat({ isDarkMode }: AIChatProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'ai',
-      text: "Hi! I'm Trackify AI 🌟 Your personal habit coach. Ask me anything about your habits, or tap a quick action below!",
+      text: "Hi! I'm Trackify AI — your **personalized** habit coach. I know your habits, schedule preferences, and streaks. Ask me to fit a new habit into a busy day, protect a streak, or analyze your progress!",
       timestamp: new Date(),
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [habitCount, setHabitCount] = useState(() => buildChatUserContext().habits.length);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const BG    = isDarkMode ? 'bg-[#0a0a0a]' : 'bg-gray-50';
@@ -46,6 +41,27 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    fetchChatUserContext()
+      .then((context) => setHabitCount(context.habits.length))
+      .catch(() => setHabitCount(buildChatUserContext().habits.length));
+  }, [isOpen, messages.length]);
+
+  const buildPayload = async (message?: string) => {
+    const context = await fetchChatUserContext();
+    setHabitCount(context.habits.length);
+    return {
+      message,
+      habits: context.habits,
+      profile: context.profile,
+      username: context.username,
+      todayProgress: context.todayProgress,
+      localTime: context.localTime,
+      dayOfWeek: context.dayOfWeek,
+    };
+  };
+
   const sendMessage = async (text: string) => {
     if (!text.trim()) return;
 
@@ -55,12 +71,10 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/chat', {
+      const data = await apiFetch<{ reply: string }>('/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, habits }),
+        body: JSON.stringify(await buildPayload(text)),
       });
-      const data = await res.json();
       setMessages(prev => [...prev, {
         role: 'ai',
         text: data.reply || 'Sorry, I could not generate a response.',
@@ -80,12 +94,10 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
   const handleMotivate = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/chat/motivate', {
+      const data = await apiFetch<{ reply: string }>('/chat/motivate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ habits }),
+        body: JSON.stringify(await buildPayload()),
       });
-      const data = await res.json();
       setMessages(prev => [...prev, {
         role: 'ai',
         text: data.reply,
@@ -105,12 +117,10 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
   const handleAnalyze = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/chat/analyze', {
+      const data = await apiFetch<{ reply: string }>('/chat/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ habits }),
+        body: JSON.stringify(await buildPayload()),
       });
-      const data = await res.json();
       setMessages(prev => [...prev, {
         role: 'ai',
         text: data.reply,
@@ -149,7 +159,11 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
         </div>
         <div>
           <h1 className={`text-base font-black ${TXT}`}>Trackify AI</h1>
-          <p className={`text-xs ${MUTED}`}>Your personal habit coach</p>
+          <p className={`text-xs ${MUTED}`}>
+            {habitCount > 0
+              ? `Coaching you on ${habitCount} habit${habitCount === 1 ? '' : 's'}`
+              : 'Add habits to unlock personalized coaching'}
+          </p>
         </div>
         <div className="ml-auto flex items-center gap-3">
           <div className="flex items-center gap-2">
@@ -171,24 +185,30 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
       </div>
 
       {/* Quick actions */}
-      <div className={`flex gap-2 px-4 py-3 border-b ${isDarkMode ? 'border-white/5' : 'border-gray-100'}`}>
+      <div className={`flex flex-wrap gap-2 px-4 py-3 border-b ${isDarkMode ? 'border-white/5' : 'border-gray-100'}`}>
         <button onClick={handleMotivate}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all
             ${isDarkMode ? 'bg-green-500/10 text-green-400 hover:bg-green-500/20' : 'bg-green-50 text-green-600 hover:bg-green-100'}`}>
           <Sparkles size={11} />
           Motivate me
         </button>
-        <button onClick={() => sendMessage("What are the best ways to track my habits?")}
+        <button onClick={() => sendMessage("Help me fit a new habit into my busy schedule. Use my existing habits and preferred times to suggest specific time blocks and a streak-protection plan.")}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all
+            ${isDarkMode ? 'bg-orange-500/10 text-orange-400 hover:bg-orange-500/20' : 'bg-orange-50 text-orange-600 hover:bg-orange-100'}`}>
+          <CalendarClock size={11} />
+          Fit my schedule
+        </button>
+        <button onClick={handleAnalyze}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all
             ${isDarkMode ? 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/20' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'}`}>
           <BarChart2 size={11} />
           Analyze habits
         </button>
-        <button onClick={() => sendMessage("What are the best tips for building habits that stick?")}
+        <button onClick={() => sendMessage("Which of my habits are at streak risk today, and what personalized steps should I take right now to protect them?")}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all
             ${isDarkMode ? 'bg-purple-500/10 text-purple-400 hover:bg-purple-500/20' : 'bg-purple-50 text-purple-600 hover:bg-purple-100'}`}>
           <Zap size={11} />
-          Habit tips
+          Save my streak
         </button>
       </div>
 
@@ -265,7 +285,7 @@ export default function AIChat({ isDarkMode, habits = [] }: AIChatProps) {
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
-            placeholder="Ask your habit coach..."
+            placeholder="Ask about your schedule, streaks, or habits..."
             className={`flex-1 px-4 py-3 border rounded-xl text-sm focus:outline-none focus:border-green-500 transition-colors ${INPUT}`}
           />
           <motion.button

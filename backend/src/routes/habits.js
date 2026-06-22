@@ -11,7 +11,8 @@ const router = Router();
 router.use(requireAuth);
 
 router.get("/", asyncHandler(listHabits));
-  router.patch("/:habitId", validate({ body: UpdateHabitBodySchema }), asyncHandler(updateHabit));
+router.post("/", validate({ body: CreateHabitBodySchema }), asyncHandler(createHabit));
+router.patch("/:habitId", validate({ body: UpdateHabitBodySchema }), asyncHandler(updateHabit));
 router.delete("/:habitId", asyncHandler(deleteHabit));
 
 module.exports = router;
